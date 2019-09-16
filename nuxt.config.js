@@ -1,7 +1,11 @@
 import colors from 'vuetify/es5/util/colors'
+// ここでenvの設定ファイルの切り替え
+const environment = process.env.NODE_ENV || 'development'
+const envSet = require(`./env.${environment}.js`)
 
 export default {
     mode: 'spa',
+    env: envSet,
     /*
      ** Headers of the page
      */
@@ -83,16 +87,6 @@ export default {
         /*
          ** You can extend webpack config here
          */
-        extend(config, ctx) {
-            // Run ESLint on save
-            if (ctx.isDev && ctx.isClient) {
-                config.module.rules.push({
-                    enforce: 'pre',
-                    test: /\.(js|vue)$/,
-                    loader: 'eslint-loader',
-                    exclude: /(node_modules)/
-                })
-            }
-        }
+        extend(config, ctx) {}
     }
 }

@@ -8,6 +8,7 @@
             <v-card>
                 <v-card-title class="headline">
                     Welcome to the Vuetify + Nuxt.js template
+                    {{ url }}
                 </v-card-title>
                 <v-card-text>
                     <p>
@@ -77,9 +78,14 @@ export default {
         Logo,
         VuetifyLogo
     },
+    data() {
+        return {
+            url: process.env.apiBaseUrl
+        }
+    },
     methods: {
         login() {
-            console.log('dケオあ')
+            console.log(this.url)
         }
     }
 }
