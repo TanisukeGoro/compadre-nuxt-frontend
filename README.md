@@ -20,3 +20,23 @@ $ npm run generate
 ```
 
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+
+## Routing
+
+- /register
+- /login
+- /app
+  - /chat
+  - /chat/{room_id}
+  - /attention-me 自分のことをいいねしてくれた人一覧
+  - /attention-card いいねしてくれた人の羅列
+  - /greetings/{user_id}
+  - /edit-profile
+  - /settings
+  - /faq よくある質問
+  - /logout
+
+## Config
+
+- develop以外ではconsole.logを許容しないようにする
+- 
