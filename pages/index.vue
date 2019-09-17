@@ -8,7 +8,6 @@
             <v-card>
                 <v-card-title class="headline">
                     Welcome to the Vuetify + Nuxt.js template
-                    {{ url }}
                 </v-card-title>
                 <v-card-text>
                     <p>
@@ -60,8 +59,8 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer />
-                    <v-btn color="primary" nuxt to="/inspire">
-                        Continue
+                    <v-btn color="primary" @click="getter">
+                        Axios GET
                     </v-btn>
                 </v-card-actions>
             </v-card>
@@ -80,13 +79,52 @@ export default {
     },
     data() {
         return {
-            url: process.env.apiBaseUrl
+            host: ''
         }
     },
     methods: {
-        login() {
-            console.log(this.url)
+        getter() {
+            this.$axios({
+                method: 'get',
+                url: `${process.env.apiBaseUrl}test`,
+                responseType: 'json',
+                headers: {
+                    'content-type': 'application/x-www-form-urlencoded'
+                },
+                xsrfHeaderName: 'X-XSRF-TOKEN',
+                withCredentials: true
+            })
+                .then(function(response) {
+                    console.log(response.data)
+                })
+                .catch(function(error) {
+                    console.log(error)
+                })
         }
+        // async asyncData({ app }) {
+        //     // const response = await app.$axios.$get(`https://httpbin.org/get`)
+        //     const response = await app.$axios.$get(
+        //         `${process.env.apiBaseUrl}test`
+        //     )
+        //     console.log(response)
+        //     // return { host: response.headers.Host }
+        // }
     }
 }
+// export default {
+
+//     data() {
+//         return {
+//             url: process.env.apiBaseUrl
+//         }
+//     },
+//     mounted() {
+//         this.login()
+//     },
+//     methods: {
+//         login() {
+//             console.log(this.url)
+//         }
+//     }
+// }
 </script>
