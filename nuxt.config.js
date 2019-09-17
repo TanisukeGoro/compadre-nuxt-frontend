@@ -52,13 +52,25 @@ export default {
     modules: [
         // Doc: https://axios.nuxtjs.org/usage
         '@nuxtjs/axios',
+        '@nuxtjs/proxy',
         '@nuxtjs/pwa'
     ],
     /*
      ** Axios module configuration
      ** See https://axios.nuxtjs.org/options
      */
-    axios: {},
+    axios: {
+        browserBaseURL: process.env.apiBaseUrl || '/',
+        requestInterceptor(config, { store }) {
+            if (store.state.csrfToken) {
+                config.headers.common['x-csrf-token'] = store.state.csrfToken
+            }
+            return config
+        }
+    },
+    proxy: {
+        '/api': 'http://localhost/api/v1/'
+    },
     /*
      ** vuetify module configuration
      ** https://github.com/nuxt-community/vuetify-module
