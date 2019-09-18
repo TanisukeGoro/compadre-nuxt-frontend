@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <v-app-bar app clipped-right color="primary" dark>
+        <v-app-bar app clipped-right color="primary" fixed dark>
             <v-app-bar-nav-icon
                 @click.stop="drawer = !drawer"
             ></v-app-bar-nav-icon>
@@ -10,12 +10,20 @@
                 @click.stop="drawerRight = !drawerRight"
             ></v-app-bar-nav-icon>
         </v-app-bar>
-        <nuxt />
+        <v-content>
+            <v-container>
+                <nuxt />
+            </v-container>
+        </v-content>
+        <BottomNav />
     </v-app>
 </template>
 
 <script>
+import BottomNav from '~/components/BottomNav'
+
 export default {
+    components: { BottomNav },
     data() {
         return {
             clipped: false,
