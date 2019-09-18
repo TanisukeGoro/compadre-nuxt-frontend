@@ -166,6 +166,9 @@ export default {
             }
         }
     },
+    workbox: {
+        dev: false
+    },
     // 全てのページにAuth権限を付与する
     router: {
         middleware: ['auth']
