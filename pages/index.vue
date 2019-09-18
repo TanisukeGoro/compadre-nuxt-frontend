@@ -1,56 +1,35 @@
 <template>
     <v-layout column justify-center align-center>
         <v-flex xs12 sm8 md6>
-            <div class="text-center">
-                <logo />
-                <vuetify-logo />
-            </div>
-            <v-card>
-                <v-card-title class="headline">
-                    Welcome to the Vuetify + Nuxt.js template
-                </v-card-title>
-                <v-card-actions>
-                    <v-spacer />
-                    <v-btn color="primary" @click="Axios_get">
-                        Axios GET Async / Await テスト
-                    </v-btn>
-                </v-card-actions>
-                <v-card-actions>
-                    <v-btn color="primary" @click="post_login">
-                        Axios Login テスト
-                    </v-btn>
-                </v-card-actions>
-                <v-card-actions>
-                    <v-spacer />
-                    <v-btn color="primary" @click="Axios_get">
-                        Axios Logout テスト
-                    </v-btn>
-                </v-card-actions>
-                <v-card-actions>
-                    <v-btn color="primary" @click="Axios_get">
-                        Axios Refresh テスト
-                    </v-btn>
-                </v-card-actions>
-                <v-card-actions>
-                    <v-spacer />
-                    <v-btn color="primary" @click="Axios_get">
-                        Axios get User テスト
-                    </v-btn>
-                </v-card-actions>
-            </v-card>
+            <v-btn color="primary">
+                primary
+            </v-btn>
+            <v-btn color="secondary">
+                secondary
+            </v-btn>
+            <v-btn color="accent">
+                accent
+            </v-btn>
+            <v-btn color="error">
+                error
+            </v-btn>
+            <v-btn color="warning">
+                warning
+            </v-btn>
+            <v-btn color="success">
+                success
+            </v-btn>
+            <v-btn color="info">
+                info
+            </v-btn>
         </v-flex>
     </v-layout>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
-import VuetifyLogo from '~/components/VuetifyLogo.vue'
-
 export default {
-    components: {
-        Logo,
-        VuetifyLogo
-    },
+    auth: false,
+    components: {},
     data() {
         return {
             host: '',
@@ -72,17 +51,16 @@ export default {
 
         async getUser() {
             try {
-                const response = await this.$axios.post(`${this.baseURL}test`)
+                const response = await this.$axios.$post(`${this.baseURL}test`)
                 console.log(response)
             } catch (error) {
                 console.error(error)
             }
         },
-        async post_login() {
-            console.log(this.response_jwt)
+        async auth_login() {
             try {
-                const response = await this.$axios.post(
-                    `http://localhost/api/v1/auth/login`,
+                const response = await this.$axios.$post(
+                    `${this.baseURL}auth/login`,
                     {
                         email: 'tomoya.nishinosono@example.com',
                         password: 'secret'
@@ -96,6 +74,21 @@ export default {
             console.log(this.response_jwt)
             this.$store.dispatch('jwt_auth', this.response_jwt)
             this.$router.push('/inspire')
+        },
+        authenticate() {
+            this.$auth.loginWith('local', {
+                data: {
+                    email: 'tomoya.nishinosono@example.com',
+                    password: 'secret'
+                }
+            })
+        },
+        async get_user() {
+            console.log(this.$store.getters.data)
+            try {
+                const response = await this.$axios.$get(`${this.baseURL}user`)
+                console.log(response)
+            } catch (error) {}
         }
         // async asyncData({ app }) {
         //     // const response = await app.$axios.$get(`https://httpbin.org/get`)
