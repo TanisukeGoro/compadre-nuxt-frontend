@@ -9,58 +9,32 @@
                 <v-card-title class="headline">
                     Welcome to the Vuetify + Nuxt.js template
                 </v-card-title>
-                <v-card-text>
-                    <p>
-                        Vuetify is a progressive Material Design component
-                        framework for Vue.js. It was designed to empower
-                        developers to create amazing applications.
-                    </p>
-                    <p>
-                        For more information on Vuetify, check out the
-                        <a href="https://vuetifyjs.com" target="_blank">
-                            documentation </a
-                        >.
-                    </p>
-                    <p>
-                        If you have questions, please join the official
-                        <a
-                            href="https://chat.vuetifyjs.com/"
-                            target="_blank"
-                            title="chat"
-                        >
-                            discord </a
-                        >.
-                    </p>
-                    <p>
-                        Find a bug? Report it on the github
-                        <a
-                            href="https://github.com/vuetifyjs/vuetify/issues"
-                            target="_blank"
-                            title="contribute"
-                        >
-                            issue board </a
-                        >.
-                    </p>
-                    <p>
-                        Thank you for developing with Vuetify and I look forward
-                        to bringing more exciting features in the future.
-                    </p>
-                    <div class="text-xs-right">
-                        <em><small>&mdash; John Leider</small></em>
-                    </div>
-                    <hr class="my-3" />
-                    <a href="https://nuxtjs.org/" target="_blank">
-                        Nuxt Documentation
-                    </a>
-                    <br />
-                    <a href="https://github.com/nuxt/nuxt.js" target="_blank">
-                        Nuxt GitHub
-                    </a>
-                </v-card-text>
                 <v-card-actions>
                     <v-spacer />
-                    <v-btn color="primary" @click="getter">
-                        Axios GET
+                    <v-btn color="primary" @click="Axios_get">
+                        Axios GET Async / Await テスト
+                    </v-btn>
+                </v-card-actions>
+                <v-card-actions>
+                    <v-btn color="primary" @click="post_login">
+                        Axios Login テスト
+                    </v-btn>
+                </v-card-actions>
+                <v-card-actions>
+                    <v-spacer />
+                    <v-btn color="primary" @click="Axios_get">
+                        Axios Logout テスト
+                    </v-btn>
+                </v-card-actions>
+                <v-card-actions>
+                    <v-btn color="primary" @click="Axios_get">
+                        Axios Refresh テスト
+                    </v-btn>
+                </v-card-actions>
+                <v-card-actions>
+                    <v-spacer />
+                    <v-btn color="primary" @click="Axios_get">
+                        Axios get User テスト
                     </v-btn>
                 </v-card-actions>
             </v-card>
@@ -79,27 +53,49 @@ export default {
     },
     data() {
         return {
-            host: ''
+            host: '',
+            baseURL: process.env.apiBaseUrl,
+            response_jwt: ''
         }
     },
     methods: {
-        getter() {
-            this.$axios({
-                method: 'get',
-                url: `${process.env.apiBaseUrl}test`,
-                responseType: 'json',
-                headers: {
-                    'content-type': 'application/x-www-form-urlencoded'
-                },
-                xsrfHeaderName: 'X-XSRF-TOKEN',
-                withCredentials: true
-            })
-                .then(function(response) {
-                    console.log(response.data)
+        Axios_get() {
+            this.$axios
+                .$get(`${this.baseURL}test`)
+                .then((response) => {
+                    console.log(response)
                 })
-                .catch(function(error) {
+                .catch((error) => {
                     console.log(error)
                 })
+        },
+
+        async getUser() {
+            try {
+                const response = await this.$axios.post(`${this.baseURL}test`)
+                console.log(response)
+            } catch (error) {
+                console.error(error)
+            }
+        },
+        async post_login() {
+            console.log(this.response_jwt)
+            try {
+                const response = await this.$axios.post(
+                    `http://localhost/api/v1/auth/login`,
+                    {
+                        email: 'tomoya.nishinosono@example.com',
+                        password: 'secret'
+                    }
+                )
+                console.log(response)
+                this.response_jwt = response.data
+            } catch (error) {
+                console.log(error)
+            }
+            console.log(this.response_jwt)
+            this.$store.dispatch('jwt_auth', this.response_jwt)
+            this.$router.push('/inspire')
         }
         // async asyncData({ app }) {
         //     // const response = await app.$axios.$get(`https://httpbin.org/get`)

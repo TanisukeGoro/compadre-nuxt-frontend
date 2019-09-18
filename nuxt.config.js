@@ -60,7 +60,6 @@ export default {
      ** See https://axios.nuxtjs.org/options
      */
     axios: {
-        browserBaseURL: process.env.apiBaseUrl || '/',
         requestInterceptor(config, { store }) {
             if (store.state.csrfToken) {
                 config.headers.common['x-csrf-token'] = store.state.csrfToken
@@ -68,6 +67,9 @@ export default {
             return config
         }
     },
+    /**
+     * プロキシを設定したけど動く気がしないのでとりあえず放置する。
+     */
     proxy: {
         '/api': 'http://localhost/api/v1/'
     },

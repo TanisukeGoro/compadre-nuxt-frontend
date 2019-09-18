@@ -10,6 +10,24 @@
                     </small>
                 </footer>
             </blockquote>
+            <v-btn color="primary" @click="jwt_getter">
+                Axios Login テスト
+            </v-btn>
         </v-flex>
     </v-layout>
 </template>
+
+<script>
+export default {
+    data() {
+        return {
+            jwt: this.$store.getters.data
+        }
+    },
+    methods: {
+        jwt_getter() {
+            console.log(this.jwt.access_token)
+        }
+    }
+}
+</script>
