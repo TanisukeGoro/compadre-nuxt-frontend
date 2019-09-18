@@ -53,7 +53,8 @@ export default {
         // Doc: https://axios.nuxtjs.org/usage
         '@nuxtjs/axios',
         '@nuxtjs/proxy',
-        '@nuxtjs/pwa'
+        '@nuxtjs/pwa',
+        '@nuxtjs/auth'
     ],
     /*
      ** Axios module configuration
@@ -68,10 +69,50 @@ export default {
         }
     },
     /**
+     * proxy module configration
      * プロキシを設定したけど動く気がしないのでとりあえず放置する。
      */
     proxy: {
         '/api': 'http://localhost/api/v1/'
+    },
+    /**
+     * Auth module configuration
+     * See https://auth.nuxtjs.org/
+     */
+    auth: {
+        redirect: {
+            login: '/login', // 未ログイン時のリダイレクト先
+            logout: '/login', // ログアウト処理を実行した直後のリダイレクト先
+            callback: '/callback', // コールバックURL（各プロバイダで設定したものと同じPathにする）
+            home: '/app' // ログイン後に遷移するページ
+        },
+        strategies: {
+            local: {
+                // APIのエンドポイント
+                endpoints: {
+                    login: {
+                        url: 'http://localhost/api/v1/auth/login',
+                        method: 'post',
+                        // レスポンスのトークンが入っているkey
+                        propertyName: 'access_token'
+                    },
+                    logout: {
+                        url: 'http://localhost/api/v1/api/auth/logout',
+                        method: 'post'
+                    },
+                    user: {
+                        url: 'http://localhost/api/v1/user',
+                        method: 'get',
+                        propertyName: 'user'
+                    }
+                }
+            },
+            github: {
+                client_id: process.env.GITHUB_CLIENT_ID,
+                client_secret: process.env.GITHUB_CLIENT_SECRET,
+                scope: ['read:user'] // デフォルトだと ['user', 'email'] となり、権限がやや強いので絞る
+            }
+        }
     },
     /*
      ** vuetify module configuration
@@ -79,9 +120,21 @@ export default {
      */
     vuetify: {
         customVariables: ['~/assets/variables.scss'],
+        // 色のテーマ
         theme: {
-            dark: true,
+            dark: false,
             themes: {
+                // 通常のテーマ
+                light: {
+                    primary: '#F4D03F',
+                    secondary: '#F5D76E',
+                    accent: '#4F75A0',
+                    error: '#ED5E7D',
+                    warning: '#ffeb3b',
+                    info: '#cddc39',
+                    success: '#8bc34a'
+                },
+                // ダークモードのとき
                 dark: {
                     primary: colors.blue.darken2,
                     accent: colors.grey.darken3,
@@ -112,5 +165,9 @@ export default {
                 })
             }
         }
+    },
+    // 全てのページにAuth権限を付与する
+    router: {
+        middleware: ['auth']
     }
 }
