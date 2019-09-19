@@ -6,6 +6,7 @@
 
 <script>
 import SelectCard from '~/components/SelectCard'
+// import { firebase, db } from '~/plugins/firebase'
 export default {
     components: {
         SelectCard

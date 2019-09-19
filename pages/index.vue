@@ -31,6 +31,7 @@
 
 <script>
 export default {
+    layout: 'empty',
     auth: false,
     components: {},
     data() {
