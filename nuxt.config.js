@@ -132,7 +132,7 @@ export default {
                     error: '#ED5E7D',
                     warning: '#ffeb3b',
                     info: '#cddc39',
-                    success: '#8bc34a'
+                    success: '#EBB920'
                 },
                 // ダークモードのとき
                 dark: {

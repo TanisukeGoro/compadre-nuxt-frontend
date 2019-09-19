@@ -1,5 +1,5 @@
 <template>
-    <v-bottom-navigation fixed grow shift>
+    <v-bottom-navigation app fixed grow shift>
         <v-btn to="/app" nuxt>
             <span>Home</span>
             <v-icon>mdi-home-outline</v-icon>
