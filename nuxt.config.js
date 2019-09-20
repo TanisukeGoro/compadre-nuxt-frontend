@@ -97,7 +97,7 @@ export default {
                         propertyName: 'access_token'
                     },
                     logout: {
-                        url: 'http://localhost/api/v1/api/auth/logout',
+                        url: 'http://localhost/api/v1/auth/logout',
                         method: 'post'
                     },
                     user: {
