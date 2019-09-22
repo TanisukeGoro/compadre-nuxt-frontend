@@ -1,0 +1,25 @@
+.profileimg {
+    border-radius: 50%;
+}
+
+@media screen and (min-width: 767px) {
+    /*ウィンドウ幅が767px以上の場合に適用*/
+    .select-text {
+        color: #00ffff; /*青色*/
+        font-size: 24px;
+    }
+}
+@media screen and (max-width: 479px) {
+    /*ウィンドウ幅が最大479pxまでの場合に適用*/
+    .select-text {
+        color: rgb(50, 50, 50); /*緑色*/
+        font-size: 24px;
+    }
+}
+@media screen and (max-width: 330px) {
+    /*ウィンドウ幅が最大479pxまでの場合に適用*/
+    .select-text {
+        color: rgb(50, 50, 50); /*緑色*/
+        font-size: 16px;
+    }
+}

@@ -10,9 +10,9 @@
                     </small>
                 </footer>
             </blockquote>
-            <v-btn color="primary" @click="jwt_getter">
-                Axios Login テスト
-            </v-btn>
+            <v-btn color="primary" @click="jwt_getter"
+                >Axios Login テスト</v-btn
+            >
         </v-flex>
     </v-layout>
 </template>
