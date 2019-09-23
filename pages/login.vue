@@ -56,8 +56,8 @@
                                                 "
                                             >
                                                 Login with
-                                                {{ auth.name }}</v-btn
-                                            >
+                                                {{ auth.name }}
+                                            </v-btn>
                                         </v-list-item-title>
                                     </v-list-item-content>
                                 </v-list-item>
@@ -77,7 +77,7 @@ export default {
     components: {},
     data() {
         return {
-            email: 'tomoya.nishinosono@example.com',
+            email: 'sakamoto.mai@example.org',
             password: 'secret',
             error: null,
             strategies: [

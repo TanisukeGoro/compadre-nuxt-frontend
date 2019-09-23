@@ -20,6 +20,7 @@
     "@nuxtjs/pwa": "^3.0.0-0",
     "firebase": "^6.6.1",
     "nuxt": "^2.0.0",
+    "nuxt-i18n": "^6.2.1",
     "vuexfire": "^3.1.2"
   },
   "devDependencies": {

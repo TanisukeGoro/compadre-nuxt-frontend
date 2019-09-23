@@ -1,33 +1,16 @@
 <template>
-    <div>
-        pages/app/attention-me.vue
-
-        <p>
-            <nuxt-link to="/app">/app</nuxt-link>
-        </p>
-
-        <p>
-            <nuxt-link to="/app/settings">/app/settings</nuxt-link>
-        </p>
-
-        <p>
-            <nuxt-link to="/app/attention-card">/app/attention-card</nuxt-link>
-        </p>
-
-        <p>
-            <nuxt-link to="/app/attention-me">/app/attention-me</nuxt-link>
-        </p>
-
-        <p>
-            <nuxt-link to="/app/edit-profile">/app/edit-profile</nuxt-link>
-        </p>
-
-        <p>
-            <nuxt-link to="/chat">/chat</nuxt-link>
-        </p>
-
-        <p>
-            <nuxt-link to="/chat/jieajf">/chat/jieajf</nuxt-link>
-        </p>
-    </div>
+    <v-content>
+        <likecard />
+    </v-content>
 </template>
+
+<script>
+// eslint-disable-next-line no-unused-vars
+import likecard from '~/components/likecard'
+import '@/assets/attension-mr.css'
+export default {
+    components: {
+        likecard
+    }
+}
+</script>
