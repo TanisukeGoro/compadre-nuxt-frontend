@@ -16,9 +16,9 @@
                         @click.stop="data.parent.selectedIndex = data.index"
                         @click:close="data.parent.selectItem(data.item)"
                     >
-                        <v-avatar class="accent white--text" left>
-                            {{ data.item.slice(0, 1).toUpperCase() }}
-                        </v-avatar>
+                        <v-avatar class="accent white--text" left>{{
+                            data.item.slice(0, 1).toUpperCase()
+                        }}</v-avatar>
                         {{ data.item }}
                     </v-chip>
                 </template>
@@ -30,7 +30,7 @@
 export default {
     data() {
         return {
-            select: 'Programming',
+            select: 'Japan',
             items: [
                 'Australia',
                 'Canada',
