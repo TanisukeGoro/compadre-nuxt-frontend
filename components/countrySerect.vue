@@ -31,7 +31,32 @@ export default {
     data() {
         return {
             select: 'Programming',
-            items: ['Programming', 'Design', 'Vue', 'Vuetify']
+            items: [
+                'Australia',
+                'Canada',
+                'Saudi Arabia',
+                'America',
+                'India',
+                'Russia',
+                'South Africa',
+                'Turkey',
+                'Argentina',
+                'Brazil',
+                'Mexico',
+                'France',
+                'Germany',
+                'Italy',
+                'England',
+                'China',
+                'Indonesia',
+                'Japan',
+                'Korea',
+                'Philippines',
+                'Singapore',
+                'Thailand',
+                'Vietnam',
+                'Malaysia'
+            ]
         }
     }
 }
