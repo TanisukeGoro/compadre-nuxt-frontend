@@ -5,7 +5,7 @@
                 <v-combobox
                     v-model="select"
                     :items="items"
-                    label="対象国"
+                    label="Target country"
                 ></v-combobox>
                 <template v-slot:selection="data">
                     <v-chip
@@ -16,9 +16,9 @@
                         @click.stop="data.parent.selectedIndex = data.index"
                         @click:close="data.parent.selectItem(data.item)"
                     >
-                        <v-avatar class="accent white--text" left>{{
-                            data.item.slice(0, 1).toUpperCase()
-                        }}</v-avatar>
+                        <v-avatar class="accent white--text" left>
+                            {{ data.item.slice(0, 1).toUpperCase() }}
+                        </v-avatar>
                         {{ data.item }}
                     </v-chip>
                 </template>
