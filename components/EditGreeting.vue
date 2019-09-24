@@ -24,29 +24,29 @@
                         </v-row>
                     </v-list-item>
                 </v-card-actions>
-                <v-card-text class="headline font-weight-bold">
-                    <div
-                        v-for="(text, index) in cardText.split('\n')"
-                        :key="index"
-                    >
-                        {{ text }}
-                    </div>
-                </v-card-text>
+                <v-textarea
+                    v-model="props_content"
+                    class="card-text__font pa-2"
+                    auto-grow
+                    color="accent"
+                    autofocus
+                    clearable
+                    placeholder="'What do you want to do?'"
+                    label="Edit Greeting"
+                    :counter="counter"
+                    rows="1"
+                ></v-textarea>
                 <v-btn-toggle multiple mandatory>
-                    <v-btn
-                        text
-                        width="100px"
-                        height="30px"
-                        @click="previousCard"
-                        >previous</v-btn
+                    <v-btn text width="100px" height="30px" @click="editCancel"
+                        >cancel</v-btn
                     >
                     <v-btn
                         color="accent"
                         height="30px"
                         width="100px"
-                        @click="nextCard"
+                        @click="editSave"
                     >
-                        next
+                        save
                     </v-btn>
                 </v-btn-toggle>
             </v-card>
@@ -74,8 +74,8 @@ export default {
             default: ''
         },
         content: {
-            type: [String, Array],
-            default: () => ['']
+            type: String,
+            default: 'no text...'
         },
         mediaUrl: {
             type: String,
@@ -96,31 +96,53 @@ export default {
     },
     data() {
         return {
-            counter: 200
-            // cardText: this.content
-        }
-    },
-    computed: {
-        cardText() {
-            return this.content
+            counter: 200,
+            props_content: this.content
         }
     },
     methods: {
-        previousCard() {
-            this.$emit('previousCardFromChild')
+        /**
+         * 編集をセーブする関数
+         *
+         * もしhash_idが空なら新規投稿
+         * もしhash_idがあれば更新
+         */
+        editSave(e) {
+            // axiosの通信のあとでthisを参照できなくなるので、ここでやってしまう
+            const self = this
+            if (this.hashId) {
+                this.$axios
+                    .$put(`${process.env.apiBaseUrl}greetings`, {
+                        greeting_hash: this.hashId,
+                        content: this.props_content
+                    })
+                    .then((_res) => {
+                        self.$emit('returnEditFromChild', { _res })
+                    })
+            } else {
+                this.$axios
+                    .$post(`${process.env.apiBaseUrl}greetings`, {
+                        content: this.props_content
+                    })
+                    .then((_res) => {
+                        self.$emit('returnEditFromChild', { _res })
+                    })
+            }
         },
-        nextCard() {
-            this.$emit('nextCardFromChild')
+        editCancel() {
+            this.$emit('cancelEditFromChild')
+            console.log('debug seve')
         }
     }
 }
 </script>
 
-<style>
+<style scoped>
 .card-text__font {
-    font-size: 24px;
-    font-weight: 700;
+    font-size: 20px;
+    font-weight: 580;
     line-height: 32px;
+    color: #fff;
 }
 .v-textarea textarea {
     line-height: 32px;

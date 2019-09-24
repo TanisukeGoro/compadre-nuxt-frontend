@@ -1,4 +1,5 @@
 import firebase from 'firebase/app'
+import 'firebase/firestore'
 if (!firebase.apps.length) {
     firebase.initializeApp({
         apiKey: process.env.apiKey,
@@ -10,4 +11,5 @@ if (!firebase.apps.length) {
         appId: process.env.appId
     })
 }
-export default firebase
+const db = firebase.firestore()
+export { firebase, db }

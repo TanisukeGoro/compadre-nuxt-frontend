@@ -7,8 +7,8 @@
             <v-btn color="primary" @click="auth_login">
                 primary
             </v-btn>
-            <v-btn color="secondary">
-                secondary
+            <v-btn color="secondary" @click="Axios_get">
+                Axios_get
             </v-btn>
             <v-btn color="accent">
                 accent

@@ -4,17 +4,19 @@
             <v-app-bar-nav-icon
                 @click.stop="drawer = !drawer"
             ></v-app-bar-nav-icon>
+
+            <v-spacer></v-spacer>
+
             <v-toolbar-title>{{ title }}</v-toolbar-title>
-            <div class="flex-grow-1"></div>
+
+            <v-spacer></v-spacer>
+
             <v-app-bar-nav-icon
                 @click.stop="drawerRight = !drawerRight"
             ></v-app-bar-nav-icon>
         </v-app-bar>
-        <v-content>
-            <v-container>
-                <nuxt />
-            </v-container>
-        </v-content>
+        <!-- v-content, v-contentはコンポーネントへの影響力が高いので削除 -->
+        <nuxt />
         <BottomNav />
     </v-app>
 </template>

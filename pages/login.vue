@@ -13,6 +13,7 @@
                         <v-card-text>
                             <v-form>
                                 <v-text-field
+                                    v-model="email"
                                     label="Email"
                                     name="login"
                                     prepend-icon="mdi-account-circle"
@@ -77,7 +78,7 @@ export default {
     components: {},
     data() {
         return {
-            email: 'youichi.kudo@example.net',
+            email: '',
             password: 'secret',
             error: null,
             strategies: [
@@ -125,7 +126,10 @@ export default {
             const response = await this.$auth
                 .loginWith('local', {
                     data: {
-                        email: this.email,
+                        email:
+                            this.email.trim(' ').length !== 0
+                                ? this.email
+                                : 'mikako05@example.net',
                         password: this.password
                     }
                 })
