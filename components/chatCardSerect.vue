@@ -1,6 +1,6 @@
 <template>
     <v-row>
-        <v-container fluid>
+        <v-container fluid style="display: contents;">
             <v-col
                 v-for="(item, i) in items"
                 :key="i"
@@ -9,7 +9,7 @@
                 <v-btn
                     :style="item.background"
                     dark
-                    style="border-radius: 1em; width: -webkit-fill-available;"
+                    style="border-radius: 1em; width: 120px;"
                     elevation="5"
                     text
                     color="white accent-4"
