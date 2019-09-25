@@ -4,11 +4,11 @@
             LOGIN
         </v-btn>
         <v-flex xs12 sm8 md6>
-            <v-btn color="primary">
+            <v-btn color="primary" @click="auth_login">
                 primary
             </v-btn>
-            <v-btn color="secondary">
-                secondary
+            <v-btn color="secondary" @click="Axios_get">
+                Axios_get
             </v-btn>
             <v-btn color="accent">
                 accent
@@ -66,23 +66,24 @@ export default {
                 const response = await this.$axios.$post(
                     `${this.baseURL}auth/login`,
                     {
-                        email: 'tomoya.nishinosono@example.com',
+                        email: 'youichi.kudo@example.net',
                         password: 'secret'
                     }
                 )
-                console.log(response)
-                this.response_jwt = response.data
+                // console.log(response)
+                this.response_jwt = response
             } catch (error) {
                 console.log(error)
             }
-            console.log(this.response_jwt)
-            this.$store.dispatch('jwt_auth', this.response_jwt)
+            this.$store.dispatch('comman/auth/jwt_auth', this.response_jwt, {
+                root: true
+            })
             this.$router.push('/inspire')
         },
         authenticate() {
             this.$auth.loginWith('local', {
                 data: {
-                    email: 'tomoya.nishinosono@example.com',
+                    email: 'youichi.kudo@example.net',
                     password: 'secret'
                 }
             })

@@ -5,18 +5,18 @@
                 <v-subheader>Recent chat</v-subheader>
                 <v-list-item
                     v-for="chat in chatLists"
-                    :key="chat.title"
-                    :to="`chat/${chat.hashed_room_id}`"
+                    :key="chat.id"
+                    :to="`attention-me/${chat.id}`"
                     nuxt
                 >
                     <v-list-item-avatar>
-                        <v-img :src="chat.toTole_uinfo.icon_url"></v-img>
+                        <v-img :src="chat.icon_url"></v-img>
                         <!-- <v-img :src="iconURL"></v-img> -->
                     </v-list-item-avatar>
 
                     <v-list-item-content>
                         <v-list-item-title
-                            v-text="chat.toTole_uinfo.name"
+                            v-text="chat.name"
                         ></v-list-item-title>
                     </v-list-item-content>
 
@@ -62,9 +62,11 @@ export default {
         iconURL: `${process.env.AwsStoreImageUrl}images/GDayPwYX4Ioeknxb6R6Dbn9eDHXdr2NNy94Dctp5.jpeg`
     }),
     asyncData({ $axios }) {
-        return $axios.$get(`${process.env.apiBaseUrl}matching`).then((res) => {
-            return { chatLists: res }
-        })
+        return $axios
+            .$get(`${process.env.apiBaseUrl}matching/islike`)
+            .then((res) => {
+                return { chatLists: res }
+            })
     },
     methods: {
         check() {
