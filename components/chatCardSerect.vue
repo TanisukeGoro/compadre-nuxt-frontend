@@ -9,7 +9,7 @@
                 <v-btn
                     :style="item.background"
                     dark
-                    style="border-radius: 1em; width: 120px;"
+                    style="border-radius: 1em; width: 150px; height: 50px;"
                     elevation="5"
                     text
                     color="white accent-4"
