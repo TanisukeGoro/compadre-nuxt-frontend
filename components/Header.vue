@@ -1,6 +1,9 @@
 <template>
     <v-app-bar app clipped-right color="primary" fixed dark>
-        <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+        <v-app-bar-nav-icon
+            to="/app/user-profile"
+            @click.stop="drawer = !drawer"
+        ></v-app-bar-nav-icon>
         <v-toolbar-title>{{ title }}</v-toolbar-title>
         <div class="flex-grow-1"></div>
         <v-app-bar-nav-icon

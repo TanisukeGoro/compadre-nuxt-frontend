@@ -1,0 +1,30 @@
+.user-img-space {
+    height: 10px;
+}
+.user-main-img {
+    border-radius: 50%;
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translate(-50%);
+    z-index: 100;
+    width: 74px;
+    height: 74px;
+}
+.user-name {
+    position: absolute;
+    bottom: -80px;
+    left: 50%;
+    transform: translate(-50%);
+    text-align: center;
+}
+.user-text {
+    position: relative;
+    max-width: 600px;
+    padding-bottom: 20px;
+}
+.greeting-toEdit {
+    position: absolute;
+    bottom: 110px;
+    right: 30px;
+}

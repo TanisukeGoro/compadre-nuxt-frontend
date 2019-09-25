@@ -1,5 +1,5 @@
 <template>
-    <v-content class="pt-0 pb-0">
+    <v-content class="pt-0 pb-0 selectcard">
         <v-card max-width="480">
             <v-row>
                 <v-col :cols="4" class="pr-0">

@@ -1,8 +1,12 @@
 <template>
     <v-row>
         <v-layout justify-center>
-            <v-btn class="mb-5 btn" color="#f953c6" rounded min-width="200px"
-                >like</v-btn
+            <v-btn
+                rounded
+                dark
+                class="mb-5 btn"
+                style="background: linear-gradient(to right, #70e1f5, #ffd194);"
+                >Rounded Button</v-btn
             >
         </v-layout>
     </v-row>

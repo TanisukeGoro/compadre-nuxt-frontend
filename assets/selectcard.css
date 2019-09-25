@@ -1,6 +1,10 @@
 .profileimg {
     border-radius: 50%;
 }
+.selectcard {
+    margin: 0 auto;
+    max-width: 480px;
+}
 
 @media screen and (min-width: 767px) {
     /*ウィンドウ幅が767px以上の場合に適用*/
