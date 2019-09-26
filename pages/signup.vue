@@ -1,6 +1,8 @@
 <template>
     <v-app>
         <v-content>
+            <!-- <v-btn color="success" @click="test">text</v-btn>
+            {{ phoneNumber == undefined || phoneNumber.isValid() }} -->
             <v-stepper v-model="e1">
                 <v-stepper-header>
                     <template v-for="n in steps">
@@ -56,12 +58,50 @@
                                 class="input-group--focused"
                                 @click:append="showPassword = !showPassword"
                             ></v-text-field>
-                            <v-text-field
-                                v-model="phone"
-                                :rules="phoneRules"
-                                label="Phone-Number"
-                                required
-                            ></v-text-field>
+                            <v-layout>
+                                <v-flex xs4>
+                                    <v-select
+                                        v-model="country"
+                                        label="country"
+                                        :items="countries"
+                                        width="50px"
+                                        item-value="iso2"
+                                        item-text="name"
+                                        class="caption"
+                                        return-object
+                                        @input="updateValue"
+                                    >
+                                        <template
+                                            slot="selection"
+                                            slot-scope="{ item }"
+                                        >
+                                            <p
+                                                class="inline iti-flag"
+                                                :class="item.iso2.toLowerCase()"
+                                            ></p>
+                                        </template>
+                                        <template
+                                            slot="item"
+                                            slot-scope="{ item }"
+                                        >
+                                            <p
+                                                class="inline iti-flag"
+                                                :class="item.iso2.toLowerCase()"
+                                            ></p>
+                                            {{ item.name }}
+                                        </template>
+                                    </v-select>
+                                </v-flex>
+                                <v-flex xs8>
+                                    <v-text-field
+                                        v-model="phone"
+                                        flat
+                                        type="tel"
+                                        label="phone number"
+                                        @input="updateValue"
+                                    ></v-text-field>
+                                </v-flex>
+                            </v-layout>
                             <!--  ここに入れる-->
                         </v-card>
 
@@ -118,6 +158,9 @@
 </template>
 
 <script>
+import { parsePhoneNumberFromString, AsYouType } from 'libphonenumber-js'
+import { countries } from '~/plugins/phoneCodeCountries'
+
 export default {
     layout: 'empty',
     auth: false,
@@ -157,11 +200,20 @@ export default {
             /**
              * phone validation
              */
+            country: '',
+            countries,
             phone: '',
+            currPhoneInp: '',
             phoneRules: [
                 (v) => !!v || 'Phone number required',
-                (v) => / /.test(v) || ''
+                (v) => / /.test(v) || 'error'
             ]
+            // phoneNumber: parsePhoneNumberFromString('Phone: 08031947940', 'JP')
+        }
+    },
+    computed: {
+        phoneNumber() {
+            return parsePhoneNumberFromString(`${this.phone}`, 'JP')
         }
     },
 
@@ -180,7 +232,37 @@ export default {
             } else {
                 this.e1 = n + 1
             }
+        },
+        test() {
+            const a = new AsYouType('JP')
+            a.input('08031947940')
+            const b = new AsYouType('JP').input('0223751514')
+            console.log(a)
+            console.log(a.getTemplate())
+            console.log(b)
+            // const aphone = parsePhoneNumberFromString(a, 'JP')
+            // console.log(aphone.formatInternational())
+            // console.log(aphone.formatNational())
+            // console.log(aphone.getURI())
+        },
+        updateValue() {
+            this.currPhoneInp = new AsYouType(this.country.iso2.toUpperCase())
+            this.phone = this.currPhoneInp.input(this.phone)
+            console.log(this.currPhoneInp.getTemplate())
+            console.log(this.currPhoneInp.getNumber())
+            try {
+                console.log(this.currPhoneInp.getNumber().formatNational())
+            } catch (error) {
+                console.log(error)
+            }
         }
     }
 }
 </script>
+
+<style>
+.inline {
+    display: inline-block;
+    margin-bottom: 0 !important;
+}
+</style>
