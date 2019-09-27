@@ -61,6 +61,7 @@ export default {
      ** See https://axios.nuxtjs.org/options
      */
     axios: {
+        proxy: true,
         requestInterceptor(config, { store }) {
             if (store.state.csrfToken) {
                 config.headers.common['x-csrf-token'] = store.state.csrfToken
@@ -73,7 +74,9 @@ export default {
      * プロキシを設定したけど動く気がしないのでとりあえず放置する。
      */
     proxy: {
-        '/api': 'http://localhost/api/v1/'
+        '/api': 'http://localhost/api/v1/',
+        '/geolocation':
+            'https://geoapi.heartrails.com/api/json?method=searchByGeoLocation'
     },
     /**
      * Auth module configuration

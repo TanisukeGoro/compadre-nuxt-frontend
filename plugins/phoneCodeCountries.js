@@ -1,4 +1,5 @@
 const allCountries = [
+    ['Japan (日本)', 'jp', '81'],
     ['Afghanistan (‫افغانستان‬‎)', 'af', '93'],
     ['Albania (Shqipëri)', 'al', '355'],
     ['Algeria (‫الجزائر‬‎)', 'dz', '213'],
@@ -160,7 +161,6 @@ const allCountries = [
     ['Israel (‫ישראל‬‎)', 'il', '972'],
     ['Italy (Italia)', 'it', '39', 0],
     ['Jamaica', 'jm', '1876'],
-    ['Japan (日本)', 'jp', '81'],
     ['Jersey', 'je', '44', 3],
     ['Jordan (‫الأردن‬‎)', 'jo', '962'],
     ['Kazakhstan (Казахстан)', 'kz', '7', 1],
