@@ -30,6 +30,7 @@
         </p>
         <chatCard />
         <chatCardSerect />
+        <spotCard />
     </div>
 </template>
 <script>
@@ -37,13 +38,16 @@
 import chatCard from '~/components/chatCard'
 // eslint-disable-next-line no-unused-vars
 import chatCardSerect from '~/components/chatCardSerect'
+// eslint-disable-next-line no-unused-vars
+import spotCard from '~/components/spotCard'
 
 export default {
     components: {
         // eslint-disable-next-line vue/no-unused-components
         chatCard,
         // eslint-disable-next-line vue/no-unused-components
-        chatCardSerect
+        chatCardSerect,
+        spotCard
     }
 }
 </script>
