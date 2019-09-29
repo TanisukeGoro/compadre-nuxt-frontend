@@ -33,55 +33,23 @@
 </template>
 
 <script>
-import { firebase, db } from '~/plugins/firebase'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
     data: () => ({
-        items: [
-            {
-                active: true,
-                title: 'Jason Oner',
-                avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg'
-            },
-            {
-                active: true,
-                title: 'Ranee Carlson',
-                avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg'
-            },
-            {
-                title: 'Cindy Baker',
-                avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg'
-            },
-            {
-                title: 'Ali Connors',
-                avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg'
-            }
-        ],
-        chatLists: '',
         // AWSの画像だったら爆速で取ってこれる感じか。
         iconURL: `${process.env.AwsStoreImageUrl}images/GDayPwYX4Ioeknxb6R6Dbn9eDHXdr2NNy94Dctp5.jpeg`
     }),
-    asyncData({ $axios }) {
-        return $axios.$get(`${process.env.apiBaseUrl}matching`).then((res) => {
-            return { chatLists: res }
+    computed: {
+        ...mapGetters('app/chat/chatList', ['chatLists'])
+    },
+    async fetch({ store, $axios }) {
+        await $axios.$get(`${process.env.apiBaseUrl}matching`).then((res) => {
+            store.dispatch('app/chat/chatList/getChatList', res, { root: true })
         })
     },
     methods: {
-        check() {
-            // console.log(
-            //     this.chatLists.map((i) => i.toTole_uinfo.name).join('\n')
-            // )
-            // console.log(this.chatLists)
-            // db.collection(
-            //     `/chat_rooms/$2y$10$MQqF4m4kFjKQGj2fPqhQWOosFr8F57WElHdEbpWOtYt5KZKbdj6Iy/messages`
-            // ).onSnapshot((snapshot) => {
-            //     snapshot.docChanges().forEach((change) => {
-            //         console.log(change.doc.data())
-            //     })
-            // })
-            console.log(firebase)
-            console.log(db)
-        }
+        ...mapActions('app/chat/chatList', ['getChatList'])
     }
 }
 </script>

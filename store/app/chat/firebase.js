@@ -14,7 +14,12 @@ export const getters = {
  */
 
 export const actions = {
-    setPostsRef: firestoreAction(function(context, ref) {
-        context.bindFirestoreRef('posts', ref)
+    /**
+     * コールバックをasync, awaitするのめっちゃ大事。
+     */
+    setPostsRef: firestoreAction(async function(context, ref) {
+        console.log('データの取得開始')
+        await context.bindFirestoreRef('posts', ref)
+        console.log('データの取得終わり')
     })
 }
