@@ -35,7 +35,7 @@
                         </v-card-actions>
                     </v-card>
                     <v-card title="Social Login" bg-variant="light" class="p-2">
-                        <v-list disabled>
+                        <v-list>
                             <v-list-item-group color="primary">
                                 <v-list-item
                                     v-for="auth in strategies"
@@ -52,9 +52,7 @@
                                                     background: auth.color
                                                 }"
                                                 class="login-button white--text"
-                                                @click="
-                                                    $auth.loginWith(auth.key)
-                                                "
+                                                @click="social(auth.key)"
                                             >
                                                 Login with
                                                 {{ auth.name }}</v-btn
@@ -82,30 +80,30 @@ export default {
             password: 'secret',
             error: null,
             strategies: [
-                {
-                    key: 'auth0',
-                    name: 'Auth0',
-                    color: '#ec5425',
-                    icon: 'login-variant'
-                },
-                {
-                    key: 'google',
-                    name: 'Google',
-                    color: '#4284f4',
-                    icon: 'google'
-                },
+                // {
+                //     key: 'auth0',
+                //     name: 'Auth0',
+                //     color: '#ec5425',
+                //     icon: 'login-variant'
+                // },
+                // {
+                //     key: 'google',
+                //     name: 'Google',
+                //     color: '#4284f4',
+                //     icon: 'google'
+                // },
                 {
                     key: 'facebook',
                     name: 'Facebook',
                     color: '#3c65c4',
                     icon: 'facebook-box'
-                },
-                {
-                    key: 'github',
-                    name: 'GitHub',
-                    color: '#202326',
-                    icon: 'github-circle'
                 }
+                // {
+                //     key: 'github',
+                //     name: 'GitHub',
+                //     color: '#202326',
+                //     icon: 'github-circle'
+                // }
             ]
         }
     },
@@ -129,7 +127,7 @@ export default {
                         email:
                             this.email.trim(' ').length !== 0
                                 ? this.email
-                                : 'mikako05@example.net',
+                                : 'chiyo.nakatsugawa@example.com',
                         password: this.password
                     }
                 })
@@ -137,6 +135,11 @@ export default {
                     this.error = e + ''
                 })
             return response
+        },
+        async social(key) {
+            console.log('object')
+            const response = await this.$auth.loginWith(key)
+            console.log(response)
         }
     }
 }

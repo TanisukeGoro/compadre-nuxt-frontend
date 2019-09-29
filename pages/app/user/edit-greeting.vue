@@ -122,6 +122,16 @@ export default {
     },
     asyncData({ $axios }) {
         return $axios.$get(`${process.env.apiBaseUrl}greetings`).then((res) => {
+            if (res.length === 0) {
+                res.push({
+                    content: `挨拶カードはまだありません!!\n新しく作ってみましょう！`,
+                    fst_hashtag: '',
+                    hash_id: '',
+                    media_url: '',
+                    snd_hashtag: '',
+                    trd_hashtag: ''
+                })
+            }
             return { greetings: res }
         })
     },
