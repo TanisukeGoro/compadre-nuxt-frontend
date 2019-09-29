@@ -19,6 +19,7 @@
 
 <script>
 export default {
+    auth: 'guest',
     data() {
         return {
             jwt: this.$store.getters.data
