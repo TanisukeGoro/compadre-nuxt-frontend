@@ -55,8 +55,8 @@
                                                 @click="social(auth.key)"
                                             >
                                                 Login with
-                                                {{ auth.name }}</v-btn
-                                            >
+                                                {{ auth.name }}
+                                            </v-btn>
                                         </v-list-item-title>
                                     </v-list-item-content>
                                 </v-list-item>

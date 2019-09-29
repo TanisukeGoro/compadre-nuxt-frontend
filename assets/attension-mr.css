@@ -1,0 +1,18 @@
+.fonntColor {
+    color: black;
+}
+.Color {
+    color: black;
+}
+.img {
+    border-radius: 2em;
+}
+/* 
+@media (min-width: 120%) {
+    .card {
+        font-size: 20px;
+    }
+    .card {
+        max-width: 325px;
+    }
+} */

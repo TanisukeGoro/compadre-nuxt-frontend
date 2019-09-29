@@ -182,6 +182,7 @@ export default {
         dev: false
     },
     // 全てのページにAuth権限を付与する
+    // eslint-disable-next-line no-dupe-keys
     router: {
         middleware: ['auth']
     }

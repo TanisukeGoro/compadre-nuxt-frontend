@@ -1,8 +1,6 @@
 <template>
     <v-layout column justify-center align-center>
-        <v-btn color="success" to="/login" nuxt>
-            LOGIN
-        </v-btn>
+        <v-btn color="success" to="/login" nuxt>LOGIN</v-btn>
         <v-flex xs12 sm8 md6>
             <v-btn color="primary" @click="auth_login">
                 primary
