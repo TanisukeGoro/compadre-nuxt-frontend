@@ -37,6 +37,8 @@
 
 ## Build Setup
 
+* env files heve not contain in this repository
+
 ``` bash
 # install dependencies
 $ npm run install
