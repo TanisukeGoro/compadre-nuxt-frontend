@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import VCallout from '~/components/VCallout'
+import VCallout from '~/components/chat/VCallout'
 export default {
     components: {
         VCallout

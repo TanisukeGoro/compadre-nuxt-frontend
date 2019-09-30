@@ -14,7 +14,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import VMessageTimestamp from '~/components/VMessageTimestamp'
+import VMessageTimestamp from '~/component/chat/VMessageTimestamp'
 export default {
     components: {
         VMessageTimestamp
