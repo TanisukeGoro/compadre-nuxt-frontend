@@ -71,7 +71,6 @@ export default {
                 return
             }
             const date = val.toDate()
-            console.log(date)
             return date.getHours() + ':' + ('0' + date.getMinutes()).slice(-2)
         }
     },
@@ -93,6 +92,10 @@ export default {
         return {
             iconURL: `${process.env.AwsStoreImageUrl}images/GDayPwYX4Ioeknxb6R6Dbn9eDHXdr2NNy94Dctp5.jpeg`
         }
+    },
+    updated() {
+        // 更新があったらスクロールする。
+        window.scrollTo(0, document.body.clientHeight)
     }
 }
 </script>

@@ -23,7 +23,7 @@
                     </v-layout>
                 </div>
             </v-container>
-            <v-send-footer />
+            <v-send-footer @sendDataFromChild="sendMessage($event)" />
         </v-content>
     </v-app>
 </template>
@@ -86,7 +86,7 @@ export default {
         ...mapState('app/chat/chatList', ['chatlists']),
         // ...mapState('app/chat/firebase', ['posts']),
         refreshRender() {
-            console.log(this.posts)
+            // console.log(this.posts)
             this.timestamps = []
             this.changeMessageNo = []
             this.posts.forEach((res, index) => {
@@ -101,7 +101,29 @@ export default {
             })
             window.scrollTo(0, document.body.clientHeight)
         },
-        sendMessage() {},
+        async sendMessage(dbdata) {
+            if (!dbdata) return 0
+            dbdata.receive_uid = this.toTalk_user.toTolk_uid
+            // データの登録
+            await db
+                .collection(
+                    `/chat_rooms/${this.$route.params.room_id}/messages`
+                )
+                .add({
+                    text: dbdata.text,
+                    send_uid: dbdata.send_uid,
+                    receive_uid: dbdata.receive_uid,
+                    idRead: dbdata.idRead,
+                    created: dbdata.created
+                })
+                .then(() => {
+                    return 'Status OK'
+                })
+                .catch(function(error) {
+                    console.error('Error writing document: ', error)
+                })
+            return true
+        },
         getMessages() {}
     }
 }

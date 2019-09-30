@@ -11,16 +11,11 @@
 </template>
 
 <script>
-// eslint-disable-next-line no-unused-vars
-import distanceSlider from '~/components/distanceSlider'
-// eslint-disable-next-line no-unused-vars
-import ageSlider from '~/components/ageSlider'
-// eslint-disable-next-line no-unused-vars
-import languageSerect from '~/components/languageSerect'
-// eslint-disable-next-line no-unused-vars
-import countrySerect from '~/components/countrySerect'
-// eslint-disable-next-line no-unused-vars
-import jobsSerect from '~/components/jobsSerect'
+import distanceSlider from '~/components/settings/distanceSlider'
+import ageSlider from '~/components/settings/ageSlider'
+import languageSerect from '~/components/settings/languageSerect'
+import countrySerect from '~/components/settings/countrySerect'
+import jobsSerect from '~/components/settings/jobsSerect'
 
 export default {
     components: {
