@@ -1,30 +1,72 @@
 <template>
-    <v-content>
-        <distanceSlider />
-        <ageSlider />
-        <languageSerect />
-        <countrySerect />
-        <jobsSerect />
-        <v-btn @click="$auth.logout()">Logout</v-btn>
-        <v-btn to="/store-test" nuxt>Storeのテスト</v-btn>
-    </v-content>
+    <v-app>
+        <v-content>
+            <v-container>
+                <hr />
+                {{ age }}
+                <age-slider v-model="age" :min-age="minAge" :max-age="maxAge" />
+                <hr />
+                {{ country }}
+                <country-select v-model="country" />
+                <hr />
+                {{ distance }}
+                <distance-slider v-model="distance" />
+                <hr />
+                {{ job }}
+                <jobs-select v-model="job" />
+                <hr />
+                {{ language }}
+                <language-serect v-model="language" />
+                <v-btn @click="$auth.logout()">Logout</v-btn>
+                <v-btn to="/store-test" nuxt>Storeのテスト</v-btn>
+            </v-container>
+        </v-content>
+    </v-app>
 </template>
 
 <script>
-import distanceSlider from '~/components/settings/distanceSlider'
-import ageSlider from '~/components/settings/ageSlider'
-import languageSerect from '~/components/settings/languageSerect'
-import countrySerect from '~/components/settings/countrySerect'
-import jobsSerect from '~/components/settings/jobsSerect'
-
+import AgeSlider from '@/components/settings/AgeSlider'
+import CountrySelect from '@/components/settings/CountrySelect'
+import DistanceSlider from '@/components/settings/DistanceSlider'
+import JobsSelect from '@/components/settings/JobsSelect'
+import LanguageSerect from '@/components/settings/LanguageSerect'
 export default {
     components: {
-        distanceSlider,
-        ageSlider,
-        // eslint-disable-next-line vue/no-unused-components
-        countrySerect,
-        languageSerect,
-        jobsSerect
+        AgeSlider,
+        CountrySelect,
+        DistanceSlider,
+        JobsSelect,
+        LanguageSerect
+    },
+    data() {
+        return {
+            /**
+             * 年齢の設定と取得
+             */
+            age: 0,
+            minAge: 18,
+            maxAge: 100,
+
+            /**
+             * 国の設定と取得
+             */
+            country: 'not select',
+
+            /**
+             * 距離
+             */
+            distance: 20,
+
+            /**
+             * 職業
+             */
+            job: '',
+
+            /**
+             * 言語
+             */
+            language: ''
+        }
     }
 }
 </script>

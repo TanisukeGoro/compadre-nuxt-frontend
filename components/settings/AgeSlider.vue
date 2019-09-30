@@ -1,15 +1,35 @@
 <template>
-    <div class="pa-4 lighten-4">
-        <v-row align="center" justify="center">
-            <v-col cols="12" md="6">
-                <v-slider
-                    v-model="openDelay"
-                    label="年齢"
-                    min="0"
-                    max="100"
-                    thumb-label
-                ></v-slider>
-            </v-col>
-        </v-row>
-    </div>
+    <v-slider
+        v-model="currAge"
+        label="年齢"
+        :min="minAge"
+        :max="maxAge"
+        thumb-label
+        @input="onChange"
+    ></v-slider>
 </template>
+
+<script>
+export default {
+    props: {
+        minAge: {
+            type: Number,
+            default: 0
+        },
+        maxAge: {
+            type: Number,
+            default: 100
+        }
+    },
+    data() {
+        return {
+            currAge: 0
+        }
+    },
+    methods: {
+        onChange() {
+            this.$emit('input', this.currAge)
+        }
+    }
+}
+</script>
