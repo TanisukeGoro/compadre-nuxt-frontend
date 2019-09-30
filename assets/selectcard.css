@@ -1,5 +1,19 @@
+.card-text__font {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 32px;
+}
+.v-textarea textarea {
+    line-height: 32px;
+}
+.greetingarea {
+    height: 220px;
+    overflow: scroll;
+}
 .profileimg {
     border-radius: 50%;
+    width: 80px;
+    height: 80px;
 }
 .selectcard {
     margin: 0 auto;
@@ -10,7 +24,7 @@
     /*ウィンドウ幅が767px以上の場合に適用*/
     .select-text {
         color: #00ffff; /*青色*/
-        font-size: 24px;
+        font-size: 10px;
     }
 }
 @media screen and (max-width: 479px) {
@@ -24,6 +38,6 @@
     /*ウィンドウ幅が最大479pxまでの場合に適用*/
     .select-text {
         color: rgb(50, 50, 50); /*緑色*/
-        font-size: 16px;
+        font-size: 8px;
     }
 }

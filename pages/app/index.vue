@@ -44,7 +44,6 @@
         <NButton />
     </v-content>
 </template>
-
 <script>
 import '@/assets/selectcard.css'
 import LButton from '~/components/LikeButton'
@@ -55,6 +54,9 @@ export default {
         // SelectCard
         LButton,
         NButton
+    },
+    asyncData({ redirect }) {
+        redirect(200, '/app/select')
     },
     methods: {
         async logout() {
