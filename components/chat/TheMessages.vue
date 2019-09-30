@@ -13,7 +13,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import VMessageDate from '~/components/VMessageDate'
+import VMessageDate from '~/components/chat/VMessageDate'
 import VMessageLine from '~/components/VMessageLine'
 
 export default {

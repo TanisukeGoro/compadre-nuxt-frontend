@@ -84,8 +84,8 @@
 
 <script>
 // import { mapGetters } from 'vuex'
-import SelectCard from '~/components/SelectCard'
-import EditGreeting from '~/components/EditGreeting'
+import SelectCard from '~/components/greetings/SelectCard'
+import EditGreeting from '~/components/greetings/EditGreeting'
 
 export default {
     components: {

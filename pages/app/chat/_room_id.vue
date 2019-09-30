@@ -32,9 +32,9 @@
 import { mapActions, mapGetters, mapState } from 'vuex'
 import { db } from '~/plugins/firebase.js'
 
-import VMessageTimestamp from '~/components/VMessageTimestamp'
-import VMessageDate from '~/components/VMessageDate'
-import VSendFooter from '~/components/VSendFooter'
+import VMessageTimestamp from '~/components/chat/VMessageTimestamp'
+import VMessageDate from '~/components/chat/VMessageDate'
+import VSendFooter from '~/components/chat/VSendFooter'
 export default {
     layout: 'chat',
     components: {

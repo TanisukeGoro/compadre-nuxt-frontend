@@ -5,7 +5,7 @@
     </v-content>
 </template>
 <script>
-import SelectCard from '~/components/SelectCard'
+import SelectCard from '~/components/greetings/SelectCard'
 // import { firebase, db } from '~/plugins/firebase'
 // eslint-disable-next-line no-unused-vars
 import likeButton from '~/components/likeButton'

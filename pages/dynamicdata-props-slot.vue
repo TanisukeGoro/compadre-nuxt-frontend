@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import DynamicProps from '~/components/DynamicProps'
+import DynamicProps from '~/components/test/DynamicProps'
 export default {
     layout: 'empty',
     components: {

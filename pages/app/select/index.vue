@@ -17,7 +17,7 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
-import SelectCard from '~/components/SelectCard'
+import SelectCard from '~/components/greetings/SelectCard'
 // import { firebase, db } from '~/plugins/firebase'
 export default {
     components: {

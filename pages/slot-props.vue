@@ -21,8 +21,8 @@
 </template>
 
 <script>
-import CustomButtonWithProps from '~/components/CustomButtonWithProps'
-import CustomButtonWithSlots from '~/components/CustomButtonWithSlots'
+import CustomButtonWithProps from '~/components/test/CustomButtonWithProps'
+import CustomButtonWithSlots from '~/components/test/CustomButtonWithSlots'
 export default {
     components: {
         CustomButtonWithProps,
