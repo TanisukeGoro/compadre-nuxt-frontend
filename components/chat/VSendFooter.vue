@@ -33,7 +33,7 @@
                             <v-flex xs1 class="pb-2 pl-1">
                                 <v-icon
                                     :color="message && 'accent'"
-                                    @click="sendData"
+                                    @click="sendDataToFirebase"
                                 >
                                     mdi-send
                                 </v-icon>
@@ -47,7 +47,8 @@
 </template>
 
 <script>
-import { firebase, db } from '~/plugins/firebase.js'
+import { mapGetters } from 'vuex'
+import { firebase } from '~/plugins/firebase.js'
 export default {
     data() {
         return {
@@ -55,6 +56,8 @@ export default {
         }
     },
     computed: {
+        // VuexからPostsデータを取得
+        ...mapGetters('app/chat/firebase', ['posts']),
         lineCount() {
             const line =
                 this.message === null
@@ -65,39 +68,34 @@ export default {
             return line
         }
     },
-    mounted() {},
     methods: {
         debug() {
             console.log(
                 this.message.match(/\n/g) ? this.message.match(/\n/g).length : 0
             )
         },
-        async sendData() {
+        sendDataToFirebase() {
+            console.log('footer')
             // データのチェック
             if (this.message === '') {
                 return false
             }
-            const dbdata = {
+            const sendData = {
                 text: this.message,
                 send_uid: this.$auth.state.user.id,
-                receive_uid: 12,
+                receive_uid: '',
                 idRead: false,
                 created: firebase.firestore.FieldValue.serverTimestamp()
             }
             const self = this
-            // データの登録
-            await db
-                .collection(
-                    `/chat_rooms/${this.$route.params.room_id}/messages`
-                )
-                .add(dbdata)
-                .then((results) => {
-                    window.scrollTo(0, document.body.clientHeight)
-                    self.message = ''
-                })
-                .catch(function(error) {
-                    console.error('Error writing document: ', error)
-                })
+
+            let emitPromise = Promise.resolve()
+            sendData.waitUntil = (p) => (emitPromise = p)
+
+            this.$emit('sendDataFromChild', sendData)
+            emitPromise.then((response) => {
+                self.message = ''
+            })
         }
     }
 }
