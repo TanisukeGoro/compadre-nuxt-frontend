@@ -5,14 +5,15 @@
                 v-for="(item, i) in items"
                 :key="i"
                 style="text-align: center;"
+                @click="selectCard(item.title)"
             >
                 <v-btn
-                    :style="item.background"
+                    outlined
                     dark
                     style="border-radius: 1em; width: 150px; height: 50px;"
                     elevation="5"
                     text
-                    color="white accent-4"
+                    color="accent"
                 >
                     <v-list-item-title>
                         <v-list-item-title
@@ -31,41 +32,32 @@ export default {
     data: () => ({
         items: [
             {
-                background:
-                    'background: linear-gradient(to right, #fdc830, #f37335);',
                 title: 'Lunch'
             },
             {
-                background:
-                    'background: linear-gradient(to right, #ba8b02, #181818);',
                 title: 'Cafe'
             },
             {
-                background:
-                    'background: linear-gradient(to right, #232526, #414345);',
                 title: 'Dinner'
             },
             {
-                background:
-                    'background: linear-gradient(to right, #22c1c3, #fdbb2d); ',
                 title: 'Activities'
             },
             {
-                background:
-                    'background: linear-gradient(to right, #23074d, #cc5333);',
                 title: 'Bar'
             },
             {
-                background:
-                    'background: linear-gradient(to right, #feac5e, #c779d0, #4bc0c8);',
                 title: 'Shopping'
             },
             {
-                background:
-                    'background: linear-gradient(to right, #616161, #9bc5c3);',
                 title: 'other'
             }
         ]
-    })
+    }),
+    methods: {
+        selectCard(select) {
+            this.$emit('selectCardFromChild', { select })
+        }
+    }
 }
 </script>
