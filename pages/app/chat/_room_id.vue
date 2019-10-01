@@ -37,6 +37,7 @@
                     />
                 </transition>
             </v-container>
+            <spot-card />
             <v-send-footer @sendDataFromChild="sendMessage($event)" />
         </v-content>
     </v-app>
@@ -52,6 +53,7 @@ import VSendFooter from '~/components/chat/VSendFooter'
 
 import ChatCard from '@/components/chat/ChatCard'
 import ChatCardSelect from '@/components/chat/ChatCardSelect'
+import SpotCard from '@/components/chat/SpotCard'
 export default {
     layout: 'chat',
     components: {
@@ -59,7 +61,8 @@ export default {
         VMessageDate,
         VSendFooter,
         ChatCardSelect,
-        ChatCard
+        ChatCard,
+        SpotCard
     },
     data() {
         return {
