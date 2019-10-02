@@ -29,8 +29,8 @@
                             max-width="34px"
                             max-height="34px"
                             :src="
-                                toTalkUser.toTole_uinfo.icon_url
-                                    ? toTalkUser.toTole_uinfo.icon_url
+                                toTalkUser.toTolk_uinfo.icon_url
+                                    ? toTalkUser.toTolk_uinfo.icon_url
                                     : iconURL
                             "
                             alt="avatar"
@@ -39,7 +39,7 @@
                 </div>
                 <div class="nameMessage">
                     <div class="overline py-1">
-                        {{ toTalkUser.toTole_uinfo.name || 'untitle' }}
+                        {{ toTalkUser.toTolk_uinfo.name || 'untitle' }}
                     </div>
                     <v-callout v-if="message.audioURL"
                         ><v-audio :src="message.audioURL"></v-audio

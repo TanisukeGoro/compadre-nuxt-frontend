@@ -16,7 +16,7 @@
                 <jobs-select v-model="job" />
                 <hr />
                 {{ language }}
-                <language-serect v-model="language" />
+                <language-select v-model="language" />
                 <v-btn @click="$auth.logout()">Logout</v-btn>
                 <v-btn to="/store-test" nuxt>Storeのテスト</v-btn>
             </v-container>
@@ -29,14 +29,14 @@ import AgeSlider from '@/components/settings/AgeSlider'
 import CountrySelect from '@/components/settings/CountrySelect'
 import DistanceSlider from '@/components/settings/DistanceSlider'
 import JobsSelect from '@/components/settings/JobsSelect'
-import LanguageSerect from '@/components/settings/LanguageSerect'
+import LanguageSelect from '@/components/settings/LanguageSelect'
 export default {
     components: {
         AgeSlider,
         CountrySelect,
         DistanceSlider,
         JobsSelect,
-        LanguageSerect
+        LanguageSelect
     },
     data() {
         return {
