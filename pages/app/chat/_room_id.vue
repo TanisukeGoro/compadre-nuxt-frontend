@@ -4,24 +4,48 @@
             <!-- <v-btn color="success" @click="debug">ゲット</v-btn> -->
             <v-container grid-list-xl style="max-width: 600px;">
                 <div v-for="(msg, index) in posts" :key="index">
-                    <v-message-date
-                        v-show="changeMessageNo.includes(index)"
-                        :key="index + 'date'"
-                        :message="msg"
-                    ></v-message-date>
-                    <v-layout
-                        column
-                        :align-end="msg.send_uid === $auth.state.user.id"
-                    >
-                        <v-flex>
-                            <v-messageTimestamp
-                                :is-own="msg.send_uid === $auth.state.user.id"
-                                :message="msg"
-                                :to-talk-user="toTalk_user"
-                            >
-                            </v-messageTimestamp>
-                        </v-flex>
-                    </v-layout>
+                    <div v-if="!msg.text.match(regexp)">
+                        <v-message-date
+                            v-show="changeMessageNo.includes(index)"
+                            :key="index + 'date'"
+                            :message="msg"
+                        ></v-message-date>
+                        <v-layout
+                            column
+                            :align-end="msg.send_uid === $auth.state.user.id"
+                        >
+                            <v-flex>
+                                <v-messageTimestamp
+                                    :is-own="
+                                        msg.send_uid === $auth.state.user.id
+                                    "
+                                    :message="msg"
+                                    :to-talk-user="toTalk_user"
+                                >
+                                </v-messageTimestamp>
+                            </v-flex>
+                        </v-layout>
+                    </div>
+                    <div v-else>
+                        <v-layout
+                            column
+                            :align-end="msg.send_uid === $auth.state.user.id"
+                        >
+                            <v-flex>
+                                <spot-card
+                                    class="callout right"
+                                    :class="
+                                        msg.send_uid === $auth.state.user.id
+                                            ? 'left'
+                                            : 'right'
+                                    "
+                                    :card-type="msg.text.match(regexp)"
+                                    :post-id="msg.id"
+                                    :to-tolk-user="toTalk_user"
+                                />
+                            </v-flex>
+                        </v-layout>
+                    </div>
                 </div>
                 <transition name="fade">
                     <chat-card
@@ -37,7 +61,6 @@
                     />
                 </transition>
             </v-container>
-            <spot-card />
             <v-send-footer @sendDataFromChild="sendMessage($event)" />
         </v-content>
     </v-app>
@@ -45,7 +68,7 @@
 
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex'
-import { db, firebase } from '~/plugins/firebase.js'
+import { db, firebase } from '~/plugins/firebase'
 
 import VMessageTimestamp from '~/components/chat/VMessageTimestamp'
 import VMessageDate from '~/components/chat/VMessageDate'
@@ -73,7 +96,8 @@ export default {
             directMessages: this.$store.state.directMessages,
             userId: this.$auth.state.user.id,
             showBotCard: false,
-            answer: false
+            answer: false,
+            regexp: /^:(.*)\((.*)\):$/
         }
     },
     computed: {
@@ -81,6 +105,7 @@ export default {
         ...mapGetters('app/chat/firebase', ['posts'])
     },
     async mounted() {
+        console.log(this.posts)
         const chatInfoData = await this.getChatInfo()
         if (chatInfoData) {
             chatInfoData.rallyCount > 5 && !chatInfoData.botEvent
@@ -158,7 +183,7 @@ export default {
         },
 
         // this.posts[this.posts.length - 2].send_uid ===
-        // this.$auth.state.user.id
+        // this.userId
         //     ? rallyCount
         //     : rallyCount++
         async getChatInfo() {
@@ -173,7 +198,7 @@ export default {
 
         initChatInfo(postedText) {
             console.log('object :', 'chat init')
-            this.setChatInfo(postedText, this.$auth.state.user.id, 1, false)
+            this.setChatInfo(postedText, this.userId, 1, false)
         },
         updateChatInfo(chatInfoData, postedText, setEventState) {
             console.log(chatInfoData, postedText, setEventState)
@@ -231,7 +256,7 @@ export default {
             console.log('card :', card)
             const sendData = {
                 text: `:proposeActivity(${card.select}):`,
-                send_uid: this.$auth.state.user.id,
+                send_uid: this.userId,
                 receive_uid: this.toTalk_user.toTolk_uid,
                 idRead: false,
                 created: firebase.firestore.FieldValue.serverTimestamp()
@@ -250,12 +275,28 @@ export default {
 }
 </script>
 
-<style ß>
+<style>
 .fade-enter-active,
 .fade-leave-active {
     transition: opacity 1.5s;
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
     opacity: 0;
+}
+
+.callout {
+    position: relative; /* Set to fix triangle position */
+    display: inline-block;
+    margin-top: 10px;
+    max-width: 320px;
+    text-align: left;
+    word-wrap: break-word;
+    white-space: pre-line;
+}
+.left::after {
+    left: -10px;
+}
+.right::after {
+    right: -10px;
 }
 </style>

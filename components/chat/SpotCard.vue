@@ -1,55 +1,87 @@
 <template>
-    <v-carousel hide-delimiters show-arrows-on-hover>
-        <v-carousel-item v-for="(color, i) in colors" :key="color">
-            <v-sheet :color="color" height="100%" tile>
+    <v-carousel hide-delimiters show-arrows-on-hover :show-arrows="showArrow">
+        <v-carousel-item
+            v-for="(showCard, i) in showCards"
+            :key="showCard.name"
+        >
+            <v-sheet :color="'#fafafa'" height="100%" tile>
                 <v-row align="center" justify="center">
-                    <div class="display-3">
-                        <v-card
-                            :loading="loading"
-                            class="mx-auto"
-                            max-width="100%"
-                            light
-                        >
-                            <v-img
-                                height="200"
-                                src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
-                            ></v-img>
+                    <v-card
+                        :loading="loading"
+                        class="mx-auto"
+                        max-width="100%"
+                        light
+                    >
+                        <v-img
+                            height="200"
+                            :src="
+                                showCard.mediaUrl
+                                    ? showCard.mediaUrl
+                                    : 'https://cdn.vuetifyjs.com/images/cards/cooking.png'
+                            "
+                        ></v-img>
 
-                            <v-card-title style="font-weight: bold;"
-                                >スポットの名前</v-card-title
-                            >
-                            <v-card-text>
-                                <div class="my-4 subtitle-1 text">
-                                    住所:東京都江東区青海１丁目３−１５
-                                </div>
+                        <v-card-title style="font-weight: bold;">{{
+                            showCard.name
+                        }}</v-card-title>
+                        <v-card-text>
+                            <div class="my-4 body-2">
+                                住所:{{ showCard.address }}
+                            </div>
 
-                                <div>地図のURL</div>
-                            </v-card-text>
-                            <v-card-actions style="justify-content: center;">
-                                <div class="text-center">
-                                    <v-btn
-                                        rounded
-                                        dark
-                                        style="background: linear-gradient(to right, #70e1f5, #ffd194);"
-                                        >SEND</v-btn
-                                    >
-                                </div>
-                            </v-card-actions>
-                        </v-card>
-                        {{ i + 1 }}
-                    </div>
+                            <div>
+                                <a :href="showCard.mapLink">
+                                    <v-icon>mdi-google-maps</v-icon>
+                                    {{ showCard.name }}をGoogleマップで開く
+                                </a>
+                            </div>
+                        </v-card-text>
+                        <v-card-actions style="justify-content: center;">
+                            <div class="text-center">
+                                <v-btn
+                                    v-show="showSendBtn"
+                                    rounded
+                                    dark
+                                    style="background: linear-gradient(to right, #70e1f5, #ffd194);"
+                                    @click="sendActivityCard(showCard)"
+                                    >SEND</v-btn
+                                >
+                            </div>
+                        </v-card-actions>
+                    </v-card>
+                    {{ i + 1 }}
                 </v-row>
             </v-sheet>
         </v-carousel-item>
     </v-carousel>
 </template>
 <script>
+import { db, firebase } from '~/plugins/firebase'
+
 export default {
+    props: {
+        cardType: {
+            type: Array,
+            default: () => {}
+        },
+        postId: {
+            type: String,
+            default: ''
+        },
+        toTolkUser: {
+            type: Object,
+            default: () => {}
+        }
+    },
     data() {
         return {
             colors: ['#fafafa', '#fafafa', '#fafafa', '#fafafa', '#fafafa'],
+            loading: false,
+            showCards: {},
+            showArrow: true,
+            showSendBtn: true,
             activityDB: {
-                shopings: [
+                shopping: [
                     {
                         name: 'ヴィーナスフォート',
                         postalCode: '135-0064',
@@ -107,7 +139,7 @@ export default {
                         area: '左'
                     }
                 ],
-                bars: [
+                bar: [
                     {
                         name: 'HUB池袋西口店',
                         postalCode: '171-0021',
@@ -223,7 +255,7 @@ export default {
                         area: '左'
                     }
                 ],
-                cafes: [
+                cafe: [
                     {
                         name: 'スターバックスコーヒー 池袋明治通り店',
                         postalCode: '171-0022',
@@ -358,6 +390,41 @@ export default {
                 ]
             }
         }
+    },
+    mounted() {
+        this[this.cardType[1]](this.cardType[2])
+    },
+    methods: {
+        proposeActivity(selectedCard) {
+            this.showCards = this.activityDB[selectedCard.toLowerCase()]
+            console.log('selectedCard :', selectedCard)
+        },
+        sendActivityCard(showCard) {
+            console.log(this.postId)
+            db.collection('chat_rooms')
+                .doc(this.$route.params.room_id)
+                .collection('messages')
+                .doc(this.postId)
+                .update({
+                    text: `:selectActivitySpot(${JSON.stringify(showCard)}):`,
+                    send_uid: this.$auth.state.user.id,
+                    receive_uid: 19,
+                    idRead: false,
+                    created: firebase.firestore.FieldValue.serverTimestamp()
+                })
+        },
+        selectActivitySpot(StringJson) {
+            console.log(JSON.parse(StringJson))
+            this.showCards = [JSON.parse(StringJson)]
+            this.showSendBtn = false
+            this.showArrow = false
+        }
     }
 }
 </script>
+
+<style scoped>
+a {
+    text-decoration: none;
+}
+</style>

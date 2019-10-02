@@ -5,7 +5,7 @@
                 v-for="(item, i) in items"
                 :key="i"
                 style="text-align: center;"
-                @click="selectCard(item.title)"
+                @click="selectCard(item.key)"
             >
                 <v-btn
                     outlined
@@ -32,25 +32,32 @@ export default {
     data: () => ({
         items: [
             {
-                title: 'Lunch'
+                title: 'Lunch',
+                key: 'lunch_dinner'
             },
             {
-                title: 'Cafe'
+                title: 'Cafe',
+                key: 'cafe'
             },
             {
-                title: 'Dinner'
+                title: 'Dinner',
+                key: 'lunch_dinner'
             },
             {
-                title: 'Activities'
+                title: 'Activities',
+                key: 'activities'
             },
             {
-                title: 'Bar'
+                title: 'Bar',
+                key: 'bar'
             },
             {
-                title: 'Shopping'
+                title: 'Shopping',
+                key: 'shopping'
             },
             {
-                title: 'other'
+                title: 'other',
+                key: 'other'
             }
         ]
     }),

@@ -1,5 +1,9 @@
 <template>
-    <v-app> </v-app>
+    <v-app>
+        <v-content>
+            これはテストです
+        </v-content>
+    </v-app>
 </template>
 
 <script>
@@ -11,12 +15,12 @@ export default {
         }
     },
     mounted() {
-        let match
-        const matches = []
-        while ((match = this.regexp.exec(this.message)) !== null) {
-            matches.push(match[1])
+        console.log(this.message.match(this.regexp))
+        const isMatch = this.message.match(this.regexp)
+        if (isMatch) {
+            console.log(isMatch[1])
+            console.log(isMatch[2])
         }
-        console.log(matches)
     },
     methods: {
         proposeActivity(category) {
