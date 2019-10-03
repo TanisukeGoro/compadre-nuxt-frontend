@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import { minLangCodes } from '~/plugins/langCode'
 
 // 改行処理
 Vue.filter('formatNewLine', function(value) {
@@ -12,6 +13,23 @@ Vue.filter('description', function(value) {
     if (value) {
         return value.slice(0, 100) + '...'
     }
+})
+
+// YYYYMMDD => Age
+Vue.filter('yyyymmdd2Age', function(yyyymmdd) {
+    yyyymmdd.match(/^([1-2]\d{3})-(\d{1,2})-(\d{1,2})$/)
+    if (yyyymmdd.match(/^[1-2]\d{3}-\d{1,2}-\d{1,2}$/)) {
+        return getAge(
+            yyyymmdd.split('-')[0],
+            yyyymmdd.split('-')[1],
+            yyyymmdd.split('-')[2]
+        )
+    }
+})
+
+// Language Code => Language Name
+Vue.filter('langCode2langName', function(langCode) {
+    return minLangCodes.find((i) => i.iso639_1 === langCode.toUpperCase()).local
 })
 
 /**
@@ -34,15 +52,3 @@ const getAge = (year, month, day) => {
     // 今年の誕生日を迎えていなければage-1を返す
     return today < thisYearBirthday ? age - 1 : age
 }
-
-Vue.filter('yyyymmdd2Age', function(yyyymmdd) {
-    yyyymmdd.match(/^([1-2]\d{3})-(\d{1,2})-(\d{1,2})$/)
-    if (yyyymmdd.match(/^[1-2]\d{3}-\d{1,2}-\d{1,2}$/)) {
-        console.log(yyyymmdd)
-        return getAge(
-            yyyymmdd.split('-')[0],
-            yyyymmdd.split('-')[1],
-            yyyymmdd.split('-')[2]
-        )
-    }
-})
