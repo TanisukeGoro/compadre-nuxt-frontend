@@ -25,8 +25,7 @@
                             @cancelEditFromChild="cancelEdit()"
                             @previousCardFromChild="previousGreeting()"
                             @nextCardFromChild="nextGreetng()"
-                        >
-                        </component>
+                        ></component>
                     </div>
 
                     <!-- <v-btn color="success" @click="getGreetings">テスト</v-btn> -->

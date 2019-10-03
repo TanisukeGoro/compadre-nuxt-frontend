@@ -1,0 +1,55 @@
+.user-img-space {
+    height: 10px;
+}
+.user-main-img {
+    border-radius: 50%;
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translate(-50%);
+    z-index: 100;
+    width: 74px;
+    height: 74px;
+}
+.user-name {
+    position: absolute;
+    bottom: -80px;
+    left: 50%;
+    transform: translate(-50%);
+    text-align: center;
+}
+.user-text {
+    position: relative;
+    max-width: 600px;
+    padding-bottom: 20px;
+}
+.greeting-toEdit {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+}
+/* 編集画面CSS */
+.edit-row {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    height: 44px;
+    line-height: 44px;
+    width:600px;
+    margin:0 auto;
+}
+.edti-row-label {
+    width: 76px;
+    padding-left: 16px;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: bold;
+}
+.edit-input {
+    font-size: 14px;
+    width: 270px;
+    color: #88f4e7;
+    font-size: 14px;
+    outline: 0;
+}
+.selectFont{
+    font-size:12px;
+}

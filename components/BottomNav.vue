@@ -21,7 +21,7 @@
             <!-- ユーザーの画像を入れたいけど難しいので飛ばし中 -->
             <!-- <v-avatar :size="24">
                 <img src="https://vuetifyjs.com/apple-touch-icon-180x180.png" />
-            </v-avatar> -->
+      </v-avatar>-->
         </v-btn>
     </v-bottom-navigation>
 </template>

@@ -2,6 +2,7 @@
     <v-app>
         <v-app-bar app clipped-right color="primary" fixed dark>
             <v-app-bar-nav-icon
+                to="/app/user-profile"
                 @click.stop="drawer = !drawer"
             ></v-app-bar-nav-icon>
 
@@ -25,7 +26,9 @@
 import BottomNav from '~/components/BottomNav'
 
 export default {
-    components: { BottomNav },
+    components: {
+        BottomNav
+    },
     data() {
         return {
             clipped: false,

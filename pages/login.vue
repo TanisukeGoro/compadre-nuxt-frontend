@@ -76,7 +76,7 @@ export default {
     components: {},
     data() {
         return {
-            email: '',
+            email: 'oidaka@example.com',
             password: 'secret',
             error: null,
             strategies: [
@@ -121,7 +121,7 @@ export default {
     methods: {
         async login() {
             this.error = null
-            const response = await this.$auth
+            await this.$auth
                 .loginWith('local', {
                     data: {
                         email:
@@ -134,7 +134,6 @@ export default {
                 .catch((e) => {
                     this.error = e + ''
                 })
-            return response
         },
         async social(key) {
             console.log('object')

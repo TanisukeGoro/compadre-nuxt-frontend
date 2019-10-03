@@ -2,27 +2,13 @@
     <v-layout column justify-center align-center>
         <v-btn color="success" to="/login" nuxt>LOGIN</v-btn>
         <v-flex xs12 sm8 md6>
-            <v-btn color="primary" @click="auth_login">
-                primary
-            </v-btn>
-            <v-btn color="secondary" @click="Axios_get">
-                Axios_get
-            </v-btn>
-            <v-btn color="accent">
-                accent
-            </v-btn>
-            <v-btn color="error">
-                error
-            </v-btn>
-            <v-btn color="warning">
-                warning
-            </v-btn>
-            <v-btn color="success">
-                success
-            </v-btn>
-            <v-btn color="info">
-                info
-            </v-btn>
+            <v-btn color="primary" @click="auth_login">primary</v-btn>
+            <v-btn color="secondary" @click="Axios_get">Axios_get</v-btn>
+            <v-btn color="accent">accent</v-btn>
+            <v-btn color="error">error</v-btn>
+            <v-btn color="warning">warning</v-btn>
+            <v-btn color="success">success</v-btn>
+            <v-btn color="info">info</v-btn>
         </v-flex>
     </v-layout>
 </template>
