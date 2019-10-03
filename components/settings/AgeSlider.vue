@@ -1,6 +1,7 @@
 <template>
     <v-slider
         v-model="currAge"
+        color="accent"
         label="年齢"
         :min="minAge"
         :max="maxAge"

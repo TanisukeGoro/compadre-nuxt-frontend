@@ -76,7 +76,7 @@ export default {
     components: {},
     data() {
         return {
-            email: 'oidaka@example.com',
+            email: '',
             password: 'secret',
             error: null,
             strategies: [
