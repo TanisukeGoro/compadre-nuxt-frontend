@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import { minLangCodes } from '~/plugins/langCode'
+import { countriesName } from '~/plugins/phoneCodeCountries'
 
 // 改行処理
 Vue.filter('formatNewLine', function(value) {
@@ -30,6 +31,10 @@ Vue.filter('yyyymmdd2Age', function(yyyymmdd) {
 // Language Code => Language Name
 Vue.filter('langCode2langName', function(langCode) {
     return minLangCodes.find((i) => i.iso639_1 === langCode.toUpperCase()).local
+})
+// Country Code => Country Name
+Vue.filter('countryCode2countryName', function(country) {
+    return countriesName.find((i) => i.iso2 === country.toUpperCase()).name
 })
 
 /**

@@ -308,5 +308,9 @@ const countries = allCountries.map((country) => ({
     priority: country[3] || 0,
     areaCodes: country[4] || null
 }))
+const countriesName = allCountries.map((country) => ({
+    name: country[0],
+    iso2: country[1].toUpperCase()
+}))
 
-export { countriesIso, countries }
+export { countriesIso, countriesName, countries }
