@@ -9,6 +9,8 @@
 .greetingarea {
     height: 220px;
     overflow: scroll;
+    max-width:400px;
+    margin:0 auto;
 }
 .profileimg {
     border-radius: 50%;
@@ -18,6 +20,8 @@
 .selectcard {
     margin: 0 auto;
     max-width: 480px;
+    box-shadow: 0 0 8px gray;
+    z-index:100;
 }
 
 @media screen and (min-width: 767px) {

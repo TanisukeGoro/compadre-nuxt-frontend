@@ -13,6 +13,7 @@
                 v-for="candidate in candidatesarry"
                 :key="candidate.candidateId"
             >
+                <!-- <v-flex style="margin:0 auto;" xs11> -->
                 <v-card class="selectcard">
                     <v-card class="mx-auto" max-width="344" flat>
                         <v-list-item three-line>
@@ -57,15 +58,15 @@
                         <v-list class="mr-3">
                             <v-icon>mdi-access-point</v-icon>
                         </v-list>
-                        <v-list class="mr-3">
-                            {{ job_conversion(candidate.fst_lang) }}
-                        </v-list>
-                        <v-list class="mr-3">
-                            {{ job_conversion(candidate.snd_lang) }}
-                        </v-list>
-                        <v-list class="mr-3">
-                            {{ job_conversion(candidate.trd_lang) }}
-                        </v-list>
+                        <v-list class="mr-3">{{
+                            job_conversion(candidate.fst_lang)
+                        }}</v-list>
+                        <v-list class="mr-3">{{
+                            job_conversion(candidate.snd_lang)
+                        }}</v-list>
+                        <v-list class="mr-3">{{
+                            job_conversion(candidate.trd_lang)
+                        }}</v-list>
                     </v-layout>
                     <v-row>
                         <v-container fluid>
@@ -77,6 +78,7 @@
                         </v-container>
                     </v-row>
                 </v-card>
+                <!-- </v-flex> -->
             </v-carousel-item>
         </v-carousel>
         <!-- {{ onchange }} -->
@@ -101,7 +103,7 @@ export default {
     data() {
         return {
             counter: 200,
-            storemodel: this.$store.getters['app/(candidate/model'],
+            storemodel: this.$store.getters['app/candidate/model'],
             model: this.$store.getters['app/candidate/model'],
             showArrows: true,
             hideDelimiters: true,
@@ -185,6 +187,9 @@ export default {
             'spliceCandidate'
         ]),
         ...mapState('app/candidate', ['candidates']),
+        // ↓この二つはいらないぽい
+        // ...mapActions('comman/auth', ['loginUserData']),
+        // ...mapState('comman/auth', ['data']),
 
         previousCard() {
             this.$emit('previousCardFromChild')

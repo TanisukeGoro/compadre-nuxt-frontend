@@ -1,16 +1,8 @@
 <template>
-    <v-content>
+    <v-content style="background-color:white;">
         <v-container>
             <!-- スロット -->
             <SelectCardSlideTest :ptestdatas="testdata" />
-            <!-- <v-btn color="primary" @click="nextState && nextCandidate()"
-                >次のユーザ</v-btn
-            >
-            <p>{{ currCandidate.name }}</p>
-            <p>{{ nextState }}</p>
-            <v-btn color="primary" @click="nextState && likeUser()"
-                >いいね</v-btn
-      >-->
         </v-container>
     </v-content>
 </template>

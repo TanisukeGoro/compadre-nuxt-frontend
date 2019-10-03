@@ -10,13 +10,13 @@
                     nuxt
                 >
                     <v-list-item-avatar>
-                        <v-img :src="chat.toTole_uinfo.icon_url"></v-img>
+                        <v-img :src="chat.toTolk_uinfo.icon_url"></v-img>
                         <!-- <v-img :src="iconURL"></v-img> -->
                     </v-list-item-avatar>
 
                     <v-list-item-content>
                         <v-list-item-title
-                            v-text="chat.toTole_uinfo.name"
+                            v-text="chat.toTolk_uinfo.name"
                         ></v-list-item-title>
                     </v-list-item-content>
 
@@ -69,7 +69,7 @@ export default {
     methods: {
         check() {
             // console.log(
-            //     this.chatLists.map((i) => i.toTole_uinfo.name).join('\n')
+            //     this.chatLists.map((i) => i.toTolk_uinfo.name).join('\n')
             // )
             // console.log(this.chatLists)
             // db.collection(

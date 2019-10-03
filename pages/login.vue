@@ -123,7 +123,7 @@ export default {
     methods: {
         async login() {
             this.error = null
-            const response = await this.$auth
+            await this.$auth
                 .loginWith('local', {
                     data: {
                         email:
@@ -136,7 +136,7 @@ export default {
                 .catch((e) => {
                     this.error = e + ''
                 })
-            return response
+            // return console.log(response, 'test')
         }
     }
 }
