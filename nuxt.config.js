@@ -33,7 +33,7 @@ export default {
     /*
      ** Global CSS
      */
-    css: [],
+    css: ['@/assets/css/iti-flags.css'],
     /*
      ** Plugins to load before mounting the App
      */
@@ -61,6 +61,7 @@ export default {
      ** See https://axios.nuxtjs.org/options
      */
     axios: {
+        proxy: true,
         requestInterceptor(config, { store }) {
             if (store.state.csrfToken) {
                 config.headers.common['x-csrf-token'] = store.state.csrfToken
@@ -73,7 +74,9 @@ export default {
      * プロキシを設定したけど動く気がしないのでとりあえず放置する。
      */
     proxy: {
-        '/api': 'http://localhost/api/v1/'
+        '/api': 'http://localhost/api/v1/',
+        '/geolocation':
+            'https://geoapi.heartrails.com/api/json?method=searchByGeoLocation'
     },
     /**
      * Auth module configuration
@@ -111,6 +114,13 @@ export default {
                 client_id: process.env.GITHUB_CLIENT_ID,
                 client_secret: process.env.GITHUB_CLIENT_SECRET,
                 scope: ['read:user'] // デフォルトだと ['user', 'email'] となり、権限がやや強いので絞る
+            },
+            facebook: {
+                client_id: '433680970792692',
+                userinfo_endpoint:
+                    'https://graph.facebook.com/v2.12/me?fields=about,name,picture{url},email,birthday',
+                scope: ['public_profile', 'email', 'user_birthday'],
+                redirect_uri: 'http://localhost:3000/callback'
             }
         }
     },
@@ -132,7 +142,8 @@ export default {
                     error: '#ED5E7D',
                     warning: '#ffeb3b',
                     info: '#cddc39',
-                    success: '#EBB920'
+                    success: '#EBB920',
+                    background: '#fafafa'
                 },
                 // ダークモードのとき
                 dark: {
@@ -142,7 +153,8 @@ export default {
                     info: colors.teal.lighten1,
                     warning: colors.amber.base,
                     error: colors.deepOrange.accent4,
-                    success: colors.green.accent3
+                    success: colors.green.accent3,
+                    background: ''
                 }
             }
         }
@@ -170,6 +182,7 @@ export default {
         dev: false
     },
     // 全てのページにAuth権限を付与する
+    // eslint-disable-next-line no-dupe-keys
     router: {
         middleware: ['auth']
     }

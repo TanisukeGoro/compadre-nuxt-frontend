@@ -1,128 +1,452 @@
+<script>
+/**
+ *
+ * エラー時にsubmitのloadingをfalseにしてエラー個所を表示
+ *
+ *
+ */
+</script>
 <template>
     <v-app>
         <v-content>
-            <v-stepper v-model="e1">
-                <v-stepper-header>
-                    <template v-for="n in steps">
-                        <v-stepper-step
-                            :key="`${n}-step`"
-                            :complete="e1 > n"
-                            :step="n"
-                            editable
-                        >
-                            Step {{ n }}
-                        </v-stepper-step>
+            <!-- <v-btn color="success" @click="test">text</v-btn>
+            {{ phoneNumber == undefined || phoneNumber.isValid() }} -->
+            <v-form ref="form" v-model="form">
+                <v-stepper v-model="e1">
+                    <v-stepper-header>
+                        <template v-for="n in steps">
+                            <v-stepper-step
+                                :key="`${n}-step`"
+                                :complete="e1 > n"
+                                :step="n"
+                                editable
+                            >
+                                Step {{ n }}
+                            </v-stepper-step>
 
-                        <v-divider v-if="n !== steps" :key="n"></v-divider>
-                    </template>
-                </v-stepper-header>
+                            <v-divider v-if="n !== steps" :key="n"></v-divider>
+                        </template>
+                    </v-stepper-header>
 
-                <v-stepper-items>
-                    <v-stepper-content :key="`1-content`" :step="1">
-                        <v-card class="mb-12" flat>
-                            <v-text-field
-                                v-model="name"
-                                :rules="nameRules"
-                                :counter="20"
-                                label="Your name"
-                                required
-                            ></v-text-field>
-                            <v-text-field
-                                v-model="email"
-                                :rules="emailRules"
-                                label="E-mail"
-                                required
-                            ></v-text-field>
-                        </v-card>
+                    <v-stepper-items>
+                        <v-stepper-content :key="`1-content`" :step="1">
+                            <v-btn color="primary" @click="nextStep(1)">
+                                Continue
+                            </v-btn>
+                            <v-btn text>Cancel</v-btn>
+                            <v-card class="mb-12" flat>
+                                <v-text-field
+                                    v-model="name"
+                                    :rules="nameRules"
+                                    :counter="20"
+                                    label="Your name"
+                                    required
+                                ></v-text-field>
+                                <v-text-field
+                                    v-model="email"
+                                    :rules="emailRules"
+                                    label="E-mail"
+                                    required
+                                ></v-text-field>
+                            </v-card>
+                        </v-stepper-content>
+                        <v-stepper-content :key="`2-content`" :step="2">
+                            <v-btn color="primary" @click="nextStep(2)">
+                                Continue
+                            </v-btn>
 
-                        <v-btn color="primary" @click="nextStep(1)">
-                            Continue
-                        </v-btn>
+                            <v-btn text>Cancel</v-btn>
+                            <v-card class="mb-12" flat>
+                                <v-text-field
+                                    v-model="password"
+                                    :append-icon="
+                                        showPassword ? 'mdi-eye' : 'mdi-eye-off'
+                                    "
+                                    :rules="[rules.required, rules.min]"
+                                    :type="showPassword ? 'text' : 'password'"
+                                    name="input-10-2"
+                                    label="Not vrisible"
+                                    hint="At least 8 characters"
+                                    class="input-group--focused"
+                                    @click:append="showPassword = !showPassword"
+                                ></v-text-field>
+                                <v-layout>
+                                    <v-flex xs4>
+                                        <v-select
+                                            v-model="country"
+                                            label="country"
+                                            :items="countries"
+                                            width="50px"
+                                            item-value="iso2"
+                                            item-text="name"
+                                            class="caption"
+                                            return-object
+                                            @input="updateValue"
+                                        >
+                                            <template
+                                                slot="selection"
+                                                slot-scope="{ item }"
+                                            >
+                                                <p
+                                                    class="inline iti-flag"
+                                                    :class="
+                                                        item.iso2.toLowerCase()
+                                                    "
+                                                ></p>
+                                            </template>
+                                            <template
+                                                slot="item"
+                                                slot-scope="{ item }"
+                                            >
+                                                <p
+                                                    class="inline iti-flag"
+                                                    :class="
+                                                        item.iso2.toLowerCase()
+                                                    "
+                                                ></p>
+                                                {{ item.name }}
+                                            </template>
+                                        </v-select>
+                                    </v-flex>
+                                    <v-flex xs8>
+                                        <v-text-field
+                                            v-model="phone"
+                                            :rules="phoneRules"
+                                            flat
+                                            type="tel"
+                                            label="phone number"
+                                            @input="updateValue"
+                                        ></v-text-field>
+                                    </v-flex>
+                                </v-layout>
+                                <!--  ここに入れる-->
+                            </v-card>
+                        </v-stepper-content>
+                        <v-stepper-content :key="`3-content`" :step="3">
+                            <v-btn color="primary" @click="nextStep(3)">
+                                Continue
+                            </v-btn>
 
-                        <v-btn text>Cancel</v-btn>
-                    </v-stepper-content>
-                    <v-stepper-content :key="`2-content`" :step="2">
-                        <v-card class="mb-12" flat>
-                            <v-text-field
-                                :append-icon="
-                                    showPassword ? 'mdi-eye' : 'mdi-eye-off'
-                                "
-                                :rules="[rules.required, rules.min]"
-                                :type="showPassword ? 'text' : 'password'"
-                                name="input-10-2"
-                                label="Not vrisible"
-                                hint="At least 8 characters"
-                                value=""
-                                class="input-group--focused"
-                                @click:append="showPassword = !showPassword"
-                            ></v-text-field>
-                            <v-text-field
-                                v-model="phone"
-                                :rules="phoneRules"
-                                label="Phone-Number"
-                                required
-                            ></v-text-field>
-                            <!--  ここに入れる-->
-                        </v-card>
+                            <v-btn text>Cancel</v-btn>
+                            <v-card class="mb-12" flat>
+                                <!-- 性別の選択 -->
+                                <v-btn-toggle v-model="gender" color="primary">
+                                    <v-btn width="100px" @click="genderTest">
+                                        <v-icon>mdi-human-female</v-icon>
+                                        Woman
+                                    </v-btn>
+                                    <v-btn width="100px" @click="genderTest">
+                                        <v-icon>mdi-human-male</v-icon>
+                                        Man
+                                    </v-btn>
+                                    <v-btn width="100px" @click="genderTest">
+                                        Other
+                                    </v-btn>
+                                </v-btn-toggle>
+                                <!-- 誕生日の選択 -->
+                                <v-menu
+                                    ref="menu"
+                                    v-model="menu"
+                                    :close-on-content-click="false"
+                                    transition="scale-transition"
+                                    offset-y
+                                    full-width
+                                    min-width="290px"
+                                >
+                                    <template v-slot:activator="{ on }">
+                                        <v-text-field
+                                            v-model="date"
+                                            label="Birthday date"
+                                            prepend-icon="mdi-calendar-today"
+                                            readonly
+                                            v-on="on"
+                                        ></v-text-field>
+                                    </template>
+                                    <v-date-picker
+                                        ref="picker"
+                                        v-model="date"
+                                        :max="
+                                            new Date()
+                                                .toISOString()
+                                                .substr(0, 10)
+                                        "
+                                        min="1950-01-01"
+                                        @change="saveBirth"
+                                    ></v-date-picker>
+                                </v-menu>
+                                <!-- 位置情報の取得 -->
+                                <v-row>
+                                    <v-col cols="12">
+                                        <v-text-field
+                                            v-model="nowPlace"
+                                            clearable
+                                            label="Message"
+                                            type="text"
+                                        >
+                                            <template v-slot:prepend>
+                                                <v-tooltip bottom>
+                                                    <template
+                                                        v-slot:activator="{
+                                                            on
+                                                        }"
+                                                    >
+                                                        <v-icon v-on="on"
+                                                            >mdi-help-circle-outline</v-icon
+                                                        >
+                                                    </template>
+                                                    <v-icon>
+                                                        mdi-crosshairs-gps
+                                                    </v-icon>
+                                                    で現在地を取得
+                                                </v-tooltip>
+                                            </template>
+                                            <template v-slot:append>
+                                                <v-fade-transition
+                                                    leave-absolute
+                                                >
+                                                    <v-progress-circular
+                                                        v-if="geoLoading"
+                                                        size="24"
+                                                        color="info"
+                                                        indeterminate
+                                                    ></v-progress-circular>
+                                                    <v-icon
+                                                        v-else
+                                                        @click="getLocation"
+                                                        >mdi-crosshairs-gps</v-icon
+                                                    >
+                                                </v-fade-transition>
+                                            </template>
+                                        </v-text-field>
+                                        <!-- 職業選択 -->
+                                        <v-select
+                                            v-model="job"
+                                            :hint="job.description"
+                                            :items="jobs"
+                                            item-text="name"
+                                            item-value="value"
+                                            label="JOB"
+                                            persistent-hint
+                                            return-object
+                                            single-line
+                                        ></v-select>
+                                        <!-- 職業選択 -->
+                                        <v-select
+                                            v-model="language"
+                                            :hint="languages.description"
+                                            :items="languages"
+                                            item-text="name"
+                                            item-value="value"
+                                            label="First Language"
+                                            persistent-hint
+                                            return-object
+                                            single-line
+                                        ></v-select>
+                                    </v-col>
+                                </v-row>
+                            </v-card>
+                        </v-stepper-content>
+                        <v-stepper-content :key="`4-content`" :step="4">
+                            <v-btn color="primary" @click="nextStep(4)">
+                                Continue
+                            </v-btn>
 
-                        <v-btn color="primary" @click="nextStep(2)">
-                            Continue
-                        </v-btn>
-
-                        <v-btn text>Cancel</v-btn>
-                    </v-stepper-content>
-                    <v-stepper-content :key="`3-content`" :step="3">
-                        <v-card class="mb-12" flat>
-                            <v-text-field
-                                type="number"
-                                label="Number"
-                                append-outer-icon="mdi-add"
-                                prepend-icon="mdi-remove"
-                            ></v-text-field>
-
-                            <!--  ここに入れる -->
-                        </v-card>
-
-                        <v-btn color="primary" @click="nextStep(3)">
-                            Continue
-                        </v-btn>
-
-                        <v-btn text>Cancel</v-btn>
-                    </v-stepper-content>
-                    <v-stepper-content :key="`4-content`" :step="4">
-                        <v-card class="mb-12" flat>
-                            <!--  ここに入れる -->
-                        </v-card>
-
-                        <v-btn color="primary" @click="nextStep(4)">
-                            Continue
-                        </v-btn>
-
-                        <v-btn text>Cancel</v-btn>
-                    </v-stepper-content>
-                    <v-stepper-content :key="`5-content`" :step="5">
-                        <v-card class="mb-12" flat>
-                            <!--  ここに入れる -->
-                        </v-card>
-
-                        <v-btn color="primary" @click="nextStep(5)">
-                            Continue
-                        </v-btn>
-
-                        <v-btn text>Cancel</v-btn>
-                    </v-stepper-content>
-                </v-stepper-items>
-            </v-stepper>
+                            <v-btn text>Cancel</v-btn>
+                            <v-card class="mb-12" flat>
+                                <!-- 画像のアップロード -->
+                                <croppa
+                                    v-model="croppaImg"
+                                    :width="300"
+                                    :placeholder-font-size="16"
+                                    placeholder="Account Image"
+                                    :prevent-white-space="true"
+                                    :zoom-speed="10"
+                                    :height="300"
+                                ></croppa>
+                                <!-- <v-file-input
+                                v-model="uploadImage"
+                                :rules="imageRules"
+                                accept="image/png, image/jpeg, image/bmp"
+                                placeholder="Pick an avatar"
+                                prepend-icon="mdi-camera"
+                                label="Avatar"
+                                :show-size="1000"
+                                @change="imageUploader"
+                            ></v-file-input>
+                            <v-img
+                                :src="imageSrc"
+                                aspect-ratio="1"
+                                class="grey lighten-2"
+                                max-width="400"
+                                max-height="400"
+                            ></v-img> -->
+                            </v-card>
+                            <v-btn color="success" @click="imageUploader"
+                                >text</v-btn
+                            >
+                        </v-stepper-content>
+                        <v-stepper-content :key="`5-content`" :step="5">
+                            <!-- 登録画面 -->
+                            <v-checkbox
+                                v-model="agreementService"
+                                :rules="[rules.required]"
+                            >
+                                <template v-slot:label>
+                                    <a
+                                        href="#"
+                                        @click.stop.prevent="
+                                            dialogBox = dialogContent.Service
+                                            dialog = true
+                                        "
+                                        >Terms of Service
+                                    </a>
+                                </template>
+                            </v-checkbox>
+                            <v-checkbox
+                                v-model="agreementPolicy"
+                                :rules="[rules.required]"
+                            >
+                                <template v-slot:label>
+                                    <a
+                                        href="#"
+                                        @click.stop.prevent="
+                                            dialogBox = dialogContent.Policy
+                                            dialog = true
+                                        "
+                                    >
+                                        Privacy Policy </a
+                                    >*
+                                </template>
+                            </v-checkbox>
+                            <v-divider></v-divider>
+                            <v-card-actions>
+                                <v-btn text>
+                                    Clear
+                                </v-btn>
+                                <div class="flex-grow-1"></div>
+                                <v-btn
+                                    :disabled="!form"
+                                    :loading="isLoading"
+                                    class="white--text"
+                                    color="deep-purple accent-4"
+                                    depressed
+                                    @click="register"
+                                    >Submit</v-btn
+                                >
+                            </v-card-actions>
+                            <v-dialog
+                                v-model="dialog"
+                                absolute
+                                max-width="400"
+                                persistent
+                            >
+                                <v-card>
+                                    <v-card-title
+                                        class="headline grey lighten-3"
+                                    >
+                                        <!-- ここにラベル -->
+                                        {{ dialogBox.label }}
+                                    </v-card-title>
+                                    <v-card-text>
+                                        <!-- ここにテキスト -->
+                                        {{ dialogBox.text }}
+                                    </v-card-text>
+                                    <v-divider></v-divider>
+                                    <v-card-actions>
+                                        <v-btn
+                                            text
+                                            @click="
+                                                ;(agreementPolicy = false),
+                                                    (dialog = false)
+                                            "
+                                        >
+                                            No
+                                        </v-btn>
+                                        <div class="flex-grow-1"></div>
+                                        <v-btn
+                                            class="white--text"
+                                            color="deep-purple accent-4"
+                                            @click="
+                                                ;(agreementPolicy = true),
+                                                    (dialog = false)
+                                            "
+                                        >
+                                            Yes
+                                        </v-btn>
+                                    </v-card-actions>
+                                </v-card>
+                            </v-dialog>
+                        </v-stepper-content>
+                    </v-stepper-items>
+                </v-stepper>
+            </v-form>
         </v-content>
     </v-app>
 </template>
 
 <script>
+import { AsYouType } from 'libphonenumber-js'
+import { countries } from '~/plugins/phoneCodeCountries'
+import '~/plugins/croppa'
+
 export default {
     layout: 'empty',
     auth: false,
     data() {
         return {
+            form: false,
+            agreementService: false,
+            agreementPolicy: false,
+            dialogContent: {
+                Service: {
+                    label: 'Terms of Service',
+                    text: `
+                            Terms of Service Lorem ipsum dolor sit
+                            amet, consectetur adipiscing elit, sed
+                            do eiusmod tempor incididunt ut labore
+                            et dolore magna aliqua. Ut enim ad minim
+                            veniam, quis nostrud exercitation
+                            ullamco laboris nisi ut aliquip ex ea
+                            commodo consequat. Duis aute irure dolor
+                            in reprehenderit in voluptate velit esse
+                            cillum dolore eu fugiat nulla pariatur.
+                            Excepteur sint occaecat cupidatat non
+                            proident, sunt in culpa qui officia
+                            deserunt mollit anim id est laborum.`
+                },
+                Policy: {
+                    label: 'Privacy Policy',
+                    text: `
+                            Privacy Policy Lorem ipsum dolor sit
+                            amet, consectetur adipiscing elit, sed
+                            do eiusmod tempor incididunt ut labore
+                            et dolore magna aliqua. Ut enim ad minim
+                            veniam, quis nostrud exercitation
+                            ullamco laboris nisi ut aliquip ex ea
+                            commodo consequat. Duis aute irure dolor
+                            in reprehenderit in voluptate velit esse
+                            cillum dolore eu fugiat nulla pariatur.
+                            Excepteur sint occaecat cupidatat non
+                            proident, sunt in culpa qui officia
+                            deserunt mollit anim id est laborum.`
+                }
+            },
+            dialogBox: '',
+            dialog: '',
+            isLoading: false,
+            INPUT_FORM_DATA: {
+                name: '',
+                email: '',
+                password: '',
+                birthday: '',
+                sex: 2,
+                geolocation: '',
+                job_type: '',
+                oauth_id: 0,
+                face_image: '',
+                fst_lang: ''
+            },
+
             e1: 1,
             steps: 5,
             /**
@@ -147,7 +471,7 @@ export default {
              * password validation
              */
             showPassword: false,
-            password: 'Password',
+            password: '',
             rules: {
                 required: (value) => !!value || 'Required.',
                 min: (v) => v.length >= 8 || 'Min 8 characters',
@@ -157,12 +481,95 @@ export default {
             /**
              * phone validation
              */
+            country: '',
+            countries,
             phone: '',
+            currPhoneInp: new AsYouType('JP'),
             phoneRules: [
                 (v) => !!v || 'Phone number required',
-                (v) => / /.test(v) || ''
-            ]
+                (v) => {
+                    try {
+                        return this.currPhoneInp.getNumber().isPossible() &&
+                            this.currPhoneInp.getNumber().isValid()
+                            ? true
+                            : 'false'
+                    } catch (error) {
+                        return 'error'
+                    }
+                }
+            ],
+            /**
+             * gender
+             */
+            gender: '',
+
+            /**
+             * 誕生日の選択
+             */
+            date: '',
+            menu: false,
+            // phoneNumber: parsePhoneNumberFromString('Phone: 08031947940', 'JP')
+            /**
+             * 現在地情報
+             */
+            geoLoading: false,
+            latitude: '',
+            longitude: '',
+            place: '',
+            nowPlace: '',
+            /**
+             * 職種の設定
+             */
+            job: { name: '職種の選択', value: 0, description: '' },
+            jobs: [
+                { name: '事務・オフィス系', value: 1, description: '' },
+                { name: '販売・飲食・サービス系', value: 2, description: '' },
+                { name: 'IT・エンジニア系', value: 3, description: '' },
+                { name: 'Web・クリエーター系', value: 4, description: '' },
+                { name: '医療・介護・福祉系', value: 5, description: '' },
+                { name: '研究機関・教育系', value: 6, description: '' },
+                { name: '商社・金融・経営', value: 7, description: '' },
+                { name: '学生', value: 8, description: '' }
+            ],
+            /**
+             * 言語選択
+             */
+            language: '',
+            languages: [
+                { name: '英語', langCode: 'en', description: '' },
+                { name: '中国語', langCode: 'zh', description: '' },
+                { name: '日本語', langCode: 'ja', description: '' },
+                { name: '韓国語', langCode: 'ko', description: '' },
+                { name: 'ロシア語', langCode: 'be', description: '' },
+                { name: 'ポルトガル語', langCode: 'pt', description: '' },
+                { name: 'スペイン語', langCode: 'es', description: '' },
+                { name: 'フランス語', langCode: 'fr', description: '' },
+                { name: 'ドイツ語', langCode: 'de', description: '' },
+                { name: 'イタリア語', langCode: 'it', description: '' },
+                { name: 'マレー語', langCode: 'ms', description: '' },
+                { name: 'フィリピン語', langCode: 'tl', description: '' },
+                { name: 'ベトナム語', langCode: 'vi', description: '' },
+                { name: 'タイ語', langCode: 'th', description: '' },
+                { name: '台湾語', langCode: 'tw', description: '' },
+                { name: 'その他', langCode: 'other', description: '' }
+            ],
+
+            /**
+             * 画像のアップロード
+             */
+
+            image: '',
+            croppaImg: null,
+            imgUrl: '',
+            formData: new FormData()
         }
+    },
+    computed: {
+        // nowPlace() {
+        //     return this.place.prefecture === undefined
+        //         ? ''
+        //         : ``
+        // }
     },
 
     watch: {
@@ -170,17 +577,210 @@ export default {
             if (this.e1 > val) {
                 this.e1 = val
             }
+        },
+        menu(val) {
+            val && setTimeout(() => (this.$refs.picker.activePicker = 'YEAR'))
         }
     },
 
     methods: {
         nextStep(n) {
+            this.currentValue()
             if (n === this.steps) {
                 this.e1 = 1
             } else {
                 this.e1 = n + 1
             }
+        },
+        test() {
+            const a = new AsYouType('JP')
+            a.input('08031947940')
+            const b = new AsYouType('JP').input('0223751514')
+            console.log(a)
+            console.log(a.getTemplate())
+            console.log(b)
+            // const aphone = parsePhoneNumberFromString(a, 'JP')
+            // console.log(aphone.formatInternational())
+            // console.log(aphone.formatNational())
+            // console.log(aphone.getURI())
+        },
+        updateValue() {
+            this.currPhoneInp = new AsYouType(this.country.iso2.toUpperCase())
+            this.phone = this.currPhoneInp.input(this.phone)
+            // console.log(this.currPhoneInp.getTemplate())
+            // console.log(this.currPhoneInp.getNumber())
+            try {
+                console.log(this.currPhoneInp.getNumber().formatNational())
+                console.log(this.currPhoneInp.getNumber().country || '-')
+                console.log(this.currPhoneInp.getNumber().number)
+                console.log(this.currPhoneInp.getNumber().getURI())
+                console.log(this.currPhoneInp.getNumber().getType())
+                console.log(this.currPhoneInp.getNumber().isPossible())
+                console.log(this.currPhoneInp.getNumber().isValid())
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        genderTest() {
+            console.log(this.gender)
+        },
+        saveBirth(date) {
+            this.$refs.menu.save(date)
+        },
+
+        /**
+         * get GeoLocation and location name
+         *
+         */
+        async getLocation() {
+            this.geoLoading = true
+            const self = this
+            await navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    self.latitude = position.coords.latitude
+                    self.longitude = position.coords.longitude
+
+                    console.log(
+                        '緯度:' +
+                            position.coords.latitude +
+                            ',経度' +
+                            position.coords.longitude
+                    )
+                    self.$axios
+                        .$get(`${process.env.apiBaseUrl}locationplace`, {
+                            params: {
+                                x: position.coords.longitude,
+                                y: position.coords.latitude
+                            }
+                        })
+                        .then(function(response) {
+                            self.geoLoading = false
+                            if (response.response.location.length > 0) {
+                                console.log(response.response.location[0].city)
+                                self.place = response.response.location[0]
+                                self.nowPlace = `${self.place.prefecture}, ${self.place.city}`
+                            }
+                        })
+                },
+                function(error) {
+                    switch (error.code) {
+                        case 1: // PERMISSION_DENIED
+                            alert('位置情報の利用が許可されていません')
+                            break
+                        case 2: // POSITION_UNAVAILABLE
+                            alert('現在位置が取得できませんでした')
+                            break
+                        case 3: // TIMEOUT
+                            alert('タイムアウトになりました')
+                            break
+                        default:
+                            alert('Error (エラーコード:' + error.code + ') ')
+                            break
+                    }
+                }
+            )
+        },
+        // readImgFromURL(inputURL) {
+        //     console.log(inputURL)
+        //     if (inputURL) {
+        //         console.log('load image')
+        //         const reader = new FileReader()
+        //         const self = this
+        //         reader.onload = (e) => {
+        //             self.imageSrc = e.target.result
+        //             console.log('onload')
+        //             // console.log(e.target.result)
+        //         }
+        //         reader.readAsDataURL(inputURL)
+        //         // reader.readAsDataURL(inputURL.files[0])
+        //         // INPUT_FORM_DATA.face_image = $dom('#js-image').files[0]
+        //     }
+        // },
+        // imageUploader() {
+        //     // this.readImgFromURL(files[0])
+        //     console.log('object')
+        //     // console.log(this.uploadImage)
+        //     this.readImgFromURL(this.uploadImage)
+        // },
+        // generateImage() {
+        //     const url = this.croppaImg.generateDataUrl()
+        //     if (!url) {
+        //         alert('no image')
+        //         return
+        //     }
+        //     this.imgUrl = url
+        // },
+        imageUploader() {
+            console.log(this.croppaImg.generateDataUrl())
+            this.croppaImg.generateBlob((blob) => {
+                this.formData.append('face_image', blob)
+                console.log(this.formData.get('face_image'))
+                this.$axios.$post(
+                    `${process.env.apiBaseUrl}imageupload`,
+                    this.formData
+                )
+            })
+        },
+        currentValue() {
+            this.INPUT_FORM_DATA = {
+                name: this.name,
+                email: this.email,
+                password: this.password,
+                birthday: this.date,
+                sex: this.gender,
+                geolocation: [this.longitude, this.latitude],
+                job_type: this.job.value,
+                oauth_id: 0,
+                face_image: '',
+                fst_lang: this.language.langCode
+            }
+            console.log(`this.name : ${this.name}`)
+            console.log(`this.email : ${this.email}`)
+            console.log(`this.password : ${this.password}`)
+            console.log(`this.phone : ${this.phone}`)
+            console.log(`this.gender : ${this.gender}`)
+            console.log(`this.menu : ${this.menu}`)
+            console.log(`this.bi : ${this.date}`)
+            console.log(`this.date : ${this.job}`)
+            console.log(`this.lang : ${this.language.langCode}`)
+            console.log(this.job)
+        },
+        register() {
+            this.isLoading = true
+            Object.keys(this.INPUT_FORM_DATA).forEach((i) =>
+                this.formData.append(i, this.INPUT_FORM_DATA[i])
+            )
+            this.croppaImg.generateBlob((blob) => {
+                this.formData.append('face_image', blob)
+                console.log(this.formData.get('face_image'))
+                this.$axios
+                    .$post(
+                        `${process.env.apiBaseUrl}auth/register`,
+                        this.formData
+                    )
+                    .then((res) => {
+                        this.isLoading = false
+                        if (res.access_token) {
+                            this.$auth.loginWith('local', {
+                                data: {
+                                    email: this.email,
+                                    password: this.password
+                                }
+                            })
+                        }
+                    })
+                    .then((res) => {
+                        this.$router.push('/app/select')
+                    })
+            })
         }
     }
 }
 </script>
+
+<style>
+.inline {
+    display: inline-block;
+    margin-bottom: 0 !important;
+}
+</style>

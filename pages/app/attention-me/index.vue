@@ -71,7 +71,7 @@ export default {
     methods: {
         check() {
             // console.log(
-            //     this.chatLists.map((i) => i.toTole_uinfo.name).join('\n')
+            //     this.chatLists.map((i) => i.toTolk_uinfo.name).join('\n')
             // )
             // console.log(this.chatLists)
             // db.collection(

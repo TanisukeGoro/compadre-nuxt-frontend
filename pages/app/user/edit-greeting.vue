@@ -83,8 +83,8 @@
 
 <script>
 // import { mapGetters } from 'vuex'
-import SelectCard from '~/components/SelectCard'
-import EditGreeting from '~/components/EditGreeting'
+import SelectCard from '~/components/greetings/SelectCard'
+import EditGreeting from '~/components/greetings/EditGreeting'
 
 export default {
     components: {
@@ -123,7 +123,7 @@ export default {
         return $axios.$get(`${process.env.apiBaseUrl}greetings`).then((res) => {
             if (res.length === 0) {
                 res.push({
-                    content: '',
+                    content: `挨拶カードはまだありません!!\n新しく作ってみましょう！`,
                     fst_hashtag: '',
                     hash_id: '',
                     media_url: '',
