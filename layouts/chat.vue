@@ -1,9 +1,9 @@
 <template>
     <v-app>
         <v-app-bar app clipped-right color="primary" fixed dark>
-            <v-app-bar-nav-icon
-                @click="$router.push('/app/chat')"
-            ></v-app-bar-nav-icon>
+            <v-app-bar-nav-icon @click="$router.push('/app/chat')">
+                <v-icon>mdi-arrow-left</v-icon>
+            </v-app-bar-nav-icon>
 
             <v-spacer></v-spacer>
 
