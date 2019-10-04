@@ -87,7 +87,7 @@ export default {
             login: '/login', // 未ログイン時のリダイレクト先
             logout: '/', // ログアウト処理を実行した直後のリダイレクト先
             callback: '/callback', // コールバックURL（各プロバイダで設定したものと同じPathにする）
-            home: '/app' // ログイン後に遷移するページ
+            home: '/app/select' // ログイン後に遷移するページ
         },
         strategies: {
             local: {

@@ -275,9 +275,20 @@
                                         </v-list-item-title>
                                         <v-list-item-title class="mb-1">
                                             <v-icon>mdi-voice</v-icon>
-                                            {{ loginUserData.fst_lang }}/{{
+                                            {{
+                                                loginUserData.fst_lang
+                                                    | langCode2langName
+                                            }}
+                                            /
+                                            {{
                                                 loginUserData.snd_lang
-                                            }}/{{ loginUserData.trd_lang }}
+                                                    | langCode2langName
+                                            }}
+                                            /
+                                            {{
+                                                loginUserData.trd_lang
+                                                    | langCode2langName
+                                            }}
                                         </v-list-item-title>
                                         <v-list-item-title class="mb-1">
                                             <v-icon
@@ -290,7 +301,7 @@
                                         </v-list-item-title>
                                         <v-list-item-title class="mb-1">
                                             <v-icon>mdi-airballoon</v-icon>
-                                            {{ loginUserData.country_id }}
+                                            {{ loginUserData.country }}
                                         </v-list-item-title>
                                     </v-list-item-content>
                                 </v-list-item>

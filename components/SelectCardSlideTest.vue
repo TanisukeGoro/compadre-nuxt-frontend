@@ -1,97 +1,151 @@
+<script>
+/**
+ * 挨拶のカードを描画するコンポーネント
+ * 基本的に、ディスプレイの縦の長さに合わせて伸縮するようにする
+ * 配列の長さが1なら1枚、1枚以上ならスライド可能にする
+ *
+ * 子コンポーネント
+ *   - Hi ! ボタン
+ *   - コンポーネントの登録ボタン
+ *   - 新規作成・編集・削除ボタン
+ *   -
+ *
+ */
+</script>
+
 <template>
-    <div>
-        <v-carousel
-            v-model="model"
-            :show-arrows="showArrows"
-            :hide-delimiters="hideDelimiters"
-            :cycle="cycle"
-            :light="true"
-            :continuous="false"
-            @click.native="bindCarousel"
-        >
-            <v-carousel-item
-                v-for="candidate in candidatesarry"
-                :key="candidate.candidateId"
+    <v-app>
+        <v-content>
+            <v-carousel
+                v-model="carousel"
+                height="100%"
+                :hide-delimiters="true"
+                :show-arrows="true"
+                :cycle="false"
+                :light="true"
+                :continuous="false"
             >
-                <!-- <v-flex style="margin:0 auto;" xs11> -->
-                <v-card class="selectcard">
-                    <v-card class="mx-auto" max-width="344" flat>
-                        <v-list-item three-line>
-                            <v-list-item-avatar tile size="80">
+                <v-carousel-item
+                    v-for="candidate in displayCandidate"
+                    :key="candidate.candidateId"
+                >
+                    <v-card
+                        height="100%"
+                        max-width="344"
+                        class="mx-auto pt-4"
+                        flat
+                        color="background"
+                    >
+                        <v-list-item>
+                            <v-list-item-avatar color="grey" size="72">
                                 <v-img
-                                    class="elevation-6 profileimg"
-                                    style="border-radius:50%;"
-                                    max-width="100px"
-                                    :src="candidate.icon_url"
+                                    src="https://the-madison.s3-ap-northeast-1.amazonaws.com/images/wg5TX0SUwAptlVftxw1dlEG5iZewrwoinKOvmPbw.jpeg"
                                 ></v-img>
                             </v-list-item-avatar>
-                            <div style="overflow:scroll;">
-                                <div class="headline" style="overflow:scroll;">
-                                    {{ candidate.name }},
-                                    <span
-                                        style="font-size:18px; overflow: scroll;"
-                                        >{{ getage(candidate.birthday) }}</span
-                                    >
-                                </div>
-                                <div
-                                    class="subtitle-1 subtitle"
-                                    style="color:#959595"
+                            <v-list-item-content>
+                                <v-list-item-title
+                                    class="headline  grey--text text--darken-3"
                                 >
-                                    Tokyo/shibuya
-                                </div>
-                                <div
-                                    class="subtitle-1 subtitle"
-                                    style="color:#959595"
+                                    {{ candidate.name }}
+                                </v-list-item-title>
+                                <v-list-item-subtitle
+                                    class="grey--text text--darken-1"
                                 >
-                                    {{ job(candidate.job_type) }}
-                                </div>
-                            </div>
+                                    <p
+                                        class="inline iti-flag mr-1"
+                                        :class="candidate.country.toLowerCase()"
+                                    ></p>
+                                    {{
+                                        candidate.country
+                                            | countryCode2countryName
+                                    }}
+                                    {{ candidate.birthday | yyyymmdd2Age }}歳
+                                </v-list-item-subtitle>
+                                <v-list-item-subtitle
+                                    class="grey--text text--darken-1"
+                                >
+                                    {{ jobCode[candidate.job_type] }}
+                                </v-list-item-subtitle>
+                            </v-list-item-content>
                         </v-list-item>
-                    </v-card>
-                    <v-row>
+
+                        <!-- 表示用 -->
                         <v-card-text
-                            class="title font-weight-bold pb-0 pt-0 greetingarea"
-                            >{{ greetingPullOut(candidate) }}</v-card-text
+                            v-if="
+                                cardMode === 'select' || cardMode === 'preview'
+                            "
+                            class="subtitle-1 grey--text text--darken-3"
                         >
-                    </v-row>
-                    <v-layout>
-                        <v-list class="mr-3">
-                            <v-icon>mdi-access-point</v-icon>
-                        </v-list>
-                        <v-list class="mr-3">{{
-                            job_conversion(candidate.fst_lang)
-                        }}</v-list>
-                        <v-list class="mr-3">{{
-                            job_conversion(candidate.snd_lang)
-                        }}</v-list>
-                        <v-list class="mr-3">{{
-                            job_conversion(candidate.trd_lang)
-                        }}</v-list>
-                    </v-layout>
-                    <v-row>
-                        <v-container fluid>
-                            <LikeButton
-                                @ClickLikebutton="
-                                    nextState && ClickLikeButton()
-                                "
-                            />
-                        </v-container>
-                    </v-row>
-                </v-card>
-                <!-- </v-flex> -->
-            </v-carousel-item>
-        </v-carousel>
-        <!-- {{ onchange }} -->
-    </div>
+                            {{
+                                candidate.greetings.length > 0
+                                    ? candidate.greetings[0].content
+                                    : 'No Messages...'
+                            }}
+                        </v-card-text>
+                        <!-- 編集用 -->
+                        <v-textarea
+                            v-if="cardMode === 'edit'"
+                            v-model="props_content"
+                            class="card-text__font pa-2"
+                            auto-grow
+                            color="accent"
+                            autofocus
+                            clearable
+                            placeholder="'What do you want to do?'"
+                            label="Edit Greeting"
+                            :counter="counter"
+                            rows="1"
+                        ></v-textarea>
+
+                        <v-divider color="grey"></v-divider>
+
+                        <v-list-item>
+                            <v-list-item-content>
+                                <v-list-item-title
+                                    class="subtitle-2 grey--text"
+                                >
+                                    <v-icon class="mr-3 grey--text"
+                                        >mdi-voice</v-icon
+                                    >
+                                    {{
+                                        candidate.fst_lang | langCode2langName
+                                    }},
+                                    {{
+                                        candidate.snd_lang | langCode2langName
+                                    }},
+                                    {{ candidate.trd_lang | langCode2langName }}
+                                </v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                        <v-card-actions>
+                            <v-flex xs1>
+                                <v-btn
+                                    color="accent"
+                                    absolute
+                                    bottom
+                                    @click="isshow = !is"
+                                >
+                                    Hi !
+                                </v-btn>
+                            </v-flex>
+                            <the-editor-btn v-if="cardMode === 'preview'" />
+                        </v-card-actions>
+                    </v-card>
+                </v-carousel-item>
+            </v-carousel>
+        </v-content>
+    </v-app>
 </template>
 
 <script>
 import '@/assets/selectcard.css'
 import { mapState, mapActions } from 'vuex'
 import LikeButton from '~/components/LikeButton'
+import TheEditorBtn from '~/components/TheEditorBtn'
 export default {
     components: {
-        LikeButton
+        LikeButton,
+        TheEditorBtn
     },
     // filters: { //filtersはthisで他のプロパティにアクセエスできない.ので諦めた
     //     jobfilter(jobNumber) {
@@ -99,16 +153,35 @@ export default {
     //         return this.job(jobNumber)
     //     }
     // },
-    props: {},
+    props: {
+        candidates: {
+            type: Array,
+            default: () => {}
+        },
+        showArrows: {
+            type: Boolean,
+            default: true
+        },
+        hideDelimiters: {
+            type: Boolean,
+            default: true
+        },
+        cycle: {
+            type: Boolean,
+            default: false
+        },
+        cardMode: {
+            type: String,
+            default: 'select'
+        }
+    },
     data() {
         return {
+            carousel: 0,
             counter: 200,
             storemodel: this.$store.getters['app/candidate/model'],
             model: this.$store.getters['app/candidate/model'],
-            showArrows: true,
-            hideDelimiters: true,
-            cycle: false,
-            nextState: true,
+            props_content: '',
             jobCode: {
                 1: '事務・オフィス系',
                 2: '販売・飲食・サービス系',
@@ -118,204 +191,65 @@ export default {
                 6: '研究機関・教育系',
                 7: '商社・金融・経営',
                 8: '学生'
-            },
-            langCode: {
-                ja: '日本語',
-                zh: '中国語',
-                en: '英語',
-                be: 'ロシア語',
-                pt: 'ポルトガル語',
-                es: 'スペイン語',
-                fr: 'フランス語',
-                de: 'ドイツ語',
-                it: 'イタリア語',
-                ms: 'マレー語',
-                tl: 'フィリピン語',
-                vi: 'ベトナム語',
-                th: 'タイ語',
-                tw: '台湾語'
             }
-            // cardText: this.content
         }
     },
     computed: {
-        // コンピューテッドは算出プロパティ
-        cardText() {
-            return this.content
-        },
-        onchange() {
-            // return this.$store.getters['app/candidate/model']
-            const modeling = this.model
-            this.$store.commit('app/candidate/linkToModel', modeling)
-            return this.model
-        },
-        candidatesarry() {
-            console.log(
-                '現在のstoreのcandidatesのlengthは:',
-                this.$store.getters['app/candidate/candidates'].length
-            )
-            return this.$store.getters['app/candidate/candidates']
+        displayCandidate() {
+            console.log('this.candidates :', Array(...this.candidates))
+            return Array(...this.candidates)
         }
     },
     watch: {
-        onchange(currentNumber) {
-            this.$nextTick(() => {
-                if (this.candidatesarry.length - currentNumber === 5) {
-                    console.log('残り５にんです')
-                    if (this.candidatesarry.length >= 40) {
-                        this.model = this.model - 10
-                        const currentNum = this.model
-                        this.$store.commit(
-                            'app/candidate/spliceCandidate',
-                            currentNum
-                        )
-                        return
-                    }
-                    this.getCandidate()
-                }
-            })
-            return this.model
+        carousel() {
+            this.$emit('input', this.carousel)
         }
     },
-    mounted() {},
     methods: {
-        // バインディングヘルパーを使う
-        ...mapActions('app/candidate', [
-            'getCandidate',
-            'popCandidate',
-            'getCandidateUpdate',
-            'spliceCandidate'
-        ]),
-        ...mapState('app/candidate', ['candidates']),
-        // ↓この二つはいらないぽい
-        // ...mapActions('comman/auth', ['loginUserData']),
-        // ...mapState('comman/auth', ['data']),
-
-        previousCard() {
-            this.$emit('previousCardFromChild')
+        debug() {
+            console.log('this.candidatesData :', this.candidates)
         },
-        nextCard() {
-            this.$emit('nextCardFromChild')
-        },
-        ClickLikeButton() {
-            alert(
-                JSON.stringify(
-                    this.$store.getters['app/candidate/candidates'][this.model]
-                )
-            )
-            this.likeUser(
-                this.$store.getters['app/candidate/candidates'][this.model].id
-            )
-            this.model++
-        },
-        bindCarousel(e) {
-            // console.log(e)
-        },
+        onClick() {},
         /**
-         * ユーザーによるいいねをPOSTしてる。
-         * nuxtStateで連打による誤作動を防止している。
+         * 編集をセーブする関数
+         *
+         * もしhash_idが空なら新規投稿
+         * もしhash_idがあれば更新
          */
-        async postUserLike(LikedID) {
-            this.nextState = false
-            try {
-                await this.$axios.$post(
-                    `${process.env.apiBaseUrl}matching/like`,
-                    {
-                        userId_you: LikedID
-                    }
-                )
-                console.log(LikedID)
-                this.nextState = true
-            } catch (error) {
-                console.log(error)
-            }
-        },
-        async matchingUser(LikedID) {
-            console.log(LikedID)
-
-            this.nextState = false
-            try {
-                const postResults = await this.$axios.$post(
-                    `${process.env.apiBaseUrl}matching`,
-                    {
-                        userId_you: LikedID
-                    }
-                )
-                console.log(postResults)
-            } catch (error) {
-                console.log(error)
-            }
-        },
-        /**
-         * ユーザーのいいねのPOSTが完了してから次のユーザーを呼び出す。
-         */
-        likeUser(LikedID) {
-            console.log(
-                this.$store.getters['app/candidate/candidates'][this.model]
-                    .name,
-                this.$store.getters['app/candidate/candidates'][this.model].id,
-                this.$store.getters['app/candidate/candidates'][this.model]
-                    .has_user_voted
-            )
-            if (
-                this.$store.getters['app/candidate/candidates'][this.model]
-                    .has_user_voted
-            ) {
-                console.log('マッチング!!!')
-                this.matchingUser(LikedID)
-            }
-            this.postUserLike(LikedID)
-        },
-        /**
-         * 誕生日を計算して年齢を出し、birthdayを書き換える関数
-         */ getage(birth) {
-            const year = Number(birth.split('-')[0])
-            const month = Number(birth.split('-')[1])
-            const day = Number(birth.split('-')[2])
-            // console.log(year + ' ' + month + ' ' + day)
-
-            // 誕生年月日
-            const birthday = new Date(year, month - 1, day)
-
-            // 今日
-            const today = new Date()
-
-            // 今年の誕生日
-            const thisYearBirthday = new Date(
-                today.getFullYear(),
-                birthday.getMonth(),
-                birthday.getDate()
-            )
-
-            // 今年-誕生年
-            const age = today.getFullYear() - birthday.getFullYear()
-
-            // 今年の誕生日を迎えていなければage-1を返す
-            // this.birthday = today < thisYearBirthday ? age - 1 : age
-            return today < thisYearBirthday ? age - 1 : age
-        },
-        job(job) {
-            return this.jobCode[job]
-        },
-        job_conversion(jobNum) {
-            if (this.jobCode[jobNum]) {
-                return this.jobCode[jobNum]
+        editSave(e) {
+            // axiosの通信のあとでthisを参照できなくなるので、ここでやってしまう
+            const self = this
+            if (this.hashId) {
+                this.$axios
+                    .$put(`${process.env.apiBaseUrl}greetings`, {
+                        greeting_hash: this.hashId,
+                        content: this.props_content
+                    })
+                    .then((_res) => {
+                        self.$emit('returnEditFromChild', { _res })
+                    })
             } else {
-                return ''
+                this.$axios
+                    .$post(`${process.env.apiBaseUrl}greetings`, {
+                        content: this.props_content
+                    })
+                    .then((_res) => {
+                        self.$emit('returnEditFromChild', { _res })
+                    })
             }
         },
-        greetingPullOut(OnePeople) {
-            const tmp = Object.keys(OnePeople.greetings).map((key) => {
-                return OnePeople.greetings[key]
-            })
-            if (tmp.length === 0) {
-                return '挨拶文はありません'
-            } else {
-                return tmp[0].content
-            }
+        editCancel() {
+            this.$emit('cancelEditFromChild')
+            console.log('debug seve')
         }
     }
 }
 </script>
 
-<style></style>
+<style>
+.inline {
+    /* transform: scale(1.2, 1.2); */
+    display: inline-block;
+    margin-bottom: 0 !important;
+}
+</style>

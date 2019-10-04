@@ -30,11 +30,15 @@ Vue.filter('yyyymmdd2Age', function(yyyymmdd) {
 
 // Language Code => Language Name
 Vue.filter('langCode2langName', function(langCode) {
-    return minLangCodes.find((i) => i.iso639_1 === langCode.toUpperCase()).local
+    const results =
+        minLangCodes.find((i) => i.iso639_1 === langCode.toUpperCase()) || null
+    return results.local
 })
 // Country Code => Country Name
 Vue.filter('countryCode2countryName', function(country) {
-    return countriesName.find((i) => i.iso2 === country.toUpperCase()).name
+    const results =
+        countriesName.find((i) => i.iso2 === country.toUpperCase()) || null
+    return results ? results.name : ''
 })
 
 /**

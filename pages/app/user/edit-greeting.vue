@@ -9,92 +9,38 @@
 </script>
 <template>
     <v-app>
-        <v-content>
-            <v-container>
-                <v-card id="create" class="v__height" flat>
-                    <div v-if="currentGreeting !== null">
-                        <component
-                            :is="componentState"
-                            :name="$auth.state.user.name"
-                            :uicon="$auth.state.user.icon_url"
-                            :like="20"
-                            :content="greetings[greeting_count].content"
-                            :hash-id="greetings[greeting_count].hash_id"
-                            :media-url="greetings[greeting_count].media_url"
-                            @returnEditFromChild="returnEdit($event)"
-                            @cancelEditFromChild="cancelEdit()"
-                            @previousCardFromChild="previousGreeting()"
-                            @nextCardFromChild="nextGreetng()"
-                        ></component>
-                    </div>
-
-                    <!-- <v-btn color="success" @click="getGreetings">テスト</v-btn> -->
-                    <v-speed-dial
-                        v-model="fab"
-                        :top="false"
-                        :bottom="true"
-                        :right="true"
-                        :left="false"
-                        :direction="'top'"
-                        :open-on-hover="true"
-                        :transition="'scale-transition'"
-                    >
-                        <template v-slot:activator>
-                            <v-btn v-model="fab" color="blue darken-2" dark fab>
-                                <v-icon v-if="fab">mdi-close</v-icon>
-                                <v-icon v-else
-                                    >mdi-pencil-box-multiple-outline</v-icon
-                                >
-                            </v-btn>
-                        </template>
-                        <v-btn
-                            fab
-                            dark
-                            small
-                            color="green"
-                            @click="editGreeting"
-                        >
-                            <v-icon>mdi-pencil</v-icon>
-                        </v-btn>
-                        <v-btn
-                            fab
-                            dark
-                            small
-                            color="indigo"
-                            @click="newGreeting"
-                        >
-                            <v-icon>mdi-plus</v-icon>
-                        </v-btn>
-                        <v-btn
-                            fab
-                            dark
-                            small
-                            color="red"
-                            @click="deleteGreeting"
-                        >
-                            <v-icon>mdi-delete</v-icon>
-                        </v-btn>
-                    </v-speed-dial>
-                </v-card>
-            </v-container>
-        </v-content>
+        <component
+            :is="componentState"
+            v-model="model"
+            :candidates="greetings"
+            :hide-delimiters="hideDelimiters"
+            :show-arrows="showArrows"
+            :card-mode="cardMode"
+        />
     </v-app>
 </template>
 
 <script>
 // import { mapGetters } from 'vuex'
-import SelectCard from '~/components/greetings/SelectCard'
+// import SelectCard from '~/components/greetings/SelectCard'
 import EditGreeting from '~/components/greetings/EditGreeting'
+import SelectCardSlideTest from '~/components/SelectCardSlideTest'
 
 export default {
     components: {
-        Default: SelectCard,
+        Default: SelectCardSlideTest,
         Edit: EditGreeting
         // Empty:
     },
     data() {
         return {
+            model: 1,
+            showArrows: true,
+            hideDelimiters: true,
+            cycle: false,
+            dialog: false,
             greetings: [],
+            cardMode: 'preview',
             greeting_count: 0,
             greeting_i: 0,
             fab: false,
@@ -119,7 +65,15 @@ export default {
             }
         }
     },
-    asyncData({ $axios }) {
+    watch: {
+        dialog() {
+            console.log(this.dialog)
+        },
+        model() {
+            console.log(this.model)
+        }
+    },
+    asyncData({ $axios, $auth }) {
         return $axios.$get(`${process.env.apiBaseUrl}greetings`).then((res) => {
             if (res.length === 0) {
                 res.push({
@@ -131,7 +85,17 @@ export default {
                     trd_hashtag: ''
                 })
             }
-            return { greetings: res }
+
+            let greetingsArr = []
+            // SlectCardSlidのデータ構造に合わせる
+            for (let i = 0; i < res.length; i++) {
+                let user = $auth.state.user
+                user.greetings = [res[i]]
+                let set = Object.assign({}, user)
+                greetingsArr.push(set)
+                console.log(greetingsArr)
+            }
+            return { greetings: greetingsArr }
         })
     },
     created() {
