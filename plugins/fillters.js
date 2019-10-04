@@ -30,10 +30,21 @@ Vue.filter('yyyymmdd2Age', function(yyyymmdd) {
 
 // Language Code => Language Name
 Vue.filter('langCode2langName', function(langCode) {
+    console.log(langCode)
+    if (langCode === '') {
+        return
+    }
+    if (langCode === 'non') {
+        return ''
+    }
     return minLangCodes.find((i) => i.iso639_1 === langCode.toUpperCase()).local
 })
 // Country Code => Country Name
 Vue.filter('countryCode2countryName', function(country) {
+    console.log(country)
+    if (country === '') {
+        return
+    }
     return countriesName.find((i) => i.iso2 === country.toUpperCase()).name
 })
 

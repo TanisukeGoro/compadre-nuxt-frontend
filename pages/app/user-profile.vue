@@ -307,11 +307,12 @@
                                         <v-icon
                                             >mdi-account-star-outline</v-icon
                                         >
-                                        {{ getage(birthday) }}歳
+                                        {{ birthday | yyyymmdd2Age }}歳
                                     </v-list-item-title>
                                     <v-list-item-title class="mb-1">
                                         <v-icon>mdi-airballoon</v-icon>
-                                        {{ initem(countryname) }}
+                                        {{ country }}
+                                        {{ country | countryCode2countryName }}
                                     </v-list-item-title>
                                 </v-list-item-content>
                             </v-list-item>
@@ -351,7 +352,7 @@ export default {
     data() {
         return {
             countries,
-            countryname: '',
+            country: '',
             // 編集のデータ
             storeUserData: '',
             editName: '',
@@ -497,6 +498,7 @@ export default {
         // this.editFst_lang = this.storeUserData.user.fst_lang
         this.editSnd_lang = this.storeUserData.user.snd_lang
         this.editTrd_lang = this.storeUserData.user.trd_lang
+        this.editCountry = this.storeUserData.user.country
 
         this.name = this.storeUserData.user.name
         this.job = this.storeUserData.user.job_type
@@ -509,6 +511,7 @@ export default {
         // this.fst_lang = this.storeUserData.user.fst_lang
         this.snd_lang = this.storeUserData.user.snd_lang
         this.trd_lang = this.storeUserData.user.trd_lang
+        this.country = this.storeUserData.user.country
     },
     methods: {
         editSave() {

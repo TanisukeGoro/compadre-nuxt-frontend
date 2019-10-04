@@ -1,10 +1,18 @@
+.space{
+    width:100%;
+    height:150px;
+}
+.editspace{
+    width:100%;
+    height:65px;
+}
 .user-img-space {
     height: 10px;
 }
 .user-main-img {
     border-radius: 50%;
     position: absolute;
-    bottom: -25px;
+    top: 80px;
     left: 50%;
     transform: translate(-50%);
     z-index: 100;
@@ -13,7 +21,7 @@
 }
 .user-name {
     position: absolute;
-    bottom: -80px;
+    top: 150px;
     left: 50%;
     transform: translate(-50%);
     text-align: center;
@@ -47,6 +55,7 @@
 .edit-input {
     width: 270px;
     color: #88f4e7;
+    color:black;
     font-size: 14px;
     outline: 0;
 }
@@ -57,5 +66,6 @@
     height:93px;
     width: 270px;
     color: #88f4e7;
+    color:black;
     font-size: 14px;
 }
