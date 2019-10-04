@@ -76,7 +76,7 @@ export default {
     components: {},
     data() {
         return {
-            email: 'oidaka@example.com',
+            email: '',
             password: 'secret',
             error: null,
             strategies: [
@@ -127,7 +127,7 @@ export default {
                         email:
                             this.email.trim(' ').length !== 0
                                 ? this.email
-                                : 'rika.nakatsugawa@example.net',
+                                : 'satomi15@example.org',
                         password: this.password
                     }
                 })

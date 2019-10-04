@@ -42,9 +42,9 @@
     display: inline-block;
     font-size: 14px;
     font-weight: bold;
+    margin-right:15px;
 }
 .edit-input {
-    font-size: 14px;
     width: 270px;
     color: #88f4e7;
     font-size: 14px;
@@ -52,4 +52,10 @@
 }
 .selectFont{
     font-size:12px;
+}
+.edit-self-introduction{
+    height:93px;
+    width: 270px;
+    color: #88f4e7;
+    font-size: 14px;
 }
