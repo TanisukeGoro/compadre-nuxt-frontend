@@ -17,26 +17,24 @@
                     >
                         <!-- ↓背景写真、ユーザーアイコン、name -->
                         <v-flex xs12 sm12>
-                            <div class="space">
+                            <v-img
+                                max-width="600px"
+                                src="https://picsum.photos/id/11/500/300"
+                            ></v-img>
+                            <div
+                                class="user-img-space"
+                                style="position:relative;"
+                            >
                                 <img
                                     :src="loginUserData.icon_url"
                                     class="user-main-img"
                                 />
+                                <v-card-text font-weight-bold class="user-name">
+                                    <v-list-item-title class="headline mb-1">
+                                        {{ name }}
+                                    </v-list-item-title>
+                                </v-card-text>
                             </div>
-                            <!-- <div
-                                class="user-img-space"
-                                style="position:relative;"
-                            > -->
-                            <!-- <img
-                                    :src="loginUserData.icon_url"
-                                    class="user-main-img"
-                                /> -->
-                            <v-card-text font-weight-bold class="user-name">
-                                <v-list-item-title class="headline mb-1">
-                                    {{ name }}
-                                </v-list-item-title>
-                            </v-card-text>
-                            <!-- </div> -->
                         </v-flex>
                         <!-- ↑背景写真、ユーザーアイコン、name -->
                         <v-layout justify-center style="text-align:center;">
@@ -103,7 +101,15 @@
                                             max-width="600px"
                                             style="margin:0 auto;"
                                         >
-                                            <div class="editspace">
+                                            <v-img
+                                                max-width="600px"
+                                                style="margin:0 auto;"
+                                                src="https://picsum.photos/id/11/500/300"
+                                            ></v-img>
+                                            <div
+                                                class="user-img-space"
+                                                style="position:relative;"
+                                            >
                                                 <img
                                                     :src="
                                                         loginUserData.icon_url
@@ -133,7 +139,7 @@
                                                 自己紹介
                                             </div>
                                             <textarea
-                                                v-model="editSelfIntroduction"
+                                                v-model="SelfIntroduction"
                                                 name="勧誘文"
                                                 class="edit-self-introduction"
                                                 cols="50"
@@ -223,7 +229,7 @@
                                             </div>
                                             <!-- {{ editFrom }} -->
                                             <v-select
-                                                v-model="editCountry"
+                                                v-model="editFrom"
                                                 label="country"
                                                 :items="countries"
                                                 width="50px"
@@ -241,7 +247,7 @@
                                                             item.iso2.toLowerCase()
                                                         "
                                                     ></p>
-                                                    {{ item.name }}
+                                                    {{ initem(item.name) }}
                                                 </template>
                                                 <template
                                                     slot="item"
@@ -257,7 +263,7 @@
                                                 </template>
                                             </v-select>
                                         </div>
-                                        <!-- <div class="edit-row">
+                                        <div class="edit-row">
                                             <label class="edti-row-label"
                                                 >現在地</label
                                             >
@@ -266,7 +272,7 @@
                                                 class="edit-input"
                                                 type="text"
                                             />
-                                        </div> -->
+                                        </div>
                                     </v-card>
                                     <!--****************** ⬆︎⬆︎ 編集画面 終了 ⬆︎⬆︎ ****************** -->
                                 </v-dialog>
@@ -287,15 +293,15 @@
                                             >mdi-account-card-details-outline</v-icon
                                         >{{ job_conversion(job) }}
                                     </v-list-item-title>
-                                    <!-- <v-list-item-title class="mb-1">
+                                    <v-list-item-title class="mb-1">
                                         <v-icon>mdi-home-outline</v-icon
                                         >{{ presentLocation }}
-                                    </v-list-item-title> -->
+                                    </v-list-item-title>
                                     <v-list-item-title class="mb-1">
                                         <v-icon>mdi-voice</v-icon>
-                                        {{ fst_lang | langCode2langName }}/{{
-                                            snd_lang | langCode2langName
-                                        }}/{{ trd_lang | langCode2langName }}
+                                        {{ lang_conversion(fst_lang)
+                                        }}{{ lang_conversion(snd_lang)
+                                        }}{{ lang_conversion(trd_lang) }}
                                     </v-list-item-title>
                                     <v-list-item-title class="mb-1">
                                         <v-icon
@@ -305,6 +311,7 @@
                                     </v-list-item-title>
                                     <v-list-item-title class="mb-1">
                                         <v-icon>mdi-airballoon</v-icon>
+                                        {{ country }}
                                         {{ country | countryCode2countryName }}
                                     </v-list-item-title>
                                 </v-list-item-content>
@@ -330,20 +337,22 @@
 </template>
 
 <script>
+// import { AsYouType } from 'libphonenumber-js'
 import { mapState, mapActions } from 'vuex'
 import '@/assets/user-profile.css'
 import { countries } from '~/plugins/phoneCodeCountries'
 import BottomNav from '~/components/BottomNav'
 import CheckProfile from '~/components/CheckProfile'
 export default {
+    layout: 'empty',
     components: {
         BottomNav,
         CheckProfile
     },
     data() {
         return {
-            loginUserData: this.$auth.$state.user,
             countries,
+            country: '',
             // 編集のデータ
             storeUserData: '',
             editName: '',
@@ -353,18 +362,18 @@ export default {
             editMonth: '',
             editDay: '',
             editPresentLocation: '',
+            editFrom: '',
             editSelfIntroduction: '',
             editFst_lang: '',
             editSnd_lang: '',
             editTrd_lang: '',
-            editCountry: '',
             // プロフィールに表示するデータ
             name: '',
             job: '',
             birthday: '',
             presentLocation: '',
             langage: '',
-            country: '',
+            from: '',
             SelfIntroduction: '',
             fst_lang: '',
             snd_lang: '',
@@ -373,6 +382,7 @@ export default {
             page: 1,
             color: 'black',
             greetinglength: 3,
+            loginUserData: this.$auth.$state.user,
             // スライドの設定
             dialog: false,
             notifications: false,
@@ -382,7 +392,20 @@ export default {
             widgets: false,
             showArrows: false,
             model: 0,
-
+            // 生年月日関係
+            Yeararry: [],
+            Montharry: [],
+            Dayarry: [],
+            jobCode: {
+                1: '事務・オフィス系',
+                2: '販売・飲食・サービス系',
+                3: 'IT・エンジニア系',
+                4: 'Web・クリエイター系',
+                5: '医療・介護・福祉系',
+                6: '研究機関・教育系',
+                7: '商社・金融・経営',
+                8: '学生'
+            },
             langageCode: {
                 ja: '日本語',
                 zh: '中国語',
@@ -399,16 +422,6 @@ export default {
                 th: 'タイ語',
                 tw: '台湾語'
             },
-            jobCode: {
-                1: '事務・オフィス系',
-                2: '販売・飲食・サービス系',
-                3: 'IT・エンジニア系',
-                4: 'Web・クリエイター系',
-                5: '医療・介護・福祉系',
-                6: '研究機関・教育系',
-                7: '商社・金融・経営',
-                8: '学生'
-            },
             jobCodes: [
                 { text: '事務・オフィス系', value: 1 },
                 { text: '販売・飲食・サービス系', value: 2 },
@@ -420,7 +433,6 @@ export default {
                 { text: '学生', value: 8 }
             ],
             fst_langages: [
-                { text: '---', value: 'non' },
                 { text: '日本語', value: 'ja' },
                 { text: '中国語', value: 'zh' },
                 { text: '英語', value: 'en' },
@@ -436,22 +448,51 @@ export default {
                 { text: 'タイ語', value: 'th' },
                 { text: '台湾語', value: 'tw' }
             ],
-            snd_langages: [],
-            trd_langages: []
+            snd_langages: [
+                { text: '日本語', value: 'ja' },
+                { text: '中国語', value: 'zh' },
+                { text: '英語', value: 'en' },
+                { text: 'ロシア語', value: 'be' },
+                { text: 'ポルトガル語', value: 'pt' },
+                { text: 'スペイン語', value: 'es' },
+                { text: 'フランス語', value: 'fr' },
+                { text: 'ドイツ語', value: 'de' },
+                { text: 'イタリア語', value: 'it' },
+                { text: 'マレー語', value: 'ms' },
+                { text: 'フィリピン語', value: 'tl' },
+                { text: 'ベトナム語', value: 'vi' },
+                { text: 'タイ語', value: 'th' },
+                { text: '台湾語', value: 'tw' }
+            ],
+            trd_langages: [
+                { text: '日本語', value: 'ja' },
+                { text: '中国語', value: 'zh' },
+                { text: '英語', value: 'en' },
+                { text: 'ロシア語', value: 'be' },
+                { text: 'ポルトガル語', value: 'pt' },
+                { text: 'スペイン語', value: 'es' },
+                { text: 'フランス語', value: 'fr' },
+                { text: 'ドイツ語', value: 'de' },
+                { text: 'イタリア語', value: 'it' },
+                { text: 'マレー語', value: 'ms' },
+                { text: 'フィリピン語', value: 'tl' },
+                { text: 'ベトナム語', value: 'vi' },
+                { text: 'タイ語', value: 'th' },
+                { text: '台湾語', value: 'tw' }
+            ]
         }
     },
     async mounted() {
-        Object.assign(this.snd_langages, this.fst_langages)
-        Object.assign(this.trd_langages, this.fst_langages)
         await this.getLoginUser() // ログインしているユーザーの情報をstoreにもたせる
 
         this.storeUserData = this.$store.getters['comman/auth/data'] // storeのユーザー情報をstoreUserDataに持たせる
-        console.log('storeUserData', this.storeUserData)
 
         this.editName = this.storeUserData.user.name
         this.editJob = this.storeUserData.user.job_type
         this.editBirthday = this.storeUserData.user.birthday
-        // this.editPresentLocation = 'nodata' //現在地は今のところ表示させない
+        this.editPresentLocation = 'nodata'
+        this.editFrom = 'DZ'
+        // this.editFrom = this.storeUserData.user.country_id
         this.editSelfIntroduction = this.storeUserData.user.profile_text
         this.editFst_lang = 'zh'
         // this.editFst_lang = this.storeUserData.user.fst_lang
@@ -462,7 +503,9 @@ export default {
         this.name = this.storeUserData.user.name
         this.job = this.storeUserData.user.job_type
         this.birthday = this.storeUserData.user.birthday
-        // this.presentLocation = 'NULL' //現在地は今のところ表示させない
+        this.presentLocation = 'NULL'
+        this.from = 'DZ'
+        // this.from = this.storeUserData.user.country_id
         this.SelfIntroduction = this.storeUserData.user.profile_text
         this.fst_lang = 'zh'
         // this.fst_lang = this.storeUserData.user.fst_lang
@@ -478,18 +521,21 @@ export default {
             this.fst_lang = this.editFst_lang
             this.snd_lang = this.editSnd_lang
             this.trd_lang = this.editTrd_lang
-            this.country = this.editCountry
+            this.from = this.editFrom
             this.$auth.$storage.setState('user', this.editName)
             console.log(this.fst_lang, this.snd_lang, this.trd_lang)
+            const UserPutData = {
+                name: this.editName,
+                job_type: this.editJob,
+                profile_text: this.SelfIntroduction,
+                fst_lang: this.editFst_lang,
+                snd_lang: this.editSnd_lang,
+                trd_lang: this.editTrd_lang
+                // country_id: this.editFrom
+            }
             this.$axios
                 .$put(`${process.env.apiBaseUrl}user`, {
-                    name: this.editName,
-                    job_type: this.editJob,
-                    profile_text: this.SelfIntroduction,
-                    fst_lang: this.editFst_lang,
-                    snd_lang: this.editSnd_lang,
-                    trd_lang: this.editTrd_lang,
-                    country: this.editCountry
+                    data: UserPutData
                 })
                 .then((i) => console.log(i))
         },
@@ -500,7 +546,7 @@ export default {
             this.editFst_lang = this.fst_lang
             this.editSnd_lang = this.snd_lang
             this.editTrd_lang = this.trd_lang
-            this.country = this.editCountry
+            this.editFrom = this.from
         },
         ...mapActions('comman/auth', ['getLoginUser']),
         ...mapState('comman/auth', ['data']),
@@ -541,6 +587,10 @@ export default {
             } else {
                 return ''
             }
+        },
+        initem(item) {
+            this.countryname = item
+            return item
         }
     }
 }
