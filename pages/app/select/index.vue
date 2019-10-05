@@ -4,7 +4,7 @@
         :candidates="candidatesarry"
         :hide-delimiters="hideDelimiters"
         :show-arrows="showArrows"
-        :card-mode="cardMode"
+        :card-state="cardState"
     />
 </template>
 
@@ -21,7 +21,7 @@ export default {
 
     data() {
         return {
-            cardMode: 'select',
+            cardState: 'select',
             currCandidate: '',
             currGreetings: [],
             nextState: true,

@@ -44,10 +44,12 @@
 
             <v-divider></v-divider>
 
-            <v-list>
-                <v-list-item-title class="px-4 error--text">
-                    Logout
-                </v-list-item-title>
+            <v-list @click="$auth.logout()">
+                <v-list-item-action class="px-4">
+                    <v-btn class="error--text" text @click="$auth.logout()"
+                        >Logout</v-btn
+                    >
+                </v-list-item-action>
             </v-list>
         </v-navigation-drawer>
         <v-app-bar app clipped-right color="primary" height="55" fixed dark>
@@ -104,6 +106,11 @@ export default {
                     icon: 'mdi-settings-outline',
                     title: 'Settings',
                     to: '/app/user/settings'
+                },
+                {
+                    icon: 'mdi-settings-outline',
+                    title: 'Edit Greetings',
+                    to: '/app/user/edit-greeting'
                 }
             ],
             miniVariant: false,

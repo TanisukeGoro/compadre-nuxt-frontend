@@ -4,6 +4,8 @@
  * 基本的に、ディスプレイの縦の長さに合わせて伸縮するようにする
  * 配列の長さが1なら1枚、1枚以上ならスライド可能にする
  *
+ * データの形式
+ *
  * 子コンポーネント
  *   - Hi ! ボタン
  *   - コンポーネントの登録ボタン
@@ -20,7 +22,8 @@
                 v-model="carousel"
                 height="100%"
                 :hide-delimiters="true"
-                :show-arrows="true"
+                :show-arrows="showArrows"
+                :touchless="touchless"
                 :cycle="false"
                 :light="true"
                 :continuous="false"
@@ -72,7 +75,8 @@
                         <!-- 表示用 -->
                         <v-card-text
                             v-if="
-                                cardMode === 'select' || cardMode === 'preview'
+                                cardState === 'select' ||
+                                    cardState === 'preview'
                             "
                             class="subtitle-1 grey--text text--darken-3"
                         >
@@ -84,8 +88,8 @@
                         </v-card-text>
                         <!-- 編集用 -->
                         <v-textarea
-                            v-if="cardMode === 'edit'"
-                            v-model="props_content"
+                            v-if="cardState === 'edit'"
+                            v-model="propsContent"
                             class="card-text__font pa-2"
                             auto-grow
                             color="accent"
@@ -95,7 +99,8 @@
                             label="Edit Greeting"
                             :counter="counter"
                             rows="1"
-                        ></v-textarea>
+                        >
+                        </v-textarea>
 
                         <v-divider color="grey"></v-divider>
 
@@ -120,6 +125,7 @@
                         <v-card-actions>
                             <v-flex xs1>
                                 <v-btn
+                                    v-if="cardState === 'select'"
                                     color="accent"
                                     absolute
                                     bottom
@@ -128,7 +134,21 @@
                                     Hi !
                                 </v-btn>
                             </v-flex>
-                            <the-editor-btn v-if="cardMode === 'preview'" />
+                            <div v-if="cardState === 'edit'">
+                                <v-btn
+                                    color="success"
+                                    outlined
+                                    @click="editCancel"
+                                    >Cancel</v-btn
+                                >
+                                <v-btn color="success" @click="editSave"
+                                    >Save</v-btn
+                                >
+                            </div>
+                            <the-editor-btn
+                                v-if="cardState === 'preview'"
+                                @assignFromChild="assginState($event)"
+                            />
                         </v-card-actions>
                     </v-card>
                 </v-carousel-item>
@@ -154,11 +174,19 @@ export default {
     //     }
     // },
     props: {
+        carouselCount: {
+            type: Number,
+            default: 0
+        },
         candidates: {
             type: Array,
             default: () => {}
         },
         showArrows: {
+            type: Boolean,
+            default: true
+        },
+        touchless: {
             type: Boolean,
             default: true
         },
@@ -170,7 +198,7 @@ export default {
             type: Boolean,
             default: false
         },
-        cardMode: {
+        cardState: {
             type: String,
             default: 'select'
         }
@@ -181,7 +209,7 @@ export default {
             counter: 200,
             storemodel: this.$store.getters['app/candidate/model'],
             model: this.$store.getters['app/candidate/model'],
-            props_content: '',
+            propsContent: '',
             jobCode: {
                 1: '事務・オフィス系',
                 2: '販売・飲食・サービス系',
@@ -191,25 +219,51 @@ export default {
                 6: '研究機関・教育系',
                 7: '商社・金融・経営',
                 8: '学生'
-            }
+            },
+            hashId: ''
         }
+    },
+    mounted() {
+        this.hashId = this.displayCandidate[this.carousel].greetings[0].hash_id
     },
     computed: {
         displayCandidate() {
+            console.log(this.candidates)
             console.log('this.candidates :', Array(...this.candidates))
-            return Array(...this.candidates)
+            const data = Array(...this.candidates)
+            this.$forceUpdate() //強制更新
+            return data
         }
     },
     watch: {
         carousel() {
+            this.hashId = this.displayCandidate[
+                this.carousel
+            ].greetings[0].hash_id
             this.$emit('input', this.carousel)
+        },
+        carouselCount() {
+            this.carousel = this.carouselCount
+        },
+        cardState() {
+            if (this.cardState === 'edit') {
+                console.log(this.carousel, this.cardState, '頑張れ')
+                this.propsContent = this.displayCandidate[
+                    this.carousel
+                ].greetings[0].content
+                console.log('this.propsContent :', this.propsContent)
+            }
         }
     },
     methods: {
-        debug() {
-            console.log('this.candidatesData :', this.candidates)
+        /**
+         * editorBtnからeditモード起動のコマンド受け取り
+         * 親コンポーネントで受け取るデータとeditモードへの変更
+         */
+        assginState(state) {
+            this.$emit('fromSelectComponent', state)
         },
-        onClick() {},
+
         /**
          * 編集をセーブする関数
          *
@@ -218,12 +272,13 @@ export default {
          */
         editSave(e) {
             // axiosの通信のあとでthisを参照できなくなるので、ここでやってしまう
+            if (this.propsContent.trim() === '') return !1
             const self = this
             if (this.hashId) {
                 this.$axios
                     .$put(`${process.env.apiBaseUrl}greetings`, {
                         greeting_hash: this.hashId,
-                        content: this.props_content
+                        content: this.propsContent
                     })
                     .then((_res) => {
                         self.$emit('returnEditFromChild', { _res })
@@ -231,7 +286,7 @@ export default {
             } else {
                 this.$axios
                     .$post(`${process.env.apiBaseUrl}greetings`, {
-                        content: this.props_content
+                        content: this.propsContent
                     })
                     .then((_res) => {
                         self.$emit('returnEditFromChild', { _res })
@@ -240,7 +295,6 @@ export default {
         },
         editCancel() {
             this.$emit('cancelEditFromChild')
-            console.log('debug seve')
         }
     }
 }

@@ -16,13 +16,13 @@
                 <v-icon v-else>mdi-pencil-box-multiple-outline</v-icon>
             </v-btn>
         </template>
-        <v-btn fab dark small color="green" @click="editGreeting">
+        <v-btn fab dark small color="green" @click="assignState('edit')">
             <v-icon>mdi-pencil</v-icon>
         </v-btn>
-        <v-btn fab dark small color="indigo" @click="newGreeting">
+        <v-btn fab dark small color="indigo" @click="assignState('create')">
             <v-icon>mdi-plus</v-icon>
         </v-btn>
-        <v-btn fab dark small color="red" @click="deleteGreeting">
+        <v-btn fab dark small color="red" @click="assignState('delete')">
             <v-icon>mdi-delete</v-icon>
         </v-btn>
     </v-speed-dial>
@@ -36,14 +36,8 @@ export default {
         }
     },
     methods: {
-        newGreeting() {
-            this.$emit('')
-        },
-        editGreeting() {
-            this.$emit('')
-        },
-        deleteGreeting() {
-            this.$emit('')
+        assignState(mode) {
+            this.$emit('assignFromChild', mode)
         }
     }
 }

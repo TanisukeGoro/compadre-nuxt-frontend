@@ -200,7 +200,6 @@ export default {
         },
         editCancel() {
             this.$emit('cancelEditFromChild')
-            console.log('debug seve')
         }
     }
 }

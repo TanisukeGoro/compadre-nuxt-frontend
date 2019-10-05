@@ -12,10 +12,15 @@
         <component
             :is="componentState"
             v-model="model"
+            :carousel-count="model"
             :candidates="greetings"
             :hide-delimiters="hideDelimiters"
             :show-arrows="showArrows"
-            :card-mode="cardMode"
+            :touchless="touchLess"
+            :card-state="cardState"
+            @fromSelectComponent="changeState($event)"
+            @returnEditFromChild="returnEdit($event)"
+            @cancelEditFromChild="cancelEdit"
         />
     </v-app>
 </template>
@@ -25,6 +30,7 @@
 // import SelectCard from '~/components/greetings/SelectCard'
 import EditGreeting from '~/components/greetings/EditGreeting'
 import SelectCardSlideTest from '~/components/SelectCardSlideTest'
+import { state } from '../../../store/app/candidate'
 
 export default {
     components: {
@@ -34,13 +40,15 @@ export default {
     },
     data() {
         return {
-            model: 1,
+            model: 0,
+            preModel: 0, // 切り替え前の値保持
             showArrows: true,
+            touchLess: false,
             hideDelimiters: true,
             cycle: false,
             dialog: false,
             greetings: [],
-            cardMode: 'preview',
+            cardState: 'preview',
             greeting_count: 0,
             greeting_i: 0,
             fab: false,
@@ -71,6 +79,25 @@ export default {
         },
         model() {
             console.log(this.model)
+        },
+        cardState() {
+            switch (this.cardState) {
+                case 'preview':
+                    this.showArrows = true
+                    this.touchLess = false
+                    break
+                case 'preview':
+                    this.showArrows = true
+                    this.touchLess = false
+                    break
+                case 'edit':
+                    this.showArrows = false
+                    this.touchLess = true
+                    break
+
+                default:
+                    break
+            }
         }
     },
     asyncData({ $axios, $auth }) {
@@ -93,7 +120,6 @@ export default {
                 user.greetings = [res[i]]
                 let set = Object.assign({}, user)
                 greetingsArr.push(set)
-                console.log(greetingsArr)
             }
             return { greetings: greetingsArr }
         })
@@ -114,46 +140,123 @@ export default {
         // console.log(this.currentGreeting)
     },
     methods: {
-        getGreetings() {},
+        async getGreetings() {
+            self = this
 
+            await this.$axios
+                .$get(`${process.env.apiBaseUrl}greetings`)
+                .then((res) => {
+                    if (res.length === 0) {
+                        res.push({
+                            content: `挨拶カードはまだありません!!\n新しく作ってみましょう！`,
+                            fst_hashtag: '',
+                            hash_id: '',
+                            media_url: '',
+                            snd_hashtag: '',
+                            trd_hashtag: ''
+                        })
+                    }
+
+                    let greetingsArr = []
+                    // SlectCardSlidのデータ構造に合わせる
+                    for (let i = 0; i < res.length; i++) {
+                        let user = this.$auth.state.user
+                        user.greetings = [res[i]]
+                        let set = Object.assign({}, user)
+                        greetingsArr.push(set)
+                    }
+                    self.greetings = greetingsArr
+                })
+        },
+        changeState(state) {
+            console.log(state)
+            switch (state) {
+                case 'edit':
+                    this.editGreeting()
+                    break
+                case 'create':
+                    this.createGreeting()
+                    break
+
+                case 'delete':
+                    this.deleteGreeting()
+                    break
+
+                default:
+                    break
+            }
+        },
+        /**
+         * カードを編集モードに変更する
+         *
+         * 編集するデータは単一なので渡すデータの単一なものにする
+         *
+         */
         editGreeting() {
-            this.componentState = 'Edit'
+            if (this.greetings[0].greetings[0].hash_id === '') {
+                console.log('reject')
+                return !1
+            }
+            this.cardState = 'edit'
+            this.preModel = this.model
+            this.preGreetings = this.greetings
+            // this.model = 0
+            console.log('this.greetings :', this.greetings)
+        },
+        createGreeting() {
+            // greetingsにオブジェクトを追加して反映
+            let user = this.$auth.state.user
+            user.greetings = [
+                {
+                    content: '',
+                    fst_hashtag: '',
+                    hash_id: '',
+                    media_url: '',
+                    snd_hashtag: '',
+                    trd_hashtag: ''
+                }
+            ]
+            this.preGreetings = this.greetings // 変更前の値保持
+            this.greetings.push(user)
+            this.model = this.greetings.length - 1
+            console.log('create', this.model)
+            console.log('this.greetings :', this.greetings)
+            this.cardState = 'edit'
         },
 
         /**
          * 編集画面から戻って来るため
          */
-        returnEdit(editedContent) {
-            this.greetings[this.greeting_count].content =
-                editedContent._res.content
-            this.componentState = 'Default'
+        async returnEdit(editedContent) {
+            await this.getGreetings()
+            console.log(editedContent)
+            // this.greetings[this.model].greetings[0].content =
+            //     editedContent._res.content
+            console.log(this.greetings)
+            this.cardState = 'preview'
         },
         cancelEdit() {
-            this.componentState = 'Default'
+            this.greetings = this.preGreetings
+            const lastIndex = this.greetings[this.greetings.length - 1]
+                .greetings[0]
+            if (lastIndex.content === '' && lastIndex.hash_id === '') {
+                this.greetings.pop()
+            }
+            this.cardState = 'preview'
+            this.model = this.preModel
         },
-        newGreeting() {
-            // greetingsにオブジェクトを追加して反映
-            this.greetings.push({
-                content: '',
-                fst_hashtag: '',
-                hash_id: '',
-                media_url: '',
-                snd_hashtag: '',
-                trd_hashtag: ''
-            })
-            this.greeting_count = this.greetings.length - 1
-            this.componentState = 'Edit'
-        },
+
         deleteGreeting() {
             const self = this
+            console.log(this.model, 'を消すぞ')
             this.$axios
                 .$delete(
-                    `${process.env.apiBaseUrl}greetings?hash_id=${this.greetings[this.greeting_count].hash_id}`
+                    `${process.env.apiBaseUrl}greetings?hash_id=${this.greetings[this.model].greetings[0].hash_id}`
                 )
-                .then((_res) => {
+                .then(async (_res) => {
                     if (_res.results === 200) {
-                        self.greetings.pop(self.greeting_count)
-                        self.greeting_count = 0
+                        await self.getGreetings()
+                        self.model = 0
                     }
                 })
         },
