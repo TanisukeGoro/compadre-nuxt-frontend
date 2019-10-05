@@ -127,12 +127,12 @@ export default {
     created() {
         // 自分の挨拶文が登録されていない場合は登録する
         if (
-            this.greetings.length > 0 &&
-            this.$auth.state.user.current_greet_hash == null
+            this.greetings[0].greetings.length > 0 &&
+            this.$auth.state.user.current_greet_hash === null
         ) {
             this.$axios
                 .$put(`${process.env.apiBaseUrl}user`, {
-                    current_greet_hash: this.greetings[0].hash_id
+                    current_greet_hash: this.greetings[0].greetings[0].hash_id
                 })
                 .then((i) => console.log(i))
         }
