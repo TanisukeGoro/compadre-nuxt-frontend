@@ -1,49 +1,77 @@
 <template>
-    <v-content style="background-color:white;">
-        <v-container>
-            <!-- スロット -->
-            <SelectCardSlideTest :ptestdatas="testdata" />
-        </v-container>
-    </v-content>
+    <greeting-card
+        v-model="model"
+        :candidates="candidatesarry"
+        :hide-delimiters="hideDelimiters"
+        :show-arrows="showArrows"
+        :card-state="cardState"
+    />
 </template>
 
 <script>
 import { mapActions, mapState } from 'vuex'
 // import SelectCard from '~/components/SelectCard'
-import SelectCardSlideTest from '~/components/SelectCardSlideTest'
+import GreetingCard from '~/components/GreetingCard'
 // import { firebase, db } from '~/plugins/firebase'
 export default {
     components: {
         // SelectCard
-        SelectCardSlideTest
+        GreetingCard
     },
 
     data() {
         return {
+            cardState: 'select',
             currCandidate: '',
             currGreetings: [],
-            content: '',
-            birthday: 0,
-            src: '',
-            jobType: 'test',
-            jobCode: {
-                1: '事務・オフィス系',
-                2: '販売・飲食・サービス系',
-                3: 'IT・エンジニア系',
-                4: 'Web・クリエイター系',
-                5: '医療・介護・福祉系',
-                6: '研究機関・教育系',
-                7: '商社・金融・経営',
-                8: '学生'
-            },
             nextState: true,
             testName: '',
             testdata: [],
-            Temporary_storage: []
+            Temporary_storage: [],
+            counter: 200,
+            storemodel: this.$store.getters['app/candidate/model'],
+            model: this.$store.getters['app/candidate/model'],
+            showArrows: true,
+            hideDelimiters: true,
+            cycle: false,
+            langCode: {
+                ja: '日本語',
+                zh: '中国語',
+                en: '英語',
+                be: 'ロシア語',
+                pt: 'ポルトガル語',
+                es: 'スペイン語',
+                fr: 'フランス語',
+                de: 'ドイツ語',
+                it: 'イタリア語',
+                ms: 'マレー語',
+                tl: 'フィリピン語',
+                vi: 'ベトナム語',
+                th: 'タイ語',
+                tw: '台湾語'
+            },
+            a: []
         }
     },
     computed: {
         changeCandidates() {
+            return this.$store.getters['app/candidate/candidates']
+        },
+        // コンピューテッドは算出プロパティ
+        cardText() {
+            return this.content
+        },
+        onchange() {
+            // return this.$store.getters['app/candidate/model']
+            const modeling = this.model
+            this.$store.commit('app/candidate/linkToModel', modeling)
+            return this.model
+        },
+        candidatesarry() {
+            console.log(
+                '現在のstoreのcandidatesのlengthは:',
+                this.$store.getters['app/candidate/candidates']
+            )
             return this.$store.getters['app/candidate/candidates']
         }
     },
@@ -59,6 +87,24 @@ export default {
                 // this.selectcard_toArryPush(this.candidates())
                 // this.selectcard_toArryPush(this.currCandidate)
             })
+        },
+        onchange(currentNumber) {
+            this.$nextTick(() => {
+                if (this.candidatesarry.length - currentNumber === 5) {
+                    console.log('残り５にんです')
+                    if (this.candidatesarry.length >= 40) {
+                        this.model = this.model - 10
+                        const currentNum = this.model
+                        this.$store.commit(
+                            'app/candidate/spliceCandidate',
+                            currentNum
+                        )
+                        return
+                    }
+                    this.getCandidate()
+                }
+            })
+            return this.model
         }
     },
 
@@ -73,16 +119,8 @@ export default {
             )
         }
     },
-    // created : インスタンスの初期化完了・propsやcomputedにアクセス可・DOMへのアクセス不可
-    created() {},
-    // mounted : created + DOMへのアクセス可能
     mounted() {
         this.currCandidate = this.candidates()
-        console.log(
-            'マウンテッドで最初にcurrCandidateへ10人を入れる',
-            this.currCandidate
-        )
-        // this.selectcard_toArryPush(this.candidates())
     },
     methods: {
         // バインディングヘルパーを使う
@@ -152,34 +190,6 @@ export default {
                 this.nextCandidate()
             })
         },
-        /**
-         * greetingの中身をを返す。もし空だったら’挨拶文はありません’を返す
-         * これは実際に使える関数だが、セレクトカードが[スワイプ]の場合は使わないので、コメントアウトしてある
-         */
-        // greetingcheck() {
-        //     this.currGreetings = Object.keys(this.currCandidate.greetings).map(
-        //         (key) => {
-        //             return this.currCandidate.greetings[key]
-        //         }
-        //     )
-        //     // console.log(this.currCandidate.greetings)
-        //     // Object.assign(this.currC/・andidate.greetings, this.currGreetings)
-        //     console.log(this.currGreetings.length)
-        //     console.log(this.currGreetings)
-
-        //     // console.log(JSON.stringify(this.$store.state.works.worksData))
-        //     // this.currGreetings = this.currCandidate.greetings
-        //     // this.currGreetings = new Array(this.currCandidate.greetings)
-        //     // console.log(this.currCandidate.greetings)
-        //     // console.log(Array.isArray(this.currCandidate.greetings))
-        //     // console.log([...Array(this.currCandidate.greetings)].length)
-        //     // console.log(this.currGreetings.length)
-        //     if (this.currGreetings.length === 0) {
-        //         this.content = '挨拶文はありません'
-        //     } else {
-        //         this.content = this.currGreetings[0].content
-        //     }
-        // },
         greetingcheck() {
             this.currGreetings = Object.keys(this.currCandidate.greetings).map(
                 (key) => {
@@ -226,50 +236,44 @@ export default {
          */
         job(job) {
             return (this.jobType = this.jobCode[job])
+        },
+        previousCard() {
+            this.$emit('previousCardFromChild')
+        },
+        nextCard() {
+            this.$emit('nextCardFromChild')
+        },
+        ClickLikeButton() {
+            alert(
+                JSON.stringify(
+                    this.$store.getters['app/candidate/candidates'][this.model]
+                )
+            )
+            this.likeUser(
+                this.$store.getters['app/candidate/candidates'][this.model].id
+            )
+            this.model++
+        },
+        bindCarousel(e) {
+            // console.log(e)
+        },
+        job_conversion(jobNum) {
+            if (this.jobCode[jobNum]) {
+                return this.jobCode[jobNum]
+            } else {
+                return ''
+            }
+        },
+        greetingPullOut(OnePeople) {
+            const tmp = Object.keys(OnePeople.greetings).map((key) => {
+                return OnePeople.greetings[key]
+            })
+            if (tmp.length === 0) {
+                return '挨拶文はありません'
+            } else {
+                return tmp[0].content
+            }
         }
-        /**
-         * セレクトカードの10人(TenPeople)を取ってきて、testdata(配列)に入れる(push)処理
-         */
-        // selectcard_toArryPush(TenPeople) {
-        //     for (let i = 0; i < 10; i++) {
-        //         // console.log(n)
-        //         const temp = {}
-        //         temp.name = TenPeople[i].name
-        //         temp.birthday = this.getage(TenPeople[i].birthday)
-        //         temp.presentLocation = 'TokyoShibuya/今はデータがない'
-        //         temp.jobtype = this.job(TenPeople[i].job_type)
-        //         temp.fst_lang = TenPeople[i].fst_lang
-        //         temp.snd_lang = TenPeople[i].snd_lang
-        //         temp.trd_lang = TenPeople[i].trd_lang
-
-        //         this.currGreetings = Object.keys(TenPeople[i].greetings).map(
-        //             (key) => {
-        //                 return TenPeople[i].greetings[key]
-        //             }
-        //         )
-        //         if (this.currGreetings.length === 0) {
-        //             temp.content = '挨拶文はありません'
-        //         } else {
-        //             temp.content = this.currGreetings[0].content
-        //         }
-        //         // console.log(temp)
-        //         this.testdata.push(temp)
-        //     }
-        //     console.log('testdataの配列は "' + this.testdata.length + '" 個')
-        //     if (this.testdata.length > 30) {
-        //         console.log('30を超えた')
-        //         this.Temporary_storage = this.testdata
-        //         this.Temporary_storage.splice(0, 9)
-        //         this.testdata = []
-        //         this.testdata.push(this.Temporary_storages)
-        //         console.log(this.testdata, '新しいtestdata')
-        //         // this.testdata.splice(0, 9)
-        //     }
-        //     console.log(
-        //         '親コンポーネント/新しい10人を配列に入れる関数が呼ばれた最後',
-        //         this.testdata
-        //     )
-        // }
     }
 }
 </script>

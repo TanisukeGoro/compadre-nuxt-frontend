@@ -43,11 +43,10 @@ export const actions = {
             const _response = await this.$axios.$get(
                 `${process.env.apiBaseUrl}matching/candidate`
             )
-            response = _response
+            response = _response.filter((i) => i.greetings.length > 0)
         } catch (error) {
             console.log(error)
         }
-        console.log('ゲットキャンディデイト', response)
         commit('getCandidate', response)
     },
     // popCandidate({ commit }, payload) {
