@@ -32,7 +32,7 @@ Vue.filter('yyyymmdd2Age', function(yyyymmdd) {
 Vue.filter('langCode2langName', function(langCode) {
     const results =
         minLangCodes.find((i) => i.iso639_1 === langCode.toUpperCase()) || null
-    return results.local
+    return results ? results.local : ''
 })
 // Country Code => Country Name
 Vue.filter('countryCode2countryName', function(country) {
