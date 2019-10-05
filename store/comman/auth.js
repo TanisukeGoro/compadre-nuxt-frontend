@@ -33,7 +33,7 @@ export const actions = {
         } catch (error) {
             console.log(error)
         }
-        console.log(response, '先に呼び出されなきゃあかんやろ')
+        console.log(response)
         commit('getLoginUser', response)
         return '完了'
     }
