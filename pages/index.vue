@@ -14,10 +14,15 @@
                         href="https://greenlion62.sakura.ne.jp/LP/registar.php"
                     >
                         <p class="subtitle-1 mb-1">
-                            登録はこちらから
+                            SIGNUP
                         </p>
                     </v-btn>
                     <div class="flex-grow-1"></div>
+                    <v-btn color="white" text to="/login" nuxt>
+                        <p class="subtitle-1 mb-1 mr-12">
+                            Login
+                        </p>
+                    </v-btn>
                 </v-app-bar>
                 <v-carousel
                     :show-arrows="true"
@@ -59,11 +64,24 @@
                                     >
                                         <v-btn
                                             color="primary"
-                                            class="subtitle-1 "
-                                            height="50"
+                                            class="subtitle-1"
+                                            height="40"
                                             href="https://greenlion62.sakura.ne.jp/LP/registar.php"
                                         >
-                                            登録はこちらから
+                                            SIGNUP
+                                        </v-btn>
+
+                                        <v-btn
+                                            color="primary"
+                                            style="background-color:#fafafa"
+                                            text
+                                            width="100"
+                                            class="subtitle-1"
+                                            height="40"
+                                            to="/login"
+                                            nuxt
+                                        >
+                                            LOGIN
                                         </v-btn>
                                     </div>
                                 </div>

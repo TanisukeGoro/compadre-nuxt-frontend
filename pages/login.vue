@@ -127,7 +127,7 @@ export default {
                         email:
                             this.email.trim().length !== 0
                                 ? this.email
-                                : 'satomi15@example.org',
+                                : 'lsato@example.org',
                         password: this.password
                     }
                 })
