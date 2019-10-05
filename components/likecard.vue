@@ -1,105 +1,59 @@
 <template>
-    <v-row>
-        <v-col v-for="(item, i) in items" :key="i">
-            <v-card :color="item.color" dark>
-                <v-list-item three-line>
-                    <v-list-item-avatar size="60" tile class="img">
-                        <v-img :src="item.src"></v-img>
-                    </v-list-item-avatar>
-                    <v-list-item-content class="align-self-start">
-                        <v-list-item-title
-                            class="headline mb-2 fonntColor"
-                            v-text="item.title"
-                        ></v-list-item-title>
-
-                        <v-list-item-content
-                            class="Color"
-                            v-text="item.artist"
-                        ></v-list-item-content>
-                    </v-list-item-content>
-                </v-list-item>
-            </v-card>
-        </v-col>
-    </v-row>
+    <v-container class="mt-0">
+        <v-card
+            v-for="(item, index) in items"
+            :key="index"
+            class="mx-auto mt-2"
+            max-width="344"
+            outlined
+        >
+            <v-list-item three-line>
+                <v-list-item-avatar
+                    tile
+                    size="80"
+                    color="grey"
+                ></v-list-item-avatar>
+                <v-list-item-content>
+                    <div class="overline mb-4"></div>
+                    <v-list-item-title class="headline mb-1"
+                        >Headline 5</v-list-item-title
+                    >
+                    <v-list-item-subtitle
+                        >Greyhound divisely hello coldly
+                        fonwderfully</v-list-item-subtitle
+                    >
+                </v-list-item-content>
+            </v-list-item>
+        </v-card>
+    </v-container>
 </template>
+
 <script>
 export default {
-    data: () => ({
-        items: [
-            {
-                color: '#FAFAFA',
-                src:
-                    'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Mona_Lisa_detail_face.jpg/210px-Mona_Lisa_detail_face.jpg',
-                title: 'name',
-                artist: 'Foster the People'
-            },
-            {
-                color: '#FAFAFA',
-                src: 'https://cdn.vuetifyjs.com/images/cards/halcyon.png',
-                title: 'name',
-                artist: 'Ellie Goulding'
-            },
-            {
-                color: '#FAFAFA',
-                src: 'https://cdn.vuetifyjs.com/images/cards/halcyon.png',
-                title: 'name',
-                artist: 'Ellie Goulding'
-            },
-            {
-                color: '#FAFAFA',
-                src: 'https://cdn.vuetifyjs.com/images/cards/halcyon.png',
-                title: 'name',
-                artist: 'Ellie Goulding'
-            },
-            {
-                color: '#FAFAFA',
-                src: 'https://cdn.vuetifyjs.com/images/cards/halcyon.png',
-                title: 'name',
-                artist: 'Ellie Goulding'
-            },
-            {
-                color: '#FAFAFA',
-                src: 'https://cdn.vuetifyjs.com/images/cards/halcyon.png',
-                title: 'name',
-                artist: 'Ellie Goulding'
-            },
-            {
-                color: '#FAFAFA',
-                src: 'https://cdn.vuetifyjs.com/images/cards/halcyon.png',
-                title: 'name',
-                artist: 'Ellie Goulding'
-            },
-            {
-                color: '#FAFAFA',
-                src: 'https://cdn.vuetifyjs.com/images/cards/halcyon.png',
-                title: 'name',
-                artist: 'Ellie Goulding'
-            },
-            {
-                color: '#FAFAFA',
-                src: 'https://cdn.vuetifyjs.com/images/cards/halcyon.png',
-                title: 'name',
-                artist: 'Ellie Goulding'
-            },
-            {
-                color: '#FAFAFA',
-                src: 'https://cdn.vuetifyjs.com/images/cards/halcyon.png',
-                title: 'name',
-                artist: 'Ellie Goulding'
-            },
-            {
-                color: '#FAFAFA',
-                src: 'https://cdn.vuetifyjs.com/images/cards/halcyon.png',
-                title: 'name',
-                artist: 'Ellie Goulding'
-            },
-            {
-                color: '#FAFAFA',
-                src: 'https://cdn.vuetifyjs.com/images/cards/halcyon.png',
-                title: 'name',
-                artist: 'Ellie Goulding'
-            }
+    data() {
+        return {
+            items: ''
+        }
+    },
+    mounted() {
+        this.items = [
+            { message: 'Foo' },
+            { message: 'Bar' },
+            { message: 'Foo' },
+            { message: 'Bar' },
+            { message: 'Foo' },
+            { message: 'Bar' },
+            { message: 'Foo' },
+            { message: 'Bar' },
+            { message: 'Foo' },
+            { message: 'Bar' },
+            { message: 'Foo' },
+            { message: 'Bar' },
+            { message: 'Foo' },
+            { message: 'Bar' }
         ]
-    })
+    }
 }
 </script>
+
+<style></style>
