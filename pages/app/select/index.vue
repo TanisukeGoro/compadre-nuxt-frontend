@@ -1,5 +1,5 @@
 <template>
-    <select-card-slide-test
+    <greeting-card
         v-model="model"
         :candidates="candidatesarry"
         :hide-delimiters="hideDelimiters"
@@ -11,12 +11,12 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 // import SelectCard from '~/components/SelectCard'
-import SelectCardSlideTest from '~/components/SelectCardSlideTest'
+import GreetingCard from '~/components/GreetingCard'
 // import { firebase, db } from '~/plugins/firebase'
 export default {
     components: {
         // SelectCard
-        SelectCardSlideTest
+        GreetingCard
     },
 
     data() {
