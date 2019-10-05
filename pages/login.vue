@@ -125,7 +125,7 @@ export default {
                 .loginWith('local', {
                     data: {
                         email:
-                            this.email.trim(' ').length !== 0
+                            this.email.trim().length !== 0
                                 ? this.email
                                 : 'satomi15@example.org',
                         password: this.password
