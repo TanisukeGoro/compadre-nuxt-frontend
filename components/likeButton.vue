@@ -1,6 +1,6 @@
 <template>
     <v-row>
-        <v-layout justify-center>
+        <v-layout justify-center class="btn">
             <v-btn
                 rounded
                 dark
@@ -17,4 +17,8 @@
 export default {}
 </script>
 
-<style></style>
+<style>
+.btn {
+    padding-top: 50px;
+}
+</style>
