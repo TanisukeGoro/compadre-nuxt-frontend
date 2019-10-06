@@ -1,6 +1,6 @@
-# the_madison
+# Compadre
 
-> The Madison frontend side project 
+> [Compadre](https://compadre.netlify.com/) frontend side project 
 
 ## Routing
 
