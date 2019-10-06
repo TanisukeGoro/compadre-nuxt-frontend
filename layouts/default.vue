@@ -1,93 +1,125 @@
 <template>
-  <v-app dark>
-    <v-navigation-drawer
-      v-model="drawer"
-      :mini-variant="miniVariant"
-      :clipped="clipped"
-      fixed
-      app
-    >
-      <v-list>
-        <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
-          router
-          exact
+    <v-app>
+        <v-navigation-drawer
+            v-model="drawer"
+            app
+            fixed
+            temporary
+            width="220"
+            color="primary"
+            class="white--text"
         >
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-    <v-app-bar :clipped-left="clipped" fixed app>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-btn icon @click.stop="miniVariant = !miniVariant">
-        <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
-      </v-btn>
-      <v-btn icon @click.stop="clipped = !clipped">
-        <v-icon>mdi-application</v-icon>
-      </v-btn>
-      <v-btn icon @click.stop="fixed = !fixed">
-        <v-icon>mdi-minus</v-icon>
-      </v-btn>
-      <v-toolbar-title v-text="title" />
-      <v-spacer />
-      <v-btn icon @click.stop="rightDrawer = !rightDrawer">
-        <v-icon>mdi-menu</v-icon>
-      </v-btn>
-    </v-app-bar>
-    <v-content>
-      <v-container>
+            <v-list-item>
+                <v-list-item-avatar>
+                    <v-avatar size="30">
+                        <v-img :src="iconUrl"></v-img>
+                    </v-avatar>
+                </v-list-item-avatar>
+
+                <v-list-item-content>
+                    <v-list-item-title class="white--text">{{
+                        $auth.state.user.name
+                    }}</v-list-item-title>
+                </v-list-item-content>
+            </v-list-item>
+
+            <v-divider></v-divider>
+
+            <v-list dense>
+                <v-list-item
+                    v-for="item in items"
+                    :key="item.title"
+                    :to="item.to"
+                    nuxt
+                >
+                    <v-list-item-icon>
+                        <v-icon>{{ item.icon }}</v-icon>
+                    </v-list-item-icon>
+
+                    <v-list-item-content>
+                        <v-list-item-title>{{ item.title }}</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+            </v-list>
+
+            <v-divider></v-divider>
+
+            <v-list @click="$auth.logout()">
+                <v-list-item-action class="px-4">
+                    <v-btn class="error--text" text @click="$auth.logout()"
+                        >Logout</v-btn
+                    >
+                </v-list-item-action>
+            </v-list>
+        </v-navigation-drawer>
+        <v-app-bar app clipped-right color="primary" height="55" fixed dark>
+            <v-app-bar-nav-icon @click.stop="drawer = !drawer">
+                <v-avatar size="30">
+                    <v-img :src="iconUrl"></v-img>
+                </v-avatar>
+            </v-app-bar-nav-icon>
+
+            <v-spacer></v-spacer>
+
+            <v-toolbar-title>{{ title }}</v-toolbar-title>
+
+            <v-spacer></v-spacer>
+
+            <v-app-bar-nav-icon @click.stop="drawerRight = !drawerRight">
+                <v-icon>mdi-settings-outline</v-icon>
+            </v-app-bar-nav-icon>
+        </v-app-bar>
+
+        <!-- v-content, v-contentはコンポーネントへの影響力が高いので削除 -->
         <nuxt />
-      </v-container>
-    </v-content>
-    <v-navigation-drawer v-model="rightDrawer" :right="right" temporary fixed>
-      <v-list>
-        <v-list-item @click.native="right = !right">
-          <v-list-item-action>
-            <v-icon light>
-              mdi-repeat
-            </v-icon>
-          </v-list-item-action>
-          <v-list-item-title>Switch drawer (click me)</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-    <v-footer :fixed="fixed" app>
-      <span>&copy; 2019</span>
-    </v-footer>
-  </v-app>
+        <bottom-nav />
+    </v-app>
 </template>
 
 <script>
+import BottomNav from '@/components/BottomNav'
+
 export default {
-  data() {
-    return {
-      clipped: false,
-      drawer: false,
-      fixed: false,
-      items: [
-        {
-          icon: 'mdi-apps',
-          title: 'Welcome',
-          to: '/'
-        },
-        {
-          icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire'
+    components: {
+        BottomNav
+    },
+    data() {
+        return {
+            iconUrl: '',
+            clipped: false,
+            drawer: false,
+            drawerRight: false,
+            fixed: false,
+            title: process.env.title,
+            items: [
+                {
+                    icon: 'mdi-account-outline',
+                    title: 'Profile',
+                    to: '/app/user/user-profile'
+                },
+                {
+                    icon: 'mdi-account-group-outline',
+                    title: 'Friends',
+                    to: '/inspire'
+                },
+                {
+                    icon: 'mdi-settings-outline',
+                    title: 'Settings',
+                    to: '/app/user/settings'
+                },
+                {
+                    icon: 'mdi-settings-outline',
+                    title: 'Edit Greetings',
+                    to: '/app/user/edit-greeting'
+                }
+            ],
+            miniVariant: false,
+            right: true,
+            rightDrawer: false
         }
-      ],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
-      title: 'Vuetify.js'
+    },
+    created() {
+        this.iconUrl = this.$auth.state.user.icon_url
     }
-  }
 }
 </script>
