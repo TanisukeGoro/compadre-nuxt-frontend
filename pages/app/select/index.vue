@@ -68,10 +68,6 @@ export default {
             return this.model
         },
         candidatesarry() {
-            console.log(
-                '現在のstoreのcandidatesのlengthは:',
-                this.$store.getters['app/candidate/candidates']
-            )
             return this.$store.getters['app/candidate/candidates']
         }
     },
@@ -80,10 +76,6 @@ export default {
             this.$nextTick(() => {
                 const arry = [n]
                 this.currCandidate = arry
-                console.log(
-                    '親コンポーネント/watchの中でstoreの新しい変数を取得/currCandidate=""に入れるが、それを使えない',
-                    this.currCandidate
-                )
                 // this.selectcard_toArryPush(this.candidates())
                 // this.selectcard_toArryPush(this.currCandidate)
             })
@@ -91,7 +83,6 @@ export default {
         onchange(currentNumber) {
             this.$nextTick(() => {
                 if (this.candidatesarry.length - currentNumber === 5) {
-                    console.log('残り５にんです')
                     if (this.candidatesarry.length >= 40) {
                         this.model = this.model - 10
                         const currentNum = this.model
@@ -132,7 +123,6 @@ export default {
          */
         async nextCandidate() {
             this.nextState = false // 連打による誤作動を防ぐ
-            // console.log(this.candidates().length)
             this.candidates().length < 5 && (await this.getCandidate())
             this.popCandidate(this.candidates()).then((currUser) => {
                 this.currCandidate = currUser
@@ -153,37 +143,22 @@ export default {
                         userId_you: this.currCandidate.id
                     }
                 )
-                console.log(this.currCandidate)
                 this.nextState = false
-            } catch (error) {
-                console.log(error)
-            }
+            } catch (error) {}
         },
         async matchingUser() {
             this.nextState = false
             try {
-                const postResults = await this.$axios.$post(
-                    `${process.env.apiBaseUrl}matching`,
-                    {
-                        userId_you: this.currCandidate.id
-                    }
-                )
-                console.log(postResults)
-            } catch (error) {
-                console.log(error)
-            }
+                await this.$axios.$post(`${process.env.apiBaseUrl}matching`, {
+                    userId_you: this.currCandidate.id
+                })
+            } catch (error) {}
         },
         /**
          * ユーザーのいいねのPOSTが完了してから次のユーザーを呼び出す。
          */
         likeUser() {
-            console.log(
-                this.currCandidate.name,
-                this.currCandidate.id,
-                this.currCandidate.has_user_voted
-            )
             if (this.currCandidate.has_user_voted) {
-                console.log('マッチング!!!')
                 this.matchingUser()
             }
             this.postUserLike().then(() => {
@@ -209,7 +184,7 @@ export default {
             const year = Number(birth.split('-')[0])
             const month = Number(birth.split('-')[1])
             const day = Number(birth.split('-')[2])
-            // console.log(year + ' ' + month + ' ' + day)
+            //
 
             // 誕生年月日
             const birthday = new Date(year, month - 1, day)
@@ -255,7 +230,7 @@ export default {
             this.model++
         },
         bindCarousel(e) {
-            // console.log(e)
+            //
         },
         job_conversion(jobNum) {
             if (this.jobCode[jobNum]) {

@@ -68,8 +68,6 @@ export default {
     },
     computed: {
         phone() {
-            console.log(new AsYouType('JP').input(this.value))
-            console.log(this.parsephoneNumber)
             return new AsYouType('JP').input(this.value)
         }
     },
@@ -77,9 +75,7 @@ export default {
         updateValue() {
             this.value = new AsYouType('JP').input(this.value)
         },
-        check() {
-            console.log(this.country)
-        }
+        check() {}
     }
 }
 </script>

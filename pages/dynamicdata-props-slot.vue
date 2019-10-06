@@ -52,7 +52,6 @@ export default {
     methods: {
         increment() {
             this.i++
-            console.log(this.i)
         }
     }
 }

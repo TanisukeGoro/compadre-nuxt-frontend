@@ -523,7 +523,6 @@ export default {
             this.trd_lang = this.editTrd_lang
             this.from = this.editFrom
             this.$auth.$storage.setState('user', this.editName)
-            console.log(this.fst_lang, this.snd_lang, this.trd_lang)
             const UserPutData = {
                 name: this.editName,
                 job_type: this.editJob,
@@ -533,11 +532,10 @@ export default {
                 trd_lang: this.editTrd_lang
                 // country_id: this.editFrom
             }
-            this.$axios
-                .$put(`${process.env.apiBaseUrl}user`, {
-                    data: UserPutData
-                })
-                .then((i) => console.log(i))
+            this.$axios.$put(`${process.env.apiBaseUrl}user`, {
+                data: UserPutData
+            })
+            // .then((i) => console.log(i))
         },
         editCancel() {
             this.editName = this.name

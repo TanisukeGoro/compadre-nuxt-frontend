@@ -228,8 +228,6 @@ export default {
     },
     computed: {
         displayCandidate() {
-            console.log(this.candidates)
-            console.log('this.candidates :', Array(...this.candidates))
             const data = Array(...this.candidates)
             this.$forceUpdate() //強制更新
             return data
@@ -247,11 +245,9 @@ export default {
         },
         cardState() {
             if (this.cardState === 'edit') {
-                console.log(this.carousel, this.cardState, '頑張れ')
                 this.propsContent = this.displayCandidate[
                     this.carousel
                 ].greetings[0].content
-                console.log('this.propsContent :', this.propsContent)
             }
         }
     },
