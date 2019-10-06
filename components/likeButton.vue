@@ -19,6 +19,6 @@ export default {}
 
 <style>
 .btn {
-    padding-top: 50px;
+    padding-top: 60px;
 }
 </style>
