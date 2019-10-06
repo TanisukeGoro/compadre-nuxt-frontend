@@ -136,9 +136,7 @@ export default {
                 })
         },
         async social(key) {
-            console.log('object')
-            const response = await this.$auth.loginWith(key)
-            console.log(response)
+            await this.$auth.loginWith(key)
         }
     }
 }

@@ -28,22 +28,14 @@ export default {
                 { user: 'depatchくん', age: '永遠の53歳' },
                 { root: true }
             )
-            console.log('object')
         },
-        getState() {
-            console.log(this.$store.getters['comman/auth/data'])
-            console.log(this.$store.getters['comman/auth/data'].user)
-            console.log(this.$store.getters['comman/auth/data'].age)
-        },
+        getState() {},
         depatch_withNameSpace() {
             this.obj = { user: 'depatchくん', age: '永遠の53歳' }
             this.jwt_auth(this.obj)
         },
 
-        getState_withNameSpace() {
-            console.log(this.$store.getters.data)
-            console.log(this.data().age)
-        }
+        getState_withNameSpace() {}
     }
 }
 </script>

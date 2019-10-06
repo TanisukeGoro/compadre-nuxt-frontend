@@ -83,35 +83,21 @@ export default {
                     }
                 )
                 this.nextState = false
-            } catch (error) {
-                console.log(error)
-            }
+            } catch (error) {}
         },
         async matchingUser() {
             this.nextState = false
             try {
-                const postResults = await this.$axios.$post(
-                    `${process.env.apiBaseUrl}matching`,
-                    {
-                        userId_you: this.currCandidate.id
-                    }
-                )
-                console.log(postResults)
-            } catch (error) {
-                console.log(error)
-            }
+                await this.$axios.$post(`${process.env.apiBaseUrl}matching`, {
+                    userId_you: this.currCandidate.id
+                })
+            } catch (error) {}
         },
         /**
          * ユーザーのいいねのPOSTが完了してから次のユーザーを呼び出す。
          */
         likeUser() {
-            console.log(
-                this.currCandidate.name,
-                this.currCandidate.id,
-                this.currCandidate.has_user_voted
-            )
             if (this.currCandidate.has_user_voted) {
-                console.log('マッチング!!!')
                 this.matchingUser()
             }
             this.postUserLike().then(() => {

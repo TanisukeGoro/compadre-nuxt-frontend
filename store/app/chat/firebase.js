@@ -18,8 +18,6 @@ export const actions = {
      * コールバックをasync, awaitするのめっちゃ大事。
      */
     setPostsRef: firestoreAction(async function(context, ref) {
-        console.log('データの取得開始')
         await context.bindFirestoreRef('posts', ref)
-        console.log('データの取得終わり')
     })
 }

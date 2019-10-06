@@ -181,6 +181,9 @@ export default {
     workbox: {
         dev: false
     },
+    generate: {
+        fallback: true
+    },
     // 全てのページにAuth権限を付与する
     // eslint-disable-next-line no-dupe-keys
     router: {

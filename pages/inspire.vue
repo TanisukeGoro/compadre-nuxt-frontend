@@ -26,9 +26,7 @@ export default {
         }
     },
     methods: {
-        jwt_getter() {
-            console.log(this.jwt.access_token)
-        }
+        jwt_getter() {}
     }
 }
 </script>

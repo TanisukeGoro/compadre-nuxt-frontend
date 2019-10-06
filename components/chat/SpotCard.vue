@@ -397,10 +397,8 @@ export default {
     methods: {
         proposeActivity(selectedCard) {
             this.showCards = this.activityDB[selectedCard.toLowerCase()]
-            console.log('selectedCard :', selectedCard)
         },
         sendActivityCard(showCard) {
-            console.log(this.postId)
             db.collection('chat_rooms')
                 .doc(this.$route.params.room_id)
                 .collection('messages')
@@ -414,7 +412,6 @@ export default {
                 })
         },
         selectActivitySpot(StringJson) {
-            console.log(JSON.parse(StringJson))
             this.showCards = [JSON.parse(StringJson)]
             this.showSendBtn = false
             this.showArrow = false

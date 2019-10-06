@@ -14,7 +14,7 @@
                     <v-col sm="6" xs="12">
                         <v-layout wrap align-end justify-center>
                             <v-flex xs1 class="pb-2">
-                                <v-icon @click="debug">mdi-camera</v-icon>
+                                <v-icon>mdi-camera</v-icon>
                             </v-flex>
                             <v-flex xs9>
                                 <v-textarea
@@ -69,13 +69,7 @@ export default {
         }
     },
     methods: {
-        debug() {
-            console.log(
-                this.message.match(/\n/g) ? this.message.match(/\n/g).length : 0
-            )
-        },
         sendDataToFirebase() {
-            console.log('footer')
             // データのチェック
             if (this.message === '') {
                 return false
