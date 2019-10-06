@@ -1,6 +1,6 @@
 module.exports = {
-    title: 'the Madison',
-    apiBaseUrl: 'http://localhost:80/api/v1/',
+    title: 'Compadre',
+    apiBaseUrl: 'https://compadre.herokuapp.com/api/v1/',
     AwsStoreImageUrl: 'https://the-madison.s3-ap-northeast-1.amazonaws.com/',
     apiKey: 'AIzaSyCMfxQNP8U4YhOVx6OqCWA_rjXKoJCooT4',
     authDomain: 'themadison-2d71b.firebaseapp.com',

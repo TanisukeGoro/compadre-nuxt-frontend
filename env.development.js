@@ -1,5 +1,5 @@
 module.exports = {
-    title: 'the Madison',
+    title: 'Compadre',
     apiBaseUrl: 'http://localhost:80/api/v1/',
     AwsStoreImageUrl: 'https://the-madison.s3-ap-northeast-1.amazonaws.com/',
     apiKey: 'AIzaSyCMfxQNP8U4YhOVx6OqCWA_rjXKoJCooT4',
