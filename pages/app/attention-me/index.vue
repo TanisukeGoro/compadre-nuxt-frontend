@@ -33,8 +33,6 @@
 </template>
 
 <script>
-import { firebase, db } from '~/plugins/firebase'
-
 export default {
     data: () => ({
         items: [
@@ -69,21 +67,7 @@ export default {
             })
     },
     methods: {
-        check() {
-            // console.log(
-            //     this.chatLists.map((i) => i.toTolk_uinfo.name).join('\n')
-            // )
-            // console.log(this.chatLists)
-            // db.collection(
-            //     `/chat_rooms/$2y$10$MQqF4m4kFjKQGj2fPqhQWOosFr8F57WElHdEbpWOtYt5KZKbdj6Iy/messages`
-            // ).onSnapshot((snapshot) => {
-            //     snapshot.docChanges().forEach((change) => {
-            //         console.log(change.doc.data())
-            //     })
-            // })
-            console.log(firebase)
-            console.log(db)
-        }
+        check() {}
     }
 }
 </script>

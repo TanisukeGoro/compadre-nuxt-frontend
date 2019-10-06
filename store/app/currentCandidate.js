@@ -12,17 +12,14 @@ export const mutations = {
 }
 export const actions = {
     async getCandidate({ commit }) {
-        console.log('debug001')
         let response = []
         try {
             const _response = await this.$axios.$get(
                 `${process.env.apiBaseUrl}matching/candidate`
             )
             response = _response
-        } catch (error) {
-            console.log(error)
-        }
-        console.log(response)
+        } catch (error) {}
+
         commit('getCandidate', response)
     },
     model({ commit, payload }) {

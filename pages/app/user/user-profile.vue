@@ -446,7 +446,6 @@ export default {
         await this.getLoginUser() // ログインしているユーザーの情報をstoreにもたせる
 
         this.storeUserData = this.$store.getters['comman/auth/data'] // storeのユーザー情報をstoreUserDataに持たせる
-        console.log('storeUserData', this.storeUserData)
 
         this.editName = this.storeUserData.user.name
         this.editJob = this.storeUserData.user.job_type
@@ -480,18 +479,17 @@ export default {
             this.trd_lang = this.editTrd_lang
             this.country = this.editCountry
             this.$auth.$storage.setState('user', this.editName)
-            console.log(this.fst_lang, this.snd_lang, this.trd_lang)
-            this.$axios
-                .$put(`${process.env.apiBaseUrl}user`, {
-                    name: this.editName,
-                    job_type: this.editJob,
-                    profile_text: this.SelfIntroduction,
-                    fst_lang: this.editFst_lang,
-                    snd_lang: this.editSnd_lang,
-                    trd_lang: this.editTrd_lang,
-                    country: this.editCountry
-                })
-                .then((i) => console.log(i))
+
+            this.$axios.$put(`${process.env.apiBaseUrl}user`, {
+                name: this.editName,
+                job_type: this.editJob,
+                profile_text: this.SelfIntroduction,
+                fst_lang: this.editFst_lang,
+                snd_lang: this.editSnd_lang,
+                trd_lang: this.editTrd_lang,
+                country: this.editCountry
+            })
+            // .then((i) => console.log(i))
         },
         editCancel() {
             this.editName = this.name
@@ -510,7 +508,7 @@ export default {
             const year = Number(birth.split('-')[0])
             const month = Number(birth.split('-')[1])
             const day = Number(birth.split('-')[2])
-            // console.log(year + ' ' + month + ' ' + day)
+            //
 
             // 誕生年月日
             const birthday = new Date(year, month - 1, day)

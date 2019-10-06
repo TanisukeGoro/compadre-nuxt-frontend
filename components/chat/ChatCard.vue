@@ -54,7 +54,6 @@ export default {
     }),
     computed: {
         isAnswer() {
-            console.log('this.ans :', this.answerStatus)
             return this.answerStatus
         }
     }

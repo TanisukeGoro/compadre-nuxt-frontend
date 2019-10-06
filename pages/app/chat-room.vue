@@ -1,8 +1,6 @@
 <template>
     <v-content>
         <ChatHeader />
-        <div></div>
-        <v-btn @click="hogehoge">ボタン</v-btn>
         <ChatBottomNav />
     </v-content>
 </template>
@@ -16,12 +14,7 @@ export default {
         ChatHeader,
         ChatBottomNav
     },
-    methods: {
-        hogehoge(value) {
-            console.log(value.b)
-            alert('od')
-        }
-    }
+    methods: {}
 }
 </script>
 

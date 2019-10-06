@@ -105,26 +105,22 @@ export default {
         ...mapGetters('app/chat/firebase', ['posts'])
     },
     async mounted() {
-        console.log(this.posts)
         const chatInfoData = await this.getChatInfo()
         if (chatInfoData) {
-            chatInfoData.rallyCount > 5 && !chatInfoData.botEvent
-                ? (this.showBotCard = true)
-                : console.log('イベント発火なし！')
+            chatInfoData.rallyCount > 5 &&
+                !chatInfoData.botEvent &&
+                (this.showBotCard = true)
         }
     },
     updated() {
         window.scrollTo(0, document.body.clientHeight)
     },
     created() {
-        // console.log(this.chatlists())
         this.toTalk_user = this.chatlists().find(
             (i) => i.hashed_room_id === this.$route.params.room_id
         )
         if (!this.toTalk_user) this.$router.push('/app/chat')
 
-        // console.log(this.toTalk_user)
-        // console.log(this.toTalk_user.toTolk_uinfo)
         /**
          * setPostRefでfirestoreからの情報を取ってくるまで待機
          * 受信してから refresh renderを実行
@@ -137,26 +133,18 @@ export default {
                 .orderBy('created')
         ).then(() => {
             this.refreshRender()
-            console.log('処理終わり？')
         })
     },
     methods: {
         ...mapActions('app/chat/firebase', ['setPostsRef']),
         ...mapState('app/chat/chatList', ['chatlists']),
-        // ...mapState('app/chat/firebase', ['posts']),
         async debug() {
-            console.log(this.posts[this.posts.length - 2].send_uid)
-            const chatInfoData = await this.getChatInfo()
-            console.log(chatInfoData)
-            // this.updateChatInfo(chatInfoData)
-            // console.log()
+            await this.getChatInfo()
         },
         refreshRender() {
-            // console.log(this.posts)
             this.timestamps = []
             this.changeMessageNo = []
             this.posts.forEach((res, index) => {
-                // console.log(res.created.toDate().getDate())
                 if (
                     res.created &&
                     !this.timestamps.includes(res.created.toDate().getDate())
@@ -169,8 +157,6 @@ export default {
         },
 
         async setChatInfo(recentPost, recentUser, rallyCount, botEvent) {
-            console.log(recentPost, recentUser, rallyCount, botEvent)
-            console.log('setChatInfo')
             await db
                 .collection('chat_rooms')
                 .doc(this.$route.params.room_id)
@@ -197,20 +183,12 @@ export default {
         },
 
         initChatInfo(postedText) {
-            console.log('object :', 'chat init')
             this.setChatInfo(postedText, this.userId, 1, false)
         },
         updateChatInfo(chatInfoData, postedText, setEventState) {
-            console.log(chatInfoData, postedText, setEventState)
             const { recentPost, recentUser, rallyCount } = chatInfoData
             if (recentPost && recentUser && rallyCount) {
                 // 更新処理
-                console.log(
-                    'recentPost, recentUser, rallyCount  :',
-                    recentPost,
-                    recentUser,
-                    rallyCount
-                )
                 return this.setChatInfo(
                     postedText,
                     this.userId,
@@ -242,9 +220,6 @@ export default {
                 .then(() => {
                     'Status OK'
                 })
-                .catch(function(error) {
-                    console.error('Error writing document: ', error)
-                })
 
             const chatInfoData = await this.getChatInfo()
             !chatInfoData
@@ -253,7 +228,6 @@ export default {
         },
         getMessages() {},
         async selectCard(card) {
-            console.log('card :', card)
             const sendData = {
                 text: `:proposeActivity(${card.select}):`,
                 send_uid: this.userId,
@@ -263,7 +237,6 @@ export default {
             }
             await this.sendMessage(sendData)
             const chatInfoData = await this.getChatInfo()
-            console.log(chatInfoData)
             !chatInfoData
                 ? this.initChatInfo(sendData.text)
                 : this.updateChatInfo(chatInfoData, sendData.text, true)

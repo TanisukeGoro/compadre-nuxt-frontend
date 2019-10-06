@@ -74,12 +74,8 @@ export default {
         }
     },
     watch: {
-        dialog() {
-            console.log(this.dialog)
-        },
-        model() {
-            console.log(this.model)
-        },
+        dialog() {},
+        model() {},
         cardState() {
             switch (this.cardState) {
                 case 'preview':
@@ -130,14 +126,11 @@ export default {
             this.greetings[0].greetings.length > 0 &&
             this.$auth.state.user.current_greet_hash === null
         ) {
-            this.$axios
-                .$put(`${process.env.apiBaseUrl}user`, {
-                    current_greet_hash: this.greetings[0].greetings[0].hash_id
-                })
-                .then((i) => console.log(i))
+            this.$axios.$put(`${process.env.apiBaseUrl}user`, {
+                current_greet_hash: this.greetings[0].greetings[0].hash_id
+            })
+            // .then((i) => console.log(i))
         }
-        // this.currentGreeting = this.greetings[this.greeting_count]
-        // console.log(this.currentGreeting)
     },
     methods: {
         async getGreetings() {
@@ -169,7 +162,6 @@ export default {
                 })
         },
         changeState(state) {
-            console.log(state)
             switch (state) {
                 case 'edit':
                     this.editGreeting()
@@ -194,14 +186,12 @@ export default {
          */
         editGreeting() {
             if (this.greetings[0].greetings[0].hash_id === '') {
-                console.log('reject')
                 return !1
             }
             this.cardState = 'edit'
             this.preModel = this.model
             this.preGreetings = this.greetings
             // this.model = 0
-            console.log('this.greetings :', this.greetings)
         },
         createGreeting() {
             // greetingsにオブジェクトを追加して反映
@@ -219,8 +209,6 @@ export default {
             this.preGreetings = this.greetings // 変更前の値保持
             this.greetings.push(user)
             this.model = this.greetings.length - 1
-            console.log('create', this.model)
-            console.log('this.greetings :', this.greetings)
             this.cardState = 'edit'
         },
 
@@ -229,10 +217,6 @@ export default {
          */
         async returnEdit(editedContent) {
             await this.getGreetings()
-            console.log(editedContent)
-            // this.greetings[this.model].greetings[0].content =
-            //     editedContent._res.content
-            console.log(this.greetings)
             this.cardState = 'preview'
         },
         cancelEdit() {
@@ -248,7 +232,6 @@ export default {
 
         deleteGreeting() {
             const self = this
-            console.log(this.model, 'を消すぞ')
             this.$axios
                 .$delete(
                     `${process.env.apiBaseUrl}greetings?hash_id=${this.greetings[this.model].greetings[0].hash_id}`
