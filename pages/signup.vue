@@ -65,7 +65,7 @@
                                     :rules="[rules.required, rules.min]"
                                     :type="showPassword ? 'text' : 'password'"
                                     name="input-10-2"
-                                    label="Not vrisible"
+                                    label="password"
                                     hint="At least 8 characters"
                                     class="input-group--focused"
                                     @click:append="showPassword = !showPassword"
