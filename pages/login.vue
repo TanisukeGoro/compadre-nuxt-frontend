@@ -127,7 +127,7 @@ export default {
                         email:
                             this.email.trim().length !== 0
                                 ? this.email
-                                : 'satomi15@example.org',
+                                : 'lsato@example.org',
                         password: this.password
                     }
                 })
@@ -136,9 +136,7 @@ export default {
                 })
         },
         async social(key) {
-            console.log('object')
-            const response = await this.$auth.loginWith(key)
-            console.log(response)
+            await this.$auth.loginWith(key)
         }
     }
 }

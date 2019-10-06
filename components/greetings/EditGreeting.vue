@@ -165,7 +165,6 @@ export default {
     },
     computed: {
         isDialog() {
-            console.log('this.dialog :', this.dialog)
             return this.dialog
         }
     },

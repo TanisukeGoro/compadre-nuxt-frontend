@@ -142,10 +142,6 @@ export default {
             return this.model
         },
         candidatesarry() {
-            console.log(
-                '現在のstoreのcandidatesのlengthは:',
-                this.$store.getters['app/candidate/candidates'].length
-            )
             return this.$store.getters['app/candidate/candidates']
         }
     },
@@ -153,7 +149,6 @@ export default {
         onchange(currentNumber) {
             this.$nextTick(() => {
                 if (this.candidatesarry.length - currentNumber === 5) {
-                    console.log('残り５にんです')
                     if (this.candidatesarry.length >= 40) {
                         this.model = this.model - 10
                         const currentNum = this.model
@@ -201,7 +196,7 @@ export default {
             this.model++
         },
         bindCarousel(e) {
-            // console.log(e)
+            //
         },
         /**
          * ユーザーによるいいねをPOSTしてる。
@@ -216,44 +211,26 @@ export default {
                         userId_you: LikedID
                     }
                 )
-                console.log(LikedID)
+
                 this.nextState = true
-            } catch (error) {
-                console.log(error)
-            }
+            } catch (error) {}
         },
         async matchingUser(LikedID) {
-            console.log(LikedID)
-
             this.nextState = false
             try {
-                const postResults = await this.$axios.$post(
-                    `${process.env.apiBaseUrl}matching`,
-                    {
-                        userId_you: LikedID
-                    }
-                )
-                console.log(postResults)
-            } catch (error) {
-                console.log(error)
-            }
+                await this.$axios.$post(`${process.env.apiBaseUrl}matching`, {
+                    userId_you: LikedID
+                })
+            } catch (error) {}
         },
         /**
          * ユーザーのいいねのPOSTが完了してから次のユーザーを呼び出す。
          */
         likeUser(LikedID) {
-            console.log(
-                this.$store.getters['app/candidate/candidates'][this.model]
-                    .name,
-                this.$store.getters['app/candidate/candidates'][this.model].id,
-                this.$store.getters['app/candidate/candidates'][this.model]
-                    .has_user_voted
-            )
             if (
                 this.$store.getters['app/candidate/candidates'][this.model]
                     .has_user_voted
             ) {
-                console.log('マッチング!!!')
                 this.matchingUser(LikedID)
             }
             this.postUserLike(LikedID)
@@ -264,7 +241,7 @@ export default {
             const year = Number(birth.split('-')[0])
             const month = Number(birth.split('-')[1])
             const day = Number(birth.split('-')[2])
-            // console.log(year + ' ' + month + ' ' + day)
+            //
 
             // 誕生年月日
             const birthday = new Date(year, month - 1, day)

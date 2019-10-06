@@ -23,17 +23,14 @@ export const actions = {
     //     commit('loginUserData', payload, { root: true })
     // },
     async getLoginUser({ commit }) {
-        console.log('debug001')
         let response = []
         try {
             const _response = await this.$axios.$get(
                 `${process.env.apiBaseUrl}user`
             )
             response = _response
-        } catch (error) {
-            console.log(error)
-        }
-        console.log(response)
+        } catch (error) {}
+
         commit('getLoginUser', response)
         return '完了'
     }

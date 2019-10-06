@@ -596,34 +596,21 @@ export default {
             const a = new AsYouType('JP')
             a.input('08031947940')
             const b = new AsYouType('JP').input('0223751514')
-            console.log(a)
-            console.log(a.getTemplate())
-            console.log(b)
+
             // const aphone = parsePhoneNumberFromString(a, 'JP')
-            // console.log(aphone.formatInternational())
-            // console.log(aphone.formatNational())
-            // console.log(aphone.getURI())
+            //
+            //
+            //
         },
         updateValue() {
             this.currPhoneInp = new AsYouType(this.country.iso2.toUpperCase())
             this.phone = this.currPhoneInp.input(this.phone)
-            // console.log(this.currPhoneInp.getTemplate())
-            // console.log(this.currPhoneInp.getNumber())
+            //
+            //
             try {
-                console.log(this.currPhoneInp.getNumber().formatNational())
-                console.log(this.currPhoneInp.getNumber().country || '-')
-                console.log(this.currPhoneInp.getNumber().number)
-                console.log(this.currPhoneInp.getNumber().getURI())
-                console.log(this.currPhoneInp.getNumber().getType())
-                console.log(this.currPhoneInp.getNumber().isPossible())
-                console.log(this.currPhoneInp.getNumber().isValid())
-            } catch (error) {
-                console.log(error)
-            }
+            } catch (error) {}
         },
-        genderTest() {
-            console.log(this.gender)
-        },
+        genderTest() {},
         saveBirth(date) {
             this.$refs.menu.save(date)
         },
@@ -656,7 +643,6 @@ export default {
                         .then(function(response) {
                             self.geoLoading = false
                             if (response.response.location.length > 0) {
-                                console.log(response.response.location[0].city)
                                 self.place = response.response.location[0]
                                 self.nowPlace = `${self.place.prefecture}, ${self.place.city}`
                             }
@@ -681,15 +667,15 @@ export default {
             )
         },
         // readImgFromURL(inputURL) {
-        //     console.log(inputURL)
+        //
         //     if (inputURL) {
-        //         console.log('load image')
+        //
         //         const reader = new FileReader()
         //         const self = this
         //         reader.onload = (e) => {
         //             self.imageSrc = e.target.result
-        //             console.log('onload')
-        //             // console.log(e.target.result)
+        //
+        //             //
         //         }
         //         reader.readAsDataURL(inputURL)
         //         // reader.readAsDataURL(inputURL.files[0])
@@ -698,8 +684,8 @@ export default {
         // },
         // imageUploader() {
         //     // this.readImgFromURL(files[0])
-        //     console.log('object')
-        //     // console.log(this.uploadImage)
+        //
+        //     //
         //     this.readImgFromURL(this.uploadImage)
         // },
         // generateImage() {
@@ -711,10 +697,9 @@ export default {
         //     this.imgUrl = url
         // },
         imageUploader() {
-            console.log(this.croppaImg.generateDataUrl())
             this.croppaImg.generateBlob((blob) => {
                 this.formData.append('face_image', blob)
-                console.log(this.formData.get('face_image'))
+
                 this.$axios.$post(
                     `${process.env.apiBaseUrl}imageupload`,
                     this.formData
@@ -734,16 +719,6 @@ export default {
                 face_image: '',
                 fst_lang: this.language.langCode
             }
-            console.log(`this.name : ${this.name}`)
-            console.log(`this.email : ${this.email}`)
-            console.log(`this.password : ${this.password}`)
-            console.log(`this.phone : ${this.phone}`)
-            console.log(`this.gender : ${this.gender}`)
-            console.log(`this.menu : ${this.menu}`)
-            console.log(`this.bi : ${this.date}`)
-            console.log(`this.date : ${this.job}`)
-            console.log(`this.lang : ${this.language.langCode}`)
-            console.log(this.job)
         },
         register() {
             this.isLoading = true
@@ -752,7 +727,7 @@ export default {
             )
             this.croppaImg.generateBlob((blob) => {
                 this.formData.append('face_image', blob)
-                console.log(this.formData.get('face_image'))
+
                 this.$axios
                     .$post(
                         `${process.env.apiBaseUrl}auth/register`,
