@@ -124,11 +124,8 @@ export default {
             await this.$auth
                 .loginWith('local', {
                     data: {
-                        email:
-                            this.email.trim().length !== 0
-                                ? this.email
-                                : 'lsato@example.org',
-                        password: this.password
+                        email: this.email.trim().length !== 0 && this.email,
+                        password: this.email.trim().length !== 0 && this.email
                     }
                 })
                 .catch((e) => {
