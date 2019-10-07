@@ -230,6 +230,7 @@ export default {
         }
     },
     mounted() {
+        console.log('GreetigCard :', this.displayCandidate)
         this.hashId = this.displayCandidate[this.carousel].greetings[0].hash_id
     },
     computed: {

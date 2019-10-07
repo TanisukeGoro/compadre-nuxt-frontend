@@ -19,7 +19,9 @@
                         <v-flex xs12 sm12>
                             <div class="space">
                                 <img
-                                    :src="loginUserData.icon_url"
+                                    :src="
+                                        `${process.env.AwsStoreImageUrl}${loginUserData.icon_url}`
+                                    "
                                     class="user-main-img"
                                 />
                             </div>
