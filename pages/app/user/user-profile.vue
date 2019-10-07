@@ -321,9 +321,6 @@
                         <div class="user-text pt-5 pr-4 pl-4 title">
                             {{ SelfIntroduction }}
                         </div>
-                        <div class="greeting-toEdit">
-                            <v-icon>mdi-file-document-edit-outline</v-icon>
-                        </div>
                         <!--****************** ⬆︎⬆︎ 最初の画面のユーザー情報 終了 ⬆︎⬆︎ ****************** -->
                         <BottomNav />
                     </v-flex>
@@ -452,6 +449,7 @@ export default {
     async mounted() {
         Object.assign(this.snd_langages, this.fst_langages)
         Object.assign(this.trd_langages, this.fst_langages)
+
         await this.getLoginUser() // ログインしているユーザーの情報をstoreにもたせる
 
         this.storeUserData = this.$store.getters['comman/auth/data'] // storeのユーザー情報をstoreUserDataに持たせる
@@ -461,8 +459,7 @@ export default {
         this.editBirthday = this.storeUserData.user.birthday
         // this.editPresentLocation = 'nodata' //現在地は今のところ表示させない
         this.editSelfIntroduction = this.storeUserData.user.profile_text
-        this.editFst_lang = 'zh'
-        // this.editFst_lang = this.storeUserData.user.fst_lang
+        this.editFst_lang = this.storeUserData.user.fst_lang
         this.editSnd_lang = this.storeUserData.user.snd_lang
         this.editTrd_lang = this.storeUserData.user.trd_lang
         this.editCountry = this.storeUserData.user.country
@@ -472,11 +469,16 @@ export default {
         this.birthday = this.storeUserData.user.birthday
         // this.presentLocation = 'NULL' //現在地は今のところ表示させない
         this.SelfIntroduction = this.storeUserData.user.profile_text
-        this.fst_lang = 'zh'
-        // this.fst_lang = this.storeUserData.user.fst_lang
+        this.fst_lang = this.storeUserData.user.fst_lang
         this.snd_lang = this.storeUserData.user.snd_lang
         this.trd_lang = this.storeUserData.user.trd_lang
         this.country = this.storeUserData.user.country
+        console.log(this.storeUserData.user)
+        console.log(this.SelfIntroduction)
+        if (this.SelfIntroduction === null) {
+            this.SelfIntroduction =
+                '右上の"変更"ボタンから自己紹介の文を書いてみましょう！！'
+        }
     },
     methods: {
         editSave() {
