@@ -649,12 +649,6 @@ export default {
                     self.latitude = position.coords.latitude
                     self.longitude = position.coords.longitude
 
-                    console.log(
-                        '緯度:' +
-                            position.coords.latitude +
-                            ',経度' +
-                            position.coords.longitude
-                    )
                     self.$axios
                         .$get(`${process.env.apiBaseUrl}locationplace`, {
                             params: {

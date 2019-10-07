@@ -11,7 +11,6 @@ export const mutations = {
 }
 export const actions = {
     async GetAttentionMe({ commit }) {
-        console.log('debug001')
         let response = []
         try {
             const _response = await this.$axios.$get(
@@ -19,9 +18,8 @@ export const actions = {
             )
             response = _response
         } catch (error) {
-            console.log(error)
+            // console.log(error)
         }
-        console.log('自分に興味があるひと一覧', response)
         commit('GetAttentionMe', response)
     }
 }
