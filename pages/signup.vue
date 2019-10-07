@@ -739,8 +739,8 @@ export default {
                 job_type: this.job.value,
                 oauth_id: 0,
                 face_image: '',
-                fst_lang: this.language.langCode,
-                country: this.country.iso2
+                country: this.country.iso2,
+                fst_lang: this.language.langCode
             }
         },
         register() {
