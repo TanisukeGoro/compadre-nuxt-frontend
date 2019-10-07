@@ -22,6 +22,7 @@
 
                                 <v-text-field
                                     id="password"
+                                    v-model="password"
                                     label="Password"
                                     name="password"
                                     prepend-icon="mdi-lock"
@@ -124,11 +125,9 @@ export default {
             await this.$auth
                 .loginWith('local', {
                     data: {
-                        email:
-                            this.email.trim().length !== 0
-                                ? this.email
-                                : 'lsato@example.org',
-                        password: this.password
+                        email: this.email.trim().length !== 0 && this.email,
+                        password:
+                            this.password.trim().length !== 0 && this.password
                     }
                 })
                 .catch((e) => {

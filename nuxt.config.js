@@ -94,17 +94,18 @@ export default {
                 // APIのエンドポイント
                 endpoints: {
                     login: {
-                        url: 'http://localhost/api/v1/auth/login',
+                        url: 'https://compadre.herokuapp.com/api/v1/auth/login',
                         method: 'post',
                         // レスポンスのトークンが入っているkey
                         propertyName: 'access_token'
                     },
                     logout: {
-                        url: 'http://localhost/api/v1/auth/logout',
+                        url:
+                            'https://compadre.herokuapp.com/api/v1/auth/logout',
                         method: 'post'
                     },
                     user: {
-                        url: 'http://localhost/api/v1/user',
+                        url: 'https://compadre.herokuapp.com/api/v1/user',
                         method: 'get',
                         propertyName: 'user'
                     }
