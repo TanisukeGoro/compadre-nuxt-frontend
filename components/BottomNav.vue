@@ -10,7 +10,7 @@
             <v-icon>mdi-chat-outline</v-icon>
         </v-btn>
 
-        <v-btn to="/app/attention-me" nuxt>
+        <v-btn to="/app/attention/" nuxt>
             <span>Like</span>
             <v-icon>mdi-heart-multiple-outline</v-icon>
         </v-btn>

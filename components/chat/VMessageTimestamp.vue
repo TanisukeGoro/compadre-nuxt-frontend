@@ -12,7 +12,11 @@
                     message.text
                 }}</v-callout>
                 <v-callout v-else :is-left="false"
-                    ><v-img :src="$auth.state.user.icon_url"></v-img
+                    ><v-img
+                        :src="
+                            $auth.state.user.icon_url ? myIconUrl : errorIconURL
+                        "
+                    ></v-img
                 ></v-callout>
             </div>
             <template v-else>
@@ -30,8 +34,8 @@
                             max-height="34px"
                             :src="
                                 toTalkUser.toTolk_uinfo.icon_url
-                                    ? toTalkUser.toTolk_uinfo.icon_url
-                                    : iconURL
+                                    ? youIconUrl
+                                    : errorIconURL
                             "
                             alt="avatar"
                         />
@@ -44,9 +48,9 @@
                     <v-callout v-if="message.audioURL"
                         ><v-audio :src="message.audioURL"></v-audio
                     ></v-callout>
-                    <v-callout v-else-if="message.text">{{
-                        message.text
-                    }}</v-callout>
+                    <v-callout v-else-if="message.text">
+                        {{ message.text }}
+                    </v-callout>
                     <v-callout v-else
                         ><v-img :src="message.imageURL"></v-img
                     ></v-callout>
@@ -90,8 +94,13 @@ export default {
     },
     data() {
         return {
-            iconURL: `${process.env.AwsStoreImageUrl}images/GDayPwYX4Ioeknxb6R6Dbn9eDHXdr2NNy94Dctp5.jpeg`
+            errorIconURL: '~/assets/images/onErrorUserImg.png',
+            myIconUrl: `${process.env.AwsStoreImageUrl}${this.$auth.state.user.icon_url}`,
+            youIconUrl: ''
         }
+    },
+    mounted() {
+        this.youIconUrl = `${process.env.AwsStoreImageUrl}${this.toTalkUser.toTolk_uinfo.icon_url}`
     },
     updated() {
         // 更新があったらスクロールする。

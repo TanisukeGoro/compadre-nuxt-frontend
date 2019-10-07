@@ -42,7 +42,11 @@
                         <v-list-item>
                             <v-list-item-avatar color="grey" size="72">
                                 <v-img
-                                    src="https://the-madison.s3-ap-northeast-1.amazonaws.com/images/wg5TX0SUwAptlVftxw1dlEG5iZewrwoinKOvmPbw.jpeg"
+                                    :src="
+                                        candidate.icon_url
+                                            ? iconBaseUrl + candidate.icon_url
+                                            : require('~/assets/images/onErrorUserImg.png')
+                                    "
                                 ></v-img>
                             </v-list-item-avatar>
                             <v-list-item-content>
@@ -123,7 +127,7 @@
                             </v-list-item-content>
                         </v-list-item>
                         <v-card-actions>
-                            <v-flex xs1>
+                            <!-- <v-flex xs1>
                                 <v-btn
                                     v-if="cardState === 'select'"
                                     color="accent"
@@ -133,8 +137,14 @@
                                 >
                                     Hi !
                                 </v-btn>
-                            </v-flex>
-                            <div v-if="cardState === 'edit'">
+                            </v-flex> -->
+                            <span v-if="cardState === 'select'" class="likebtn">
+                                <LikeButton @ClickLikebutton="HiClick" />
+                            </span>
+                            <div
+                                v-if="cardState === 'edit'"
+                                class="SaveCancelBtn"
+                            >
                                 <v-btn
                                     color="success"
                                     outlined
@@ -220,7 +230,8 @@ export default {
                 7: '商社・金融・経営',
                 8: '学生'
             },
-            hashId: ''
+            hashId: '',
+            iconBaseUrl: process.env.AwsStoreImageUrl
         }
     },
     mounted() {
@@ -291,6 +302,11 @@ export default {
         },
         editCancel() {
             this.$emit('cancelEditFromChild')
+        },
+        HiClick() {
+            alert(
+                'クリックされました。データベースに送る処理は何も書いていません'
+            )
         }
     }
 }
@@ -301,5 +317,11 @@ export default {
     /* transform: scale(1.2, 1.2); */
     display: inline-block;
     margin-bottom: 0 !important;
+}
+.SaveCancelBtn {
+    margin: 0 auto;
+}
+.likebtn {
+    margin: 0 auto;
 }
 </style>
