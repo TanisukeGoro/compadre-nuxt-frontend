@@ -125,7 +125,8 @@ export default {
                 .loginWith('local', {
                     data: {
                         email: this.email.trim().length !== 0 && this.email,
-                        password: this.email.trim().length !== 0 && this.email
+                        password:
+                            this.password.trim().length !== 0 && this.password
                     }
                 })
                 .catch((e) => {
