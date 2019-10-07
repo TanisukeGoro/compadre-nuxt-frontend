@@ -42,7 +42,6 @@ Vue.filter('countryCode2countryName', function(country) {
         countriesName.find((i) => i.iso2 === country.toUpperCase()) || null
     return results ? results.name : ''
 })
-
 /**
  * GET User Age
  *

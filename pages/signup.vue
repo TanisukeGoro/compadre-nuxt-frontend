@@ -239,7 +239,7 @@
                                             return-object
                                             single-line
                                         ></v-select>
-                                        <!-- 職業選択 -->
+                                        <!-- 言語選択 -->
                                         <v-select
                                             v-model="language"
                                             :hint="languages.description"
@@ -739,7 +739,8 @@ export default {
                 job_type: this.job.value,
                 oauth_id: 0,
                 face_image: '',
-                fst_lang: this.language.langCode
+                fst_lang: this.language.langCode,
+                country: this.country.iso2
             }
         },
         register() {
