@@ -109,18 +109,6 @@ export default {
                         propertyName: 'user'
                     }
                 }
-            },
-            github: {
-                client_id: process.env.GITHUB_CLIENT_ID,
-                client_secret: process.env.GITHUB_CLIENT_SECRET,
-                scope: ['read:user'] // デフォルトだと ['user', 'email'] となり、権限がやや強いので絞る
-            },
-            facebook: {
-                client_id: '433680970792692',
-                userinfo_endpoint:
-                    'https://graph.facebook.com/v2.12/me?fields=about,name,picture{url},email,birthday',
-                scope: ['public_profile', 'email', 'user_birthday'],
-                redirect_uri: 'http://localhost:3000/callback'
             }
         }
     },

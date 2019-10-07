@@ -77,7 +77,7 @@ export default {
     data() {
         return {
             email: '',
-            password: 'secret',
+            password: '',
             error: null,
             strategies: [
                 // {
