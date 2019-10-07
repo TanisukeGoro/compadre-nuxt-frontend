@@ -22,6 +22,7 @@
 
                                 <v-text-field
                                     id="password"
+                                    v-model="password"
                                     label="Password"
                                     name="password"
                                     prepend-icon="mdi-lock"
@@ -77,7 +78,7 @@ export default {
     data() {
         return {
             email: '',
-            password: 'secret',
+            password: '',
             error: null,
             strategies: [
                 // {
