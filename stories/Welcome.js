@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-console
-const log = () => console.log('Welcome to storybook!')
+// const log = () => console.log('Welcome to storybook!')
 
 export default {
     name: 'welcome',
