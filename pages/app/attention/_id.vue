@@ -81,7 +81,6 @@ export default {
         this.ID = this.$route.params.id
         await this.GetUserInfo(this.ID)
         // this.userdata.push(this.$store.getters['app/attentionuser/data'])
-        console.log('userdata', this.userdata)
     },
     methods: {
         ...mapActions('app/attentionuser', ['GetUserInfo']),

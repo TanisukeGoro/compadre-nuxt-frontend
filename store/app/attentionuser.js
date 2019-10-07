@@ -11,18 +11,17 @@ export const mutations = {
 }
 export const actions = {
     async GetUserInfo({ commit }, userId) {
-        console.log('debug001')
         let response = []
         try {
             const _response = await this.$axios.$get(
                 `${process.env.apiBaseUrl}user/${userId}`
             )
-            console.log('変数に入れる前のresponse', _response)
+            // console.log('変数に入れる前のresponse', _response)
             response = _response
         } catch (error) {
-            console.log(error)
+            // console.log(error)
         }
-        console.log('クリックしたuserの情報', response)
+        // console.log('クリックしたuserの情報', response)
         commit('GetUserInfo', response)
     }
     // async teGetUserInfost({ commit }, userId) {
