@@ -119,7 +119,8 @@ export default {
         }
     },
     created() {
-        this.iconUrl = this.$auth.state.user.icon_url
+        this.iconUrl =
+            process.env.AwsStoreImageUrl + this.$auth.state.user.icon_url
     }
 }
 </script>

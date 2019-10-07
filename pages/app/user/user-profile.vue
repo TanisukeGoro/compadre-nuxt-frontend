@@ -19,7 +19,11 @@
                         <v-flex xs12 sm12>
                             <div class="space">
                                 <img
-                                    :src="loginUserData.icon_url"
+                                    :src="
+                                        this.$auth.$state.user.icon_url
+                                            ? myIconUrl
+                                            : require('~/assets/images/onErrorUserImg.png')
+                                    "
                                     class="user-main-img"
                                 />
                             </div>
@@ -106,7 +110,10 @@
                                             <div class="editspace">
                                                 <img
                                                     :src="
-                                                        loginUserData.icon_url
+                                                        this.$auth.$state.user
+                                                            .icon_url
+                                                            ? myIconUrl
+                                                            : require('~/assets/images/onErrorUserImg.png')
                                                     "
                                                     class="user-main-img"
                                                 />
@@ -369,6 +376,8 @@ export default {
             fst_lang: '',
             snd_lang: '',
             trd_lang: '',
+            myIconUrl:
+                process.env.AwsStoreImageUrl + this.$auth.$state.user.icon_url,
             // greetingsのカウントバー
             page: 1,
             color: 'black',

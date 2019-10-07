@@ -230,7 +230,7 @@
                                             return-object
                                             single-line
                                         ></v-select>
-                                        <!-- 職業選択 -->
+                                        <!-- 言語選択 -->
                                         <v-select
                                             v-model="language"
                                             :hint="languages.description"
