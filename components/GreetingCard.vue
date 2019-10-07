@@ -127,7 +127,7 @@
                             </v-list-item-content>
                         </v-list-item>
                         <v-card-actions>
-                            <v-flex xs1>
+                            <!-- <v-flex xs1>
                                 <v-btn
                                     v-if="cardState === 'select'"
                                     color="accent"
@@ -137,8 +137,14 @@
                                 >
                                     Hi !
                                 </v-btn>
-                            </v-flex>
-                            <div v-if="cardState === 'edit'">
+                            </v-flex> -->
+                            <span v-if="cardState === 'select'" class="likebtn">
+                                <LikeButton @ClickLikebutton="HiClick" />
+                            </span>
+                            <div
+                                v-if="cardState === 'edit'"
+                                class="SaveCancelBtn"
+                            >
                                 <v-btn
                                     color="success"
                                     outlined
@@ -229,6 +235,7 @@ export default {
         }
     },
     mounted() {
+        console.log('GreetigCard :', this.displayCandidate)
         this.hashId = this.displayCandidate[this.carousel].greetings[0].hash_id
     },
     computed: {
@@ -296,6 +303,11 @@ export default {
         },
         editCancel() {
             this.$emit('cancelEditFromChild')
+        },
+        HiClick() {
+            alert(
+                'クリックされました。データベースに送る処理は何も書いていません'
+            )
         }
     }
 }
@@ -306,5 +318,11 @@ export default {
     /* transform: scale(1.2, 1.2); */
     display: inline-block;
     margin-bottom: 0 !important;
+}
+.SaveCancelBtn {
+    margin: 0 auto;
+}
+.likebtn {
+    margin: 0 auto;
 }
 </style>

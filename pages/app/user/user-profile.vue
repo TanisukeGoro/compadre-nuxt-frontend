@@ -321,9 +321,6 @@
                         <div class="user-text pt-5 pr-4 pl-4 title">
                             {{ SelfIntroduction }}
                         </div>
-                        <div class="greeting-toEdit">
-                            <v-icon>mdi-file-document-edit-outline</v-icon>
-                        </div>
                         <!--****************** ⬆︎⬆︎ 最初の画面のユーザー情報 終了 ⬆︎⬆︎ ****************** -->
                         <BottomNav />
                     </v-flex>
@@ -452,6 +449,7 @@ export default {
     async mounted() {
         Object.assign(this.snd_langages, this.fst_langages)
         Object.assign(this.trd_langages, this.fst_langages)
+
         await this.getLoginUser() // ログインしているユーザーの情報をstoreにもたせる
 
         this.storeUserData = this.$store.getters['comman/auth/data'] // storeのユーザー情報をstoreUserDataに持たせる
@@ -475,6 +473,12 @@ export default {
         this.snd_lang = this.storeUserData.user.snd_lang
         this.trd_lang = this.storeUserData.user.trd_lang
         this.country = this.storeUserData.user.country
+        console.log(this.storeUserData.user)
+        console.log(this.SelfIntroduction)
+        if (this.SelfIntroduction === null) {
+            this.SelfIntroduction =
+                '右上の"変更"ボタンから自己紹介の文を書いてみましょう！！'
+        }
     },
     methods: {
         editSave() {

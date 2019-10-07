@@ -14,10 +14,15 @@
                         href="https://greenlion62.sakura.ne.jp/LP/registar.php"
                     >
                         <p class="subtitle-1 mb-1">
-                            SIGNUP
+                            事前登録
                         </p>
                     </v-btn>
                     <div class="flex-grow-1"></div>
+                    <v-btn color="white" text to="/signup" nuxt>
+                        <p class="subtitle-1 mb-1 mr-12">
+                            Signup
+                        </p>
+                    </v-btn>
                     <v-btn color="white" text to="/login" nuxt>
                         <p class="subtitle-1 mb-1 mr-12">
                             Login
@@ -66,7 +71,7 @@
                                             color="primary"
                                             class="subtitle-1"
                                             height="40"
-                                            href="https://greenlion62.sakura.ne.jp/LP/registar.php"
+                                            to="/signup"
                                         >
                                             SIGNUP
                                         </v-btn>
@@ -270,7 +275,7 @@
                                         color="primary"
                                         class="px-10 py-4"
                                         depressed
-                                        href="https://greenlion62.sakura.ne.jp/LP/registar.php"
+                                        to="/signup"
                                     >
                                         <v-icon left
                                             >mdi-hand-pointing-right</v-icon
@@ -340,7 +345,7 @@
                                         color="primary"
                                         class="px-10 py-4"
                                         depressed
-                                        href="https://greenlion62.sakura.ne.jp/LP/registar.php"
+                                        to="/signup"
                                     >
                                         <v-icon left
                                             >mdi-hand-pointing-right</v-icon
@@ -385,7 +390,7 @@
                                         color="primary"
                                         class="px-10 py-4"
                                         depressed
-                                        href="https://greenlion62.sakura.ne.jp/LP/registar.php"
+                                        to="/signup"
                                     >
                                         <v-icon left
                                             >mdi-hand-pointing-right</v-icon
@@ -455,7 +460,7 @@
                                         color="primary"
                                         class="px-10 py-4"
                                         depressed
-                                        href="https://greenlion62.sakura.ne.jp/LP/registar.php"
+                                        to="/signup"
                                     >
                                         <v-icon left
                                             >mdi-hand-pointing-right</v-icon

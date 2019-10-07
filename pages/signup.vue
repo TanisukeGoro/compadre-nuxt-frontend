@@ -30,10 +30,6 @@
 
                     <v-stepper-items>
                         <v-stepper-content :key="`1-content`" :step="1">
-                            <v-btn color="primary" @click="nextStep(1)">
-                                Continue
-                            </v-btn>
-                            <v-btn text>Cancel</v-btn>
                             <v-card class="mb-12" flat>
                                 <v-text-field
                                     v-model="name"
@@ -49,13 +45,20 @@
                                     required
                                 ></v-text-field>
                             </v-card>
+                            <div class="ContinueCancel">
+                                <v-btn text>Cancel</v-btn>
+                                <v-btn color="primary" @click="nextStep(1)">
+                                    Continue
+                                </v-btn>
+                            </div>
                         </v-stepper-content>
                         <v-stepper-content :key="`2-content`" :step="2">
-                            <v-btn color="primary" @click="nextStep(2)">
+                            <!-- <v-btn color="primary" @click="nextStep(2)">
                                 Continue
                             </v-btn>
 
-                            <v-btn text>Cancel</v-btn>
+                            <v-btn text>Cancel</v-btn> -->
+
                             <v-card class="mb-12" flat>
                                 <v-text-field
                                     v-model="password"
@@ -65,7 +68,7 @@
                                     :rules="[rules.required, rules.min]"
                                     :type="showPassword ? 'text' : 'password'"
                                     name="input-10-2"
-                                    label="Not vrisible"
+                                    label="password"
                                     hint="At least 8 characters"
                                     class="input-group--focused"
                                     @click:append="showPassword = !showPassword"
@@ -120,14 +123,20 @@
                                     </v-flex>
                                 </v-layout>
                                 <!--  ここに入れる-->
+                                <div class="ContinueCancel">
+                                    <v-btn text>Cancel</v-btn>
+                                    <v-btn color="primary" @click="nextStep(2)">
+                                        Continue
+                                    </v-btn>
+                                </div>
                             </v-card>
                         </v-stepper-content>
                         <v-stepper-content :key="`3-content`" :step="3">
-                            <v-btn color="primary" @click="nextStep(3)">
+                            <!-- <v-btn color="primary" @click="nextStep(3)">
                                 Continue
                             </v-btn>
 
-                            <v-btn text>Cancel</v-btn>
+                            <v-btn text>Cancel</v-btn> -->
                             <v-card class="mb-12" flat>
                                 <!-- 性別の選択 -->
                                 <v-btn-toggle v-model="gender" color="primary">
@@ -245,23 +254,30 @@
                                     </v-col>
                                 </v-row>
                             </v-card>
+                            <div class="ContinueCancel">
+                                <v-btn text>Cancel</v-btn>
+                                <v-btn color="primary" @click="nextStep(3)">
+                                    Continue
+                                </v-btn>
+                            </div>
                         </v-stepper-content>
                         <v-stepper-content :key="`4-content`" :step="4">
-                            <v-btn color="primary" @click="nextStep(4)">
+                            <!-- <v-btn color="primary" @click="nextStep(4)">
                                 Continue
                             </v-btn>
 
-                            <v-btn text>Cancel</v-btn>
-                            <v-card class="mb-12" flat>
+                            <v-btn text>Cancel</v-btn> -->
+                            <v-card class="mb-12 container" flat>
                                 <!-- 画像のアップロード -->
                                 <croppa
                                     v-model="croppaImg"
-                                    :width="300"
+                                    :width="150"
                                     :placeholder-font-size="16"
                                     placeholder="Account Image"
                                     :prevent-white-space="true"
                                     :zoom-speed="10"
-                                    :height="300"
+                                    :height="150"
+                                    class="imgupload"
                                 ></croppa>
                                 <!-- <v-file-input
                                 v-model="uploadImage"
@@ -281,9 +297,15 @@
                                 max-height="400"
                             ></v-img> -->
                             </v-card>
-                            <v-btn color="success" @click="imageUploader"
+                            <div class="ContinueCancel">
+                                <v-btn text>Cancel</v-btn>
+                                <v-btn color="primary" @click="nextStep(4)">
+                                    Continue
+                                </v-btn>
+                            </div>
+                            <!-- <v-btn color="success" @click="imageUploader"
                                 >text</v-btn
-                            >
+                            > -->
                         </v-stepper-content>
                         <v-stepper-content :key="`5-content`" :step="5">
                             <!-- 登録画面 -->
@@ -758,5 +780,12 @@ export default {
 .inline {
     display: inline-block;
     margin-bottom: 0 !important;
+}
+.ContinueCancel {
+    text-align: center;
+}
+.container {
+    width: 100%;
+    text-align: center;
 }
 </style>
