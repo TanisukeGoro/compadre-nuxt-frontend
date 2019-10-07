@@ -42,7 +42,11 @@
                         <v-list-item>
                             <v-list-item-avatar color="grey" size="72">
                                 <v-img
-                                    src="https://the-madison.s3-ap-northeast-1.amazonaws.com/images/wg5TX0SUwAptlVftxw1dlEG5iZewrwoinKOvmPbw.jpeg"
+                                    :src="
+                                        candidate.icon_url
+                                            ? iconBaseUrl + candidate.icon_url
+                                            : require('~/assets/images/onErrorUserImg.png')
+                                    "
                                 ></v-img>
                             </v-list-item-avatar>
                             <v-list-item-content>
@@ -226,7 +230,8 @@ export default {
                 7: '商社・金融・経営',
                 8: '学生'
             },
-            hashId: ''
+            hashId: '',
+            iconBaseUrl: process.env.AwsStoreImageUrl
         }
     },
     mounted() {
