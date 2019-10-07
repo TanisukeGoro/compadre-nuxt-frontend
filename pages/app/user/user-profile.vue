@@ -461,8 +461,7 @@ export default {
         this.editBirthday = this.storeUserData.user.birthday
         // this.editPresentLocation = 'nodata' //現在地は今のところ表示させない
         this.editSelfIntroduction = this.storeUserData.user.profile_text
-        this.editFst_lang = 'zh'
-        // this.editFst_lang = this.storeUserData.user.fst_lang
+        this.editFst_lang = this.storeUserData.user.fst_lang
         this.editSnd_lang = this.storeUserData.user.snd_lang
         this.editTrd_lang = this.storeUserData.user.trd_lang
         this.editCountry = this.storeUserData.user.country
@@ -472,8 +471,7 @@ export default {
         this.birthday = this.storeUserData.user.birthday
         // this.presentLocation = 'NULL' //現在地は今のところ表示させない
         this.SelfIntroduction = this.storeUserData.user.profile_text
-        this.fst_lang = 'zh'
-        // this.fst_lang = this.storeUserData.user.fst_lang
+        this.fst_lang = this.storeUserData.user.fst_lang
         this.snd_lang = this.storeUserData.user.snd_lang
         this.trd_lang = this.storeUserData.user.trd_lang
         this.country = this.storeUserData.user.country

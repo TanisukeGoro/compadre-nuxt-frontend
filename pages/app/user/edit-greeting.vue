@@ -28,14 +28,14 @@
 <script>
 // import { mapGetters } from 'vuex'
 // import SelectCard from '~/components/greetings/SelectCard'
-import EditGreeting from '~/components/greetings/EditGreeting'
+// import EditGreeting from '~/components/greetings/EditGreeting'
 import GreetingCard from '~/components/GreetingCard'
 import { state } from '../../../store/app/candidate'
 
 export default {
     components: {
-        Default: GreetingCard,
-        Edit: EditGreeting
+        Default: GreetingCard
+        // Edit: EditGreeting
         // Empty:
     },
     data() {

@@ -717,6 +717,7 @@ export default {
                 job_type: this.job.value,
                 oauth_id: 0,
                 face_image: '',
+                country: this.country.iso2,
                 fst_lang: this.language.langCode
             }
         },
