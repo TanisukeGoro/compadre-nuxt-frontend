@@ -473,7 +473,6 @@ export default {
         this.snd_lang = this.storeUserData.user.snd_lang
         this.trd_lang = this.storeUserData.user.trd_lang
         this.country = this.storeUserData.user.country
-
         if (this.SelfIntroduction === null) {
             this.SelfIntroduction =
                 '右上の"変更"ボタンから自己紹介の文を書いてみましょう！！'

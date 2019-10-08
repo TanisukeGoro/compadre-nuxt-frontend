@@ -1,5 +1,9 @@
 <template>
+    <v-content v-if="Nodata">
+        <NoGreeting />
+    </v-content>
     <greeting-card
+        v-else
         v-model="model"
         :candidates="candidatesarry"
         :hide-delimiters="hideDelimiters"
@@ -12,11 +16,13 @@
 import { mapActions, mapState } from 'vuex'
 // import SelectCard from '~/components/SelectCard'
 import GreetingCard from '~/components/GreetingCard'
+import NoGreeting from '~/components/NoGreeting'
 // import { firebase, db } from '~/plugins/firebase'
 export default {
     components: {
         // SelectCard
-        GreetingCard
+        GreetingCard,
+        NoGreeting
     },
 
     data() {
@@ -34,6 +40,7 @@ export default {
             showArrows: true,
             hideDelimiters: true,
             cycle: false,
+            Nodata: false,
             langCode: {
                 ja: '日本語',
                 zh: '中国語',
@@ -154,6 +161,10 @@ export default {
     },
     mounted() {
         this.currCandidate = this.candidates()
+        if (this.currCandidate.length === 0) {
+            this.Nodata = true
+        }
+
     },
     methods: {
         // バインディングヘルパーを使う

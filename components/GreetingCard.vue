@@ -235,6 +235,9 @@ export default {
         }
     },
     mounted() {
+    
+        if (this.displayCandidate.length === 0) return
+
         this.hashId = this.displayCandidate[this.carousel].greetings[0].hash_id
     },
     computed: {
