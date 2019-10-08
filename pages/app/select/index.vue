@@ -117,10 +117,6 @@ export default {
             return this.model
         },
         candidatesarry() {
-            console.log(
-                this.$store.getters['app/candidate/candidates'],
-                'qwertyuio'
-            )
             return this.$store.getters['app/candidate/candidates']
         }
     },
@@ -166,9 +162,9 @@ export default {
     mounted() {
         this.currCandidate = this.candidates()
         if (this.currCandidate.length === 0) {
-            alert('これはやばいです')
             this.Nodata = true
         }
+
     },
     methods: {
         // バインディングヘルパーを使う
