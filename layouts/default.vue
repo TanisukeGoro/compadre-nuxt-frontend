@@ -64,9 +64,11 @@
             <v-toolbar-title>{{ title }}</v-toolbar-title>
 
             <v-spacer></v-spacer>
-
+            <!-- 消すとLogoの中央揃えが崩れるので困り者。
+                色を変更して誤魔化す。
+             -->
             <v-app-bar-nav-icon @click.stop="drawerRight = !drawerRight">
-                <v-icon>mdi-settings-outline</v-icon>
+                <v-icon color="primary">mdi-settings-outline</v-icon>
             </v-app-bar-nav-icon>
         </v-app-bar>
 
@@ -119,8 +121,9 @@ export default {
         }
     },
     created() {
-        this.iconUrl =
-            process.env.AwsStoreImageUrl + this.$auth.state.user.icon_url
+        this.iconUrl = this.$options.filters.avaterIconUrl(
+            this.$auth.state.user.icon_url
+        )
     }
 }
 </script>

@@ -30,18 +30,33 @@ Vue.filter('yyyymmdd2Age', function(yyyymmdd) {
 
 // Language Code => Language Name
 Vue.filter('langCode2langName', function(langCode) {
-    if (langCode === null) return ' - '
+    if (langCode === null) return ' -- '
     const results =
         minLangCodes.find((i) => i.iso639_1 === langCode.toUpperCase()) || null
     return results ? results.local : ''
 })
 // Country Code => Country Name
 Vue.filter('countryCode2countryName', function(country) {
-    if (country === null) return ' - '
+    if (country === null) return ' -- '
     const results =
         countriesName.find((i) => i.iso2 === country.toUpperCase()) || null
     return results ? results.name : ''
 })
+
+Vue.filter('jobCode2JobName', function(jobCode) {
+    const jobCodes = {
+        1: '事務・オフィス系',
+        2: '販売・飲食・サービス系',
+        3: 'IT・エンジニア系',
+        4: 'Web・クリエイター系',
+        5: '医療・介護・福祉系',
+        6: '研究機関・教育系',
+        7: '商社・金融・経営',
+        8: '学生'
+    }
+    return Number.isInteger(jobCode) ? jobCodes[jobCode] : ' -- '
+})
+
 /**
  * GET User Age
  *
