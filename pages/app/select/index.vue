@@ -41,22 +41,6 @@ export default {
             hideDelimiters: true,
             cycle: false,
             Nodata: false,
-            langCode: {
-                ja: '日本語',
-                zh: '中国語',
-                en: '英語',
-                be: 'ロシア語',
-                pt: 'ポルトガル語',
-                es: 'スペイン語',
-                fr: 'フランス語',
-                de: 'ドイツ語',
-                it: 'イタリア語',
-                ms: 'マレー語',
-                tl: 'フィリピン語',
-                vi: 'ベトナム語',
-                th: 'タイ語',
-                tw: '台湾語'
-            },
             a: []
             // userdata: [
             //     {
@@ -164,7 +148,6 @@ export default {
         if (this.currCandidate.length === 0) {
             this.Nodata = true
         }
-
     },
     methods: {
         // バインディングヘルパーを使う
