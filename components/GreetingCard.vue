@@ -42,11 +42,7 @@
                         <v-list-item>
                             <v-list-item-avatar color="grey" size="72">
                                 <v-img
-                                    :src="
-                                        candidate.icon_url
-                                            ? iconBaseUrl + candidate.icon_url
-                                            : require('~/assets/images/onErrorUserImg.png')
-                                    "
+                                    :src="candidate.icon_url | avaterIconUrl"
                                 ></v-img>
                             </v-list-item-avatar>
                             <v-list-item-content>

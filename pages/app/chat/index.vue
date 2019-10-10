@@ -10,7 +10,13 @@
                     nuxt
                 >
                     <v-list-item-avatar>
-                        <v-img :src="chat.toTolk_uinfo.icon_url"></v-img>
+                        <v-img
+                            :src="
+                                $options.filters.avaterIconUrl(
+                                    chat.toTolk_uinfo.icon_url
+                                )
+                            "
+                        ></v-img>
                         <!-- <v-img :src="iconURL"></v-img> -->
                     </v-list-item-avatar>
 
