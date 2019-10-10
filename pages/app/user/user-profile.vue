@@ -86,10 +86,7 @@
                                             text
                                             :color="color"
                                             class="white--text"
-                                            @click="
-                                                dialog = false
-                                                editSave()
-                                            "
+                                            @click="editSave()"
                                             >Save</v-btn
                                         >
                                     </v-toolbar-items>
@@ -363,39 +360,24 @@ export default {
     data() {
         return {
             loginUserData: this.$auth.$state.user,
+            // 国籍データ
             countriesName,
+            // 言語データ
             minLangCodes,
             langages: [],
+
             // 編集のデータ
             editorParam: '',
+            // 表示用で0た
             userData: '',
+
             SelfIntroduction: '',
+            userLangages: [],
             country: '',
             // greetingsのカウントバー
-            page: 1,
             color: 'black',
-            greetinglength: 3,
             // スライドの設定
-            dialog: false,
-            notifications: false,
-            light: true,
-            delimiters: true,
-            // sound: true, // これはなんぞや？
-            widgets: false,
-            showArrows: false,
-            model: 0,
-            userLangages: [],
-
-            editJobCodes: [
-                { text: '事務・オフィス系', value: 1 },
-                { text: '販売・飲食・サービス系', value: 2 },
-                { text: 'IT・エンジニア系', value: 3 },
-                { text: 'Web・クリエイター系', value: 4 },
-                { text: '医療・介護・福祉系', value: 5 },
-                { text: '研究機関・教育系', value: 6 },
-                { text: '商社・金融・経営', value: 7 },
-                { text: '学生', value: 8 }
-            ]
+            dialog: false
         }
     },
     asyncData({ params, $auth }) {
@@ -435,14 +417,12 @@ export default {
                 e.pop()
             }
             // データの更新処理
-            console.log('this.langages.length :', this.langages.length)
             this.editorParam.fst_lang =
                 this.langages.length >= 1 ? this.langages[0] : null
             this.editorParam.snd_lang =
                 this.langages.length >= 2 ? this.langages[1] : null
             this.editorParam.trd_lang =
                 this.langages.length >= 3 ? this.langages[2] : null
-            console.log('this.editorParam :', { ...this.editorParam })
         },
         searchLang(langCode) {
             if (langCode === null) return ' -- '
@@ -460,8 +440,15 @@ export default {
             const self = this
             this.$axios
                 .$put(`${process.env.apiBaseUrl}user`, { ...this.editorParam })
-                .then((i) => (self.userData = Object.assign({}, i.user)))
-                .catch()
+                .then((i) => {
+                    self.userData = Object.assign({}, i.user)
+                    self.SelfIntroduction = i.user.profile_text
+                    self.dialog = false
+                })
+                .catch(
+                    // エラー時の処理を記述する
+                    (self.dialog = false)
+                )
         }
     }
 }
