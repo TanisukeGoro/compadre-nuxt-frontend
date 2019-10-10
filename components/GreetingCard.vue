@@ -42,11 +42,7 @@
                         <v-list-item>
                             <v-list-item-avatar color="grey" size="72">
                                 <v-img
-                                    :src="
-                                        candidate.icon_url
-                                            ? iconBaseUrl + candidate.icon_url
-                                            : require('~/assets/images/onErrorUserImg.png')
-                                    "
+                                    :src="candidate.icon_url | avaterIconUrl"
                                 ></v-img>
                             </v-list-item-avatar>
                             <v-list-item-content>
@@ -71,7 +67,7 @@
                                 <v-list-item-subtitle
                                     class="grey--text text--darken-1"
                                 >
-                                    {{ jobCode[candidate.job_type] }}
+                                    {{ candidate.job_type | jobCode2JobName }}
                                 </v-list-item-subtitle>
                             </v-list-item-content>
                         </v-list-item>
@@ -139,7 +135,10 @@
                                 </v-btn>
                             </v-flex> -->
                             <span v-if="cardState === 'select'" class="likebtn">
-                                <LikeButton @ClickLikebutton="HiClick" />
+                                <LikeButton
+                                    :btn-state="postBtnState"
+                                    @ClickLikebutton="clickHiBtn"
+                                />
                             </span>
                             <div
                                 v-if="cardState === 'edit'"
@@ -198,7 +197,7 @@ export default {
         },
         touchless: {
             type: Boolean,
-            default: true
+            default: false
         },
         hideDelimiters: {
             type: Boolean,
@@ -220,21 +219,14 @@ export default {
             storemodel: this.$store.getters['app/candidate/model'],
             model: this.$store.getters['app/candidate/model'],
             propsContent: '',
-            jobCode: {
-                1: '事務・オフィス系',
-                2: '販売・飲食・サービス系',
-                3: 'IT・エンジニア系',
-                4: 'Web・クリエイター系',
-                5: '医療・介護・福祉系',
-                6: '研究機関・教育系',
-                7: '商社・金融・経営',
-                8: '学生'
-            },
             hashId: '',
+            postBtnState: true,
             iconBaseUrl: process.env.AwsStoreImageUrl
         }
     },
     mounted() {
+        if (this.displayCandidate.length === 0) return
+
         this.hashId = this.displayCandidate[this.carousel].greetings[0].hash_id
     },
     computed: {
@@ -303,10 +295,22 @@ export default {
         editCancel() {
             this.$emit('cancelEditFromChild')
         },
-        HiClick() {
-            alert(
-                'クリックされました。データベースに送る処理は何も書いていません'
-            )
+        async postHi() {
+            this.postBtnState = false
+            try {
+                await this.$axios.$post(
+                    `${process.env.apiBaseUrl}matching/like`,
+                    {
+                        userId_you: this.displayCandidate[this.carousel].id
+                    }
+                )
+                this.postBtnState = true
+            } catch (error) {
+                this.postBtnState = true
+            }
+        },
+        clickHiBtn() {
+            if (this.postBtnState === true) this.postHi()
         }
     }
 }

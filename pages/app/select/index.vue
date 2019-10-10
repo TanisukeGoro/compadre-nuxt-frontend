@@ -1,5 +1,9 @@
 <template>
+    <v-content v-if="Nodata">
+        <NoGreeting />
+    </v-content>
     <greeting-card
+        v-else
         v-model="model"
         :candidates="candidatesarry"
         :hide-delimiters="hideDelimiters"
@@ -12,11 +16,13 @@
 import { mapActions, mapState } from 'vuex'
 // import SelectCard from '~/components/SelectCard'
 import GreetingCard from '~/components/GreetingCard'
+import NoGreeting from '~/components/NoGreeting'
 // import { firebase, db } from '~/plugins/firebase'
 export default {
     components: {
         // SelectCard
-        GreetingCard
+        GreetingCard,
+        NoGreeting
     },
 
     data() {
@@ -34,22 +40,7 @@ export default {
             showArrows: true,
             hideDelimiters: true,
             cycle: false,
-            langCode: {
-                ja: '日本語',
-                zh: '中国語',
-                en: '英語',
-                be: 'ロシア語',
-                pt: 'ポルトガル語',
-                es: 'スペイン語',
-                fr: 'フランス語',
-                de: 'ドイツ語',
-                it: 'イタリア語',
-                ms: 'マレー語',
-                tl: 'フィリピン語',
-                vi: 'ベトナム語',
-                th: 'タイ語',
-                tw: '台湾語'
-            },
+            Nodata: false,
             a: []
             // userdata: [
             //     {
@@ -154,6 +145,9 @@ export default {
     },
     mounted() {
         this.currCandidate = this.candidates()
+        if (this.currCandidate.length === 0) {
+            this.Nodata = true
+        }
     },
     methods: {
         // バインディングヘルパーを使う
@@ -270,9 +264,6 @@ export default {
                 this.$store.getters['app/candidate/candidates'][this.model].id
             )
             this.model++
-        },
-        bindCarousel(e) {
-            //
         },
         job_conversion(jobNum) {
             if (this.jobCode[jobNum]) {

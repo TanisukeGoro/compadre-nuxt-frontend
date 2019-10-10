@@ -1,5 +1,5 @@
 <template>
-    <v-app>
+    <v-app v-if="chatLists.length !== 0">
         <v-content>
             <v-list subheader>
                 <v-subheader>Recent chat</v-subheader>
@@ -10,7 +10,13 @@
                     nuxt
                 >
                     <v-list-item-avatar>
-                        <v-img :src="chat.toTolk_uinfo.icon_url"></v-img>
+                        <v-img
+                            :src="
+                                $options.filters.avaterIconUrl(
+                                    chat.toTolk_uinfo.icon_url
+                                )
+                            "
+                        ></v-img>
                         <!-- <v-img :src="iconURL"></v-img> -->
                     </v-list-item-avatar>
 
@@ -30,15 +36,25 @@
             </v-list>
         </v-content>
     </v-app>
+    <v-app v-else>
+        <v-container>
+            <NoChatPartner />
+        </v-container>
+    </v-app>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import NoChatPartner from '~/components/NoChatPartner'
 
 export default {
+    components: {
+        NoChatPartner
+    },
     data: () => ({
         // AWSの画像だったら爆速で取ってこれる感じか。
-        iconURL: `${process.env.AwsStoreImageUrl}images/GDayPwYX4Ioeknxb6R6Dbn9eDHXdr2NNy94Dctp5.jpeg`
+        iconURL: `${process.env.AwsStoreImageUrl}images/GDayPwYX4Ioeknxb6R6Dbn9eDHXdr2NNy94Dctp5.jpeg`,
+        No_chat_partner: true
     }),
     computed: {
         ...mapGetters('app/chat/chatList', ['chatLists'])

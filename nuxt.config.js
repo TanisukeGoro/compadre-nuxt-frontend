@@ -1,7 +1,8 @@
 import colors from 'vuetify/es5/util/colors'
-// ここでenvの設定ファイルの切り替え
 const environment = process.env.NODE_ENV || 'development'
 const envSet = require(`./env.${environment}.js`)
+// ここで切り替え
+const apiUrl = 'https://compadre.herokuapp.com/api/v1/'
 
 export default {
     mode: 'spa',
@@ -22,6 +23,10 @@ export default {
                 hid: 'description',
                 name: 'description',
                 content: process.env.npm_package_description || ''
+            },
+            {
+                name: 'google',
+                content: 'notranslate'
             }
         ],
         link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
@@ -94,18 +99,17 @@ export default {
                 // APIのエンドポイント
                 endpoints: {
                     login: {
-                        url: 'https://compadre.herokuapp.com/api/v1/auth/login',
+                        url: `${apiUrl}auth/login`,
                         method: 'post',
                         // レスポンスのトークンが入っているkey
                         propertyName: 'access_token'
                     },
                     logout: {
-                        url:
-                            'https://compadre.herokuapp.com/api/v1/auth/logout',
+                        url: `${apiUrl}auth/logout`,
                         method: 'post'
                     },
                     user: {
-                        url: 'https://compadre.herokuapp.com/api/v1/user',
+                        url: `${apiUrl}user`,
                         method: 'get',
                         propertyName: 'user'
                     }
@@ -132,7 +136,9 @@ export default {
                     warning: '#ffeb3b',
                     info: '#cddc39',
                     success: '#EBB920',
-                    background: '#fafafa'
+                    background: '#fafafa',
+                    chips: '#FAEEB8',
+                    chipsColor: '#61636b'
                 },
                 // ダークモードのとき
                 dark: {

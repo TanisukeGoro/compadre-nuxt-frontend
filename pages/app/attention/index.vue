@@ -1,5 +1,5 @@
 <template>
-    <v-content>
+    <v-content v-if="No_one_likes_me">
         <v-container class="mt-0">
             <v-card
                 v-for="(item, index) in attentionMeData"
@@ -12,7 +12,10 @@
             >
                 <v-list-item three-line>
                     <v-list-item-avatar size="70" color="grey">
-                        <v-img :src="item.icon_url" aspect-ratio="1.7"></v-img
+                        <v-img
+                            :src="$options.filters.avaterIconUrl(item.icon_url)"
+                            aspect-ratio="1.7"
+                        ></v-img
                     ></v-list-item-avatar>
 
                     <div>
@@ -30,12 +33,17 @@
             </v-card>
         </v-container>
     </v-content>
+    <v-content v-else><NoLikesme /></v-content>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
 import { countries } from '~/plugins/phoneCodeCountries'
+import NoLikesme from '~/components/NoLikesme'
 export default {
+    components: {
+        NoLikesme
+    },
     data() {
         return {
             countries,
@@ -50,12 +58,17 @@ export default {
                 6: '研究機関・教育系',
                 7: '商社・金融・経営',
                 8: '学生'
-            }
+            },
+            No_one_likes_me: true
         }
     },
     async mounted() {
         await this.GetAttentionMe()
         this.attentionMeData = this.$store.getters['app/attention_me/data']
+        if (this.attentionMeData.length === 0) {
+            this.No_one_likes_me = false
+        }
+        console.log(this.attentionMeData.length)
     },
     methods: {
         ...mapActions('app/attention_me', ['GetAttentionMe']),
