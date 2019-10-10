@@ -1,47 +1,47 @@
 <template>
-    <v-app>
-        <v-container>
-            <v-layout v-for="(msg, index) in messages" :key="index">
-                <v-row>
-                    <div :class="{ 'flex-grow-1': msg === 1 }"></div>
+  <v-app>
+    <v-container>
+      <v-layout v-for="(msg, index) in messages" :key="index">
+        <v-row>
+          <div :class="{ 'flex-grow-1': msg === 1 }"></div>
 
-                    <v-col>
-                        <v-card class="pa-2" outlined tile>
-                            あああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ
-                        </v-card>
-                    </v-col>
-                </v-row>
-            </v-layout>
-        </v-container>
-    </v-app>
+          <v-col>
+            <v-card class="pa-2" outlined tile>
+              あああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-layout>
+    </v-container>
+  </v-app>
 </template>
 
 <script>
 export default {
-    layout: 'chat',
-    data() {
-        return {
-            messageInputHeight: '48px',
-            message: '',
-            messages: [
-                { text: 'メッセージ1', sender: 1 },
-                { text: 'メッセージ2', sender: 1 },
-                { text: 'メッセージ3', sender: 2 },
-                { text: 'メッセージ4', sender: 1 },
-                { text: 'メッセージ4', sender: 1 },
-                { text: 'メッセージ4', sender: 1 },
-                { text: 'メッセージ5', sender: 2 },
-                { text: 'メッセージ6', sender: 2 }
-            ],
-            directMessages: this.$store.state.directMessages
-        }
-    },
-    created() {},
-    updated() {},
-    methods: {
-        sendMessage() {},
-        getMessages() {}
+  layout: 'chat',
+  data() {
+    return {
+      messageInputHeight: '48px',
+      message: '',
+      messages: [
+        { text: 'メッセージ1', sender: 1 },
+        { text: 'メッセージ2', sender: 1 },
+        { text: 'メッセージ3', sender: 2 },
+        { text: 'メッセージ4', sender: 1 },
+        { text: 'メッセージ4', sender: 1 },
+        { text: 'メッセージ4', sender: 1 },
+        { text: 'メッセージ5', sender: 2 },
+        { text: 'メッセージ6', sender: 2 }
+      ],
+      directMessages: this.$store.state.directMessages
     }
+  },
+  created() {},
+  updated() {},
+  methods: {
+    sendMessage() {},
+    getMessages() {}
+  }
 }
 </script>
 

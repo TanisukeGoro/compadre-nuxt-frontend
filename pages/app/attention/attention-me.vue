@@ -1,7 +1,7 @@
 <template>
-    <v-content>
-        <likecard />
-    </v-content>
+  <v-content>
+    <likecard />
+  </v-content>
 </template>
 
 <script>
@@ -9,8 +9,8 @@
 import likecard from '~/components/likecard'
 import '@/assets/attension-mr.css'
 export default {
-    components: {
-        likecard
-    }
+  components: {
+    likecard
+  }
 }
 </script>
