@@ -265,9 +265,6 @@ export default {
             )
             this.model++
         },
-        bindCarousel(e) {
-            //
-        },
         job_conversion(jobNum) {
             if (this.jobCode[jobNum]) {
                 return this.jobCode[jobNum]
