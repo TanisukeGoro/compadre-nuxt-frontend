@@ -2,7 +2,7 @@ import colors from 'vuetify/es5/util/colors'
 const environment = process.env.NODE_ENV || 'development'
 const envSet = require(`./env.${environment}.js`)
 // ここで切り替え
-const apiUrl = 'http://localhost:80/api/v1/'
+const apiUrl = 'https://compadre.herokuapp.com/api/v1/'
 
 export default {
     mode: 'spa',
