@@ -12,7 +12,10 @@
             >
                 <v-list-item three-line>
                     <v-list-item-avatar size="70" color="grey">
-                        <v-img :src="item.icon_url" aspect-ratio="1.7"></v-img
+                        <v-img
+                            :src="$options.filters.avaterIconUrl(item.icon_url)"
+                            aspect-ratio="1.7"
+                        ></v-img
                     ></v-list-item-avatar>
 
                     <div>

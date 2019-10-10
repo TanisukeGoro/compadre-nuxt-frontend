@@ -13,9 +13,7 @@
                 }}</v-callout>
                 <v-callout v-else :is-left="false"
                     ><v-img
-                        :src="
-                            $auth.state.user.icon_url ? myIconUrl : errorIconURL
-                        "
+                        :src="$auth.state.user.icon_url | avaterIconUrl"
                     ></v-img
                 ></v-callout>
             </div>
@@ -33,9 +31,7 @@
                             max-width="34px"
                             max-height="34px"
                             :src="
-                                toTalkUser.toTolk_uinfo.icon_url
-                                    ? youIconUrl
-                                    : errorIconURL
+                                toTalkUser.toTolk_uinfo.icon_url | avaterIconUrl
                             "
                             alt="avatar"
                         />
@@ -93,14 +89,7 @@ export default {
         }
     },
     data() {
-        return {
-            errorIconURL: '~/assets/images/onErrorUserImg.png',
-            myIconUrl: `${process.env.AwsStoreImageUrl}${this.$auth.state.user.icon_url}`,
-            youIconUrl: ''
-        }
-    },
-    mounted() {
-        this.youIconUrl = `${process.env.AwsStoreImageUrl}${this.toTalkUser.toTolk_uinfo.icon_url}`
+        return {}
     },
     updated() {
         // 更新があったらスクロールする。

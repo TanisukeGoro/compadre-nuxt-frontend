@@ -58,6 +58,17 @@ Vue.filter('jobCode2JobName', function(jobCode) {
 })
 
 /**
+ * 画像のURLを変換するための
+ */
+Vue.filter('avaterIconUrl', function(iconUrl) {
+    if (iconUrl === null || iconUrl === '')
+        return require('~/assets/images/onErrorUserImg.png')
+    return !~iconUrl.indexOf('lorempixel', 'start')
+        ? `${process.env.AwsStoreImageUrl}${iconUrl}`
+        : iconUrl
+})
+
+/**
  * GET User Age
  *
  * @param {number} year Birth year
