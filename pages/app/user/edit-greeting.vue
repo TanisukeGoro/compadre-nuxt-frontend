@@ -117,6 +117,7 @@ export default {
                 let set = Object.assign({}, user)
                 greetingsArr.push(set)
             }
+            console.log('greetingArr :', { ...greetingsArr })
             return { greetings: greetingsArr }
         })
     },

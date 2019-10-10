@@ -1,12 +1,12 @@
 export const state = () => ({
-    data: []
+    attentionUser: []
 })
 export const getters = {
-    data: (state) => state.data
+    attentionUser: (state) => state.attentionUser
 }
 export const mutations = {
     GetUserInfo(state, payload) {
-        state.data = payload
+        state.attentionUser = payload
     }
 }
 export const actions = {

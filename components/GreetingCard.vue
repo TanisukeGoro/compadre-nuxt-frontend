@@ -221,12 +221,13 @@ export default {
             propsContent: '',
             hashId: '',
             postBtnState: true,
+            nextState: true,
             iconBaseUrl: process.env.AwsStoreImageUrl
         }
     },
     mounted() {
         if (this.displayCandidate.length === 0) return
-
+        if (this.displayCandidate[this.carousel].greetings.length === 0) return
         this.hashId = this.displayCandidate[this.carousel].greetings[0].hash_id
     },
     computed: {
@@ -295,7 +296,15 @@ export default {
         editCancel() {
             this.$emit('cancelEditFromChild')
         },
-        async postHi() {
+        clickHiBtn() {
+            if (this.postBtnState === true)
+                this.likeUser(this.displayCandidate[this.carousel].id)
+        },
+        /**
+         * ユーザーによるいいねをPOSTしてる。
+         * nuxtStateで連打による誤作動を防止している。
+         */
+        async postUserLike(LikedID) {
             this.postBtnState = false
             try {
                 await this.$axios.$post(
@@ -309,8 +318,26 @@ export default {
                 this.postBtnState = true
             }
         },
-        clickHiBtn() {
-            if (this.postBtnState === true) this.postHi()
+        async matchingUser(LikedID) {
+            try {
+                await this.$axios.$post(`${process.env.apiBaseUrl}matching`, {
+                    userId_you: LikedID
+                })
+            } catch (error) {}
+        },
+        /**
+         * ユーザーのいいねのPOSTが完了してから次のユーザーを呼び出す。
+         */
+        likeUser(LikedID) {
+            console.log(
+                'likeUser',
+                this.displayCandidate[this.carousel].has_user_voted
+            )
+            if (this.displayCandidate[this.carousel].has_user_voted) {
+                console.log('matchinguser')
+                this.matchingUser(LikedID)
+            }
+            this.postUserLike(LikedID)
         }
     }
 }
