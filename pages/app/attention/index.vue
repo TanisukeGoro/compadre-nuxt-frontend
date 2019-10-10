@@ -75,9 +75,6 @@ export default {
         ...mapState('app/attention_me', ['data']),
         job_conversion(job) {
             return this.jobCode[job]
-        },
-        Userdata(data) {
-            this.$router.push('../pages/app/attention-me/_attentionId=' + data)
         }
     }
 }

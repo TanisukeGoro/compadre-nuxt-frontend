@@ -2,8 +2,10 @@ import colors from 'vuetify/es5/util/colors'
 const environment = process.env.NODE_ENV || 'development'
 const envSet = require(`./env.${environment}.js`)
 // ここで切り替え
-const apiUrl = 'https://compadre.herokuapp.com/api/v1/'
-
+const apiUrl =
+    process.env.NODE_ENV === 'development'
+        ? 'http://localhost:80/api/v1/'
+        : 'https://compadre.herokuapp.com/api/v1/'
 export default {
     mode: 'spa',
     env: envSet,
@@ -82,6 +84,11 @@ export default {
         '/api': 'http://localhost/api/v1/',
         '/geolocation':
             'https://geoapi.heartrails.com/api/json?method=searchByGeoLocation'
+    },
+    pwa: {
+        manifest: {
+            start_url: '/app/select'
+        }
     },
     /**
      * Auth module configuration
