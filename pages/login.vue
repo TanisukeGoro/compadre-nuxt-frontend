@@ -5,8 +5,9 @@
                 <v-col cols="12" sm="8" md="4">
                     <v-card class="elevation-12 mb-3">
                         <v-toolbar color="primary" dark flat>
+                            <v-spacer></v-spacer>
                             <v-toolbar-title class="font-weight-black headline">
-                                「Open world and mind」</v-toolbar-title
+                                Open world and mind</v-toolbar-title
                             >
                             <div class="flex-grow-1"></div>
                         </v-toolbar>
@@ -30,11 +31,9 @@
                                 ></v-text-field>
                             </v-form>
                         </v-card-text>
-
                         <v-alert v-if="showError" color="red" text prominent>
                             user ID or password is invalid
                         </v-alert>
-
                         <v-list
                             align="center"
                             justify="center"
@@ -53,6 +52,8 @@
                             <v-btn
                                 color="primary"
                                 style="width:300px; border-radius:10px;"
+                                to="/signup"
+                                nuxt
                                 >Sign Up</v-btn
                             >
                         </v-list>

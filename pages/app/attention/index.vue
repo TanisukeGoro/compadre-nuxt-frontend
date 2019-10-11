@@ -68,7 +68,6 @@ export default {
         if (this.attentionMeData.length === 0) {
             this.No_one_likes_me = false
         }
-        console.log(this.attentionMeData.length)
     },
     methods: {
         ...mapActions('app/attention_me', ['GetAttentionMe']),
