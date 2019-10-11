@@ -19,8 +19,7 @@ export default {
             { charset: 'utf-8' },
             {
                 name: 'viewport',
-                content:
-                    'width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no'
+                content: 'width=device-width, initial-scale=1'
             },
             {
                 hid: 'description',
@@ -36,63 +35,45 @@ export default {
             { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
             {
                 rel: 'apple-touch-startup-image',
-                href: '/splashscreens/iphone5_splash.png',
+                href: '/images/splash/launch-640x1136.png',
                 media:
                     '(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)'
             },
             {
                 rel: 'apple-touch-startup-image',
-                href: '/splashscreens/iphone6_splash.png',
+                href: '/images/splash/launch-750x1294.png',
                 media:
                     '(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)'
             },
             {
                 rel: 'apple-touch-startup-image',
-                href: '/splashscreens/iphoneplus_splash.png',
+                href: '/images/splash/launch-1242x2148.png',
                 media:
-                    '(device-width: 621px) and (device-height: 1104px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)'
+                    '(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)'
             },
             {
                 rel: 'apple-touch-startup-image',
-                href: '/splashscreens/iphonex_splash.png',
+                href: '/images/splash/launch-1125x2436.png',
                 media:
                     '(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)'
             },
             {
                 rel: 'apple-touch-startup-image',
-                href: '/splashscreens/iphonexr_splash.png',
+                href: '/images/splash/launch-1536x2048.png',
                 media:
-                    '(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)'
+                    '(min-device-width: 768px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)'
             },
             {
                 rel: 'apple-touch-startup-image',
-                href: '/splashscreens/iphonexsmax_splash.png',
+                href: '/images/splash/launch-1668x2224.png',
                 media:
-                    '(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)'
+                    '(min-device-width: 834px) and (max-device-width: 834px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)'
             },
             {
                 rel: 'apple-touch-startup-image',
-                href: '/splashscreens/ipad_splash.png',
+                href: '/images/splash/launch-2048x2732.png',
                 media:
-                    '(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)'
-            },
-            {
-                rel: 'apple-touch-startup-image',
-                href: '/splashscreens/ipadpro1_splash.png',
-                media:
-                    '(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)'
-            },
-            {
-                rel: 'apple-touch-startup-image',
-                href: '/splashscreens/ipadpro3_splash.png',
-                media:
-                    '(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)'
-            },
-            {
-                rel: 'apple-touch-startup-image',
-                href: '/splashscreens/ipadpro2_splash.png',
-                media:
-                    '(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)'
+                    '(min-device-width: 1024px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)'
             }
         ]
     },
