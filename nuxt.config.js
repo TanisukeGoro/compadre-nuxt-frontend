@@ -44,7 +44,7 @@ export default {
     /*
      ** Plugins to load before mounting the App
      */
-    plugins: ['~/plugins/fillters'],
+    plugins: ['~/plugins/fillters', '~/plugins/head.js'],
     /*
      ** Nuxt.js dev-modules
      */
