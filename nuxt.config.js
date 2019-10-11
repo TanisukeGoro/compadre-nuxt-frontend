@@ -2,8 +2,10 @@ import colors from 'vuetify/es5/util/colors'
 const environment = process.env.NODE_ENV || 'development'
 const envSet = require(`./env.${environment}.js`)
 // ここで切り替え
-const apiUrl = 'https://compadre.herokuapp.com/api/v1/'
-
+const apiUrl =
+    process.env.NODE_ENV === 'development'
+        ? 'http://localhost:80/api/v1/'
+        : 'https://compadre.herokuapp.com/api/v1/'
 export default {
     mode: 'spa',
     env: envSet,
@@ -29,7 +31,13 @@ export default {
                 content: 'notranslate'
             }
         ],
-        link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+        link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+          { rel: "apple-touch-startup-image", href: "launch-1125x2436.png", media: "(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" },
+            { rel: "apple-touch-startup-image", href: "launch-750x1334.png", media: "(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" },
+            { rel: "apple-touch-startup-image", href: "launch-1242x2208.png", media: "(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3)" },
+            { rel: "apple-touch-startup-image", href: "launch-640x1136.png", media: "(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" }
+    ]
+        
     },
     /*
      ** Customize the progress-bar color
@@ -38,11 +46,11 @@ export default {
     /*
      ** Global CSS
      */
-    css: ['@/assets/css/iti-flags.css'],
+    css: ['@/assets/css/iti-flags.css', '@/assets/css/logo-font.css'],
     /*
      ** Plugins to load before mounting the App
      */
-    plugins: ['~/plugins/fillters'],
+    plugins: ['~/plugins/fillters', '~/plugins/head.js'],
     /*
      ** Nuxt.js dev-modules
      */
@@ -59,7 +67,8 @@ export default {
         '@nuxtjs/axios',
         '@nuxtjs/proxy',
         '@nuxtjs/pwa',
-        '@nuxtjs/auth'
+        '@nuxtjs/auth',
+        'nuxt-webfontloader'
     ],
     /*
      ** Axios module configuration
@@ -78,10 +87,11 @@ export default {
      * proxy module configration
      * プロキシを設定したけど動く気がしないのでとりあえず放置する。
      */
-    proxy: {
-        '/api': 'http://localhost/api/v1/',
-        '/geolocation':
-            'https://geoapi.heartrails.com/api/json?method=searchByGeoLocation'
+    proxy: {},
+    pwa: {
+        manifest: {
+            start_url: '/app/select'
+        }
     },
     /**
      * Auth module configuration
@@ -117,6 +127,11 @@ export default {
             }
         }
     },
+    webfontloader: {
+        google: {
+            families: ['Pacifico:400,700'] // Loads Lato font with weights 400 and 700
+        }
+    },
     /*
      ** vuetify module configuration
      ** https://github.com/nuxt-community/vuetify-module
@@ -138,7 +153,8 @@ export default {
                     success: '#EBB920',
                     background: '#fafafa',
                     chips: '#FAEEB8',
-                    chipsColor: '#61636b'
+                    chipsColor: '#61636b',
+                    logoText: '#4db4da'
                 },
                 // ダークモードのとき
                 dark: {
