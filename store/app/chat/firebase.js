@@ -1,9 +1,9 @@
 import { firestoreAction } from 'vuexfire'
 export const state = () => ({
-  posts: []
+    posts: []
 })
 export const getters = {
-  posts: (state) => state.posts
+    posts: (state) => state.posts
 }
 
 /**
@@ -14,10 +14,10 @@ export const getters = {
  */
 
 export const actions = {
-  /**
-   * コールバックをasync, awaitするのめっちゃ大事。
-   */
-  setPostsRef: firestoreAction(async function(context, ref) {
-    await context.bindFirestoreRef('posts', ref)
-  })
+    /**
+     * コールバックをasync, awaitするのめっちゃ大事。
+     */
+    setPostsRef: firestoreAction(async function(context, ref) {
+        await context.bindFirestoreRef('posts', ref)
+    })
 }

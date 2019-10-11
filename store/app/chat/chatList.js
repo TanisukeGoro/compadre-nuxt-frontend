@@ -1,16 +1,16 @@
 export const state = () => ({
-  chatlists: []
+    chatlists: []
 })
 export const getters = {
-  chatLists: (state) => state.chatlists
+    chatLists: (state) => state.chatlists
 }
 export const mutations = {
-  chatLists(state, payload) {
-    state.chatlists = payload
-  }
+    chatLists(state, payload) {
+        state.chatlists = payload
+    }
 }
 export const actions = {
-  getChatList({ commit }, payload) {
-    commit('chatLists', payload)
-  }
+    getChatList({ commit }, payload) {
+        commit('chatLists', payload)
+    }
 }

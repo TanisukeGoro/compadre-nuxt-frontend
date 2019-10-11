@@ -1,25 +1,25 @@
 <template>
-  <v-slider
-    v-model="distance"
-    label="距離"
-    min="0"
-    max="100"
-    thumb-label
-    @input="onChange"
-  ></v-slider>
+    <v-slider
+        v-model="distance"
+        label="距離"
+        min="0"
+        max="100"
+        thumb-label
+        @input="onChange"
+    ></v-slider>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      distance: ''
+    data() {
+        return {
+            distance: ''
+        }
+    },
+    methods: {
+        onChange() {
+            this.$emit('input', this.distance)
+        }
     }
-  },
-  methods: {
-    onChange() {
-      this.$emit('input', this.distance)
-    }
-  }
 }
 </script>
