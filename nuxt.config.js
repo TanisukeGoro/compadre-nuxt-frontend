@@ -21,6 +21,11 @@ export default {
                 name: 'viewport',
                 content: 'width=device-width, initial-scale=1'
             },
+            { name: 'apple-mobile-web-app-capable', content: 'yes' },
+            {
+                name: 'apple-mobile-web-app-status-bar-style',
+                content: 'black-translucent'
+            },
             {
                 hid: 'description',
                 name: 'description',
@@ -128,7 +133,9 @@ export default {
     proxy: {},
     pwa: {
         manifest: {
-            start_url: '/app/select'
+            start_url: '/app/select',
+            name: 'compadre',
+            description: 'The Compadre frontend side project'
         }
     },
     /**
@@ -228,7 +235,7 @@ export default {
         }
     },
     workbox: {
-        dev: false
+        dev: true
     },
     generate: {
         fallback: true
