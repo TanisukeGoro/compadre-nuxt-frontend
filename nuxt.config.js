@@ -24,7 +24,7 @@ export default {
             { name: 'apple-mobile-web-app-capable', content: 'yes' },
             {
                 name: 'apple-mobile-web-app-status-bar-style',
-                content: 'black-translucent'
+                content: 'default'
             },
             {
                 hid: 'description',
