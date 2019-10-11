@@ -5,8 +5,9 @@
                 <v-col cols="12" sm="8" md="4">
                     <v-card class="elevation-12 mb-3">
                         <v-toolbar color="primary" dark flat>
-                            <v-toolbar-title
-                                >The Madisonにログイン</v-toolbar-title
+                            <v-spacer></v-spacer>
+                            <v-toolbar-title class="font-weight-black headline">
+                                Open world and mind</v-toolbar-title
                             >
                             <div class="flex-grow-1"></div>
                         </v-toolbar>
@@ -30,11 +31,31 @@
                                 ></v-text-field>
                             </v-form>
                         </v-card-text>
-                        <v-card-actions>
-                            <div class="flex-grow-1"></div>
-                            <v-btn color="primary" @click="login">Login</v-btn>
-                        </v-card-actions>
+                        <v-list
+                            align="center"
+                            justify="center"
+                            style="padding-bottom:5%;"
+                        >
+                            <v-list>
+                                <v-btn
+                                    class="ma-2"
+                                    outlined
+                                    color="primary"
+                                    style="width:300px; border-radius:10px;"
+                                    @click="login"
+                                    >Login</v-btn
+                                >
+                            </v-list>
+                            <v-btn
+                                color="primary"
+                                style="width:300px; border-radius:10px;"
+                                to="/signup"
+                                nuxt
+                                >Sign Up</v-btn
+                            >
+                        </v-list>
                     </v-card>
+
                     <v-card title="Social Login" bg-variant="light" class="p-2">
                         <v-list>
                             <v-list-item-group color="primary">

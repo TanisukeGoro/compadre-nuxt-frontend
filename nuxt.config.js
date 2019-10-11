@@ -40,11 +40,11 @@ export default {
     /*
      ** Global CSS
      */
-    css: ['@/assets/css/iti-flags.css'],
+    css: ['@/assets/css/iti-flags.css', '@/assets/css/logo-font.css'],
     /*
      ** Plugins to load before mounting the App
      */
-    plugins: ['~/plugins/fillters'],
+    plugins: ['~/plugins/fillters', '~/plugins/head.js'],
     /*
      ** Nuxt.js dev-modules
      */
@@ -61,7 +61,8 @@ export default {
         '@nuxtjs/axios',
         '@nuxtjs/proxy',
         '@nuxtjs/pwa',
-        '@nuxtjs/auth'
+        '@nuxtjs/auth',
+        'nuxt-webfontloader'
     ],
     /*
      ** Axios module configuration
@@ -80,11 +81,7 @@ export default {
      * proxy module configration
      * プロキシを設定したけど動く気がしないのでとりあえず放置する。
      */
-    proxy: {
-        '/api': 'http://localhost/api/v1/',
-        '/geolocation':
-            'https://geoapi.heartrails.com/api/json?method=searchByGeoLocation'
-    },
+    proxy: {},
     pwa: {
         manifest: {
             start_url: '/app/select'
@@ -124,6 +121,11 @@ export default {
             }
         }
     },
+    webfontloader: {
+        google: {
+            families: ['Pacifico:400,700'] // Loads Lato font with weights 400 and 700
+        }
+    },
     /*
      ** vuetify module configuration
      ** https://github.com/nuxt-community/vuetify-module
@@ -145,7 +147,8 @@ export default {
                     success: '#EBB920',
                     background: '#fafafa',
                     chips: '#FAEEB8',
-                    chipsColor: '#61636b'
+                    chipsColor: '#61636b',
+                    logoText: '#4db4da'
                 },
                 // ダークモードのとき
                 dark: {
