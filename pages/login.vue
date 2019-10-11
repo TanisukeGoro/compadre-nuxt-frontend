@@ -31,12 +31,7 @@
                             </v-form>
                         </v-card-text>
 
-                        <v-alert
-                            v-if="showError"
-                            color="red"
-                            text="true"
-                            prominent="true"
-                        >
+                        <v-alert v-if="showError" color="red" text prominent>
                             user ID or password is invalid
                         </v-alert>
 
