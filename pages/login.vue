@@ -31,6 +31,15 @@
                             </v-form>
                         </v-card-text>
 
+                        <v-alert
+                            v-if="showError"
+                            color="red"
+                            text="true"
+                            prominent="true"
+                        >
+                            user ID or password is invalid
+                        </v-alert>
+
                         <v-list
                             align="center"
                             justify="center"
@@ -49,14 +58,11 @@
                             <v-btn
                                 color="primary"
                                 style="width:300px; border-radius:10px;"
-                                to="/signup"
-                                nuxt
-                                @click="signup"
                                 >Sign Up</v-btn
                             >
                         </v-list>
                     </v-card>
-                    <v-list-itemx> </v-list-itemx>
+
                     <v-card title="Social Login" bg-variant="light" class="p-2">
                         <v-list>
                             <v-list-item-group color="primary">
@@ -102,6 +108,7 @@ export default {
             email: '',
             password: '',
             error: null,
+            showError: false,
             strategies: [
                 // {
                 //     key: 'auth0',
@@ -154,6 +161,7 @@ export default {
                 })
                 .catch((e) => {
                     this.error = e + ''
+                    this.showError = true
                 })
         },
         async social(key) {
