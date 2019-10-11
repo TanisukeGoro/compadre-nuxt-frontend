@@ -1,12 +1,14 @@
 <template>
-    <v-content>
+    <v-content
+        :style="{ background: $vuetify.theme.themes['light'].secondary }"
+    >
         <v-container class="fill-height" fluid>
             <v-row align="center" justify="center">
                 <v-col cols="12" sm="8" md="4">
                     <v-card class="elevation-12 mb-3">
                         <v-toolbar color="primary" dark flat>
                             <v-spacer></v-spacer>
-                            <v-toolbar-title class="font-weight-black headline">
+                            <v-toolbar-title class="logo-font logoText--text">
                                 Open world and mind</v-toolbar-title
                             >
                             <div class="flex-grow-1"></div>
