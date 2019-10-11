@@ -59,8 +59,7 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/proxy',
     '@nuxtjs/pwa',
-    '@nuxtjs/auth',
-    '@nuxtjs/onesignal'
+    '@nuxtjs/auth'
   ],
   /*
    ** Axios module configuration
@@ -115,15 +114,6 @@ export default {
             propertyName: 'user'
           }
         }
-      }
-    }
-  },
-  onesignal: {
-    init: {
-      appId: '7facac0d-6d4d-4c47-9c39-3323c4840ed1',
-      allowLocalhostAsSecureOrigin: true,
-      welcomeNotification: {
-        disable: true
       }
     }
   },
