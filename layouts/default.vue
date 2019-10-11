@@ -61,7 +61,7 @@
 
             <v-spacer></v-spacer>
 
-            <v-toolbar-title>{{ title }}</v-toolbar-title>
+            <v-toolbar-title class="logo-font">{{ title }}</v-toolbar-title>
 
             <v-spacer></v-spacer>
             <!-- 消すとLogoの中央揃えが崩れるので困り者。
