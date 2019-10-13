@@ -12,7 +12,7 @@
                     <v-list-item-avatar>
                         <v-img
                             :src="
-                                $options.filters.avaterIconUrl(
+                                $options.filters.avatarIconUrl(
                                     chat.toTolk_uinfo.icon_url
                                 )
                             "

@@ -42,7 +42,7 @@
                         <v-list-item>
                             <v-list-item-avatar color="grey" size="72">
                                 <v-img
-                                    :src="candidate.icon_url | avaterIconUrl"
+                                    :src="candidate.icon_url | avatarIconUrl"
                                 ></v-img>
                             </v-list-item-avatar>
                             <v-list-item-content>

@@ -60,7 +60,7 @@ Vue.filter('jobCode2JobName', function(jobCode) {
 /**
  * 画像のURLを変換するための
  */
-Vue.filter('avaterIconUrl', function(iconUrl) {
+Vue.filter('avatarIconUrl', function(iconUrl) {
     if (iconUrl === null || iconUrl === '')
         return require('~/assets/images/onErrorUserImg.png')
     return !~iconUrl.indexOf('lorempixel', 'start')

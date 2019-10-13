@@ -12,21 +12,13 @@
                     <div class="space">
                         <img
                             :src="
-                                $options.filters.avaterIconUrl(
+                                $options.filters.avatarIconUrl(
                                     this.$auth.$state.user.icon_url
                                 )
                             "
                             class="user-main-img"
                         />
                     </div>
-                    <!-- <div
-                                class="user-img-space"
-                                style="position:relative;"
-                            > -->
-                    <!-- <img
-                                    :src="loginUserData.icon_url"
-                                    class="user-main-img"
-                                /> -->
                     <v-card-text font-weight-bold class="user-name">
                         <v-list-item-title class="headline mb-1">
                             {{ userData.name }}
@@ -96,17 +88,55 @@
                                     style="margin:0 auto;"
                                 >
                                     <div class="editspace">
-                                        <img
-                                            :src="
-                                                $options.filters.avaterIconUrl(
-                                                    this.$auth.$state.user
-                                                        .icon_url
-                                                )
+                                        <v-avatar
+                                            class="profile user-main-img"
+                                            color="grey"
+                                            size="74"
+                                            @click="
+                                                editProfilePhotoDialog = !editProfilePhotoDialog
                                             "
-                                            class="user-main-img"
-                                        />
+                                        >
+                                            <v-img
+                                                :lazy-src="
+                                                    $options.filters.avatarIconUrl(
+                                                        this.$auth.$state.user
+                                                            .icon_url
+                                                    )
+                                                "
+                                            >
+                                                <template v-slot:placeholder>
+                                                    <v-row
+                                                        class="fill-height ma-0"
+                                                        align="center"
+                                                        justify="center"
+                                                    >
+                                                        <v-icon
+                                                            color="white"
+                                                            size="30"
+                                                            >mdi-camera-enhance-outline</v-icon
+                                                        >
+                                                    </v-row>
+                                                </template>
+                                            </v-img>
+                                        </v-avatar>
                                     </div>
                                 </v-flex>
+                                <div
+                                    style="position: absolute; width: 140px; text-align: end;"
+                                >
+                                    <v-dialog
+                                        v-model="editProfilePhotoDialog"
+                                        width="500"
+                                    >
+                                        <v-card>
+                                            <edit-profile-img
+                                                @cancelProfileImg="
+                                                    editProfilePhotoDialog = !editProfilePhotoDialog
+                                                "
+                                            />
+                                        </v-card>
+                                    </v-dialog>
+                                </div>
                                 <div
                                     class="edit-row"
                                     style="height:50px;border-bottom:1px solid rgba(0,0,0,0.1)"
@@ -350,12 +380,14 @@ import { mapState, mapActions } from 'vuex'
 import '@/assets/user-profile.css'
 import { countriesName } from '~/plugins/phoneCodeCountries'
 import { minLangCodes } from '~/plugins/langCode'
+import EditProfileImg from '~/components/settings/EditProfileImg.vue'
 
 import BottomNav from '~/components/BottomNav'
 // import CheckProfile from '~/components/CheckProfile'
 export default {
     components: {
-        BottomNav
+        BottomNav,
+        EditProfileImg
     },
     data() {
         return {
@@ -377,7 +409,8 @@ export default {
             // greetingsのカウントバー
             color: 'black',
             // スライドの設定
-            dialog: false
+            dialog: true,
+            editProfilePhotoDialog: false
         }
     },
     asyncData({ params, $auth }) {
@@ -454,4 +487,9 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style>
+.v-image__image--cover {
+    -webkit-filter: blur(0.5px);
+    filter: blur(0.5px);
+}
+</style>

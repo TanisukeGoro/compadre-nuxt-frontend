@@ -13,7 +13,7 @@
                 }}</v-callout>
                 <v-callout v-else :is-left="false"
                     ><v-img
-                        :src="$auth.state.user.icon_url | avaterIconUrl"
+                        :src="$auth.state.user.icon_url | avatarIconUrl"
                     ></v-img
                 ></v-callout>
             </div>
@@ -31,7 +31,7 @@
                             max-width="34px"
                             max-height="34px"
                             :src="
-                                toTalkUser.toTolk_uinfo.icon_url | avaterIconUrl
+                                toTalkUser.toTolk_uinfo.icon_url | avatarIconUrl
                             "
                             alt="avatar"
                         />
