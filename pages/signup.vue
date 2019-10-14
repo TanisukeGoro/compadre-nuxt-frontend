@@ -59,23 +59,9 @@
                                     class="input-group--focused"
                                     @click:append="showPassword = !showPassword"
                                 ></v-text-field>
-                                <!-- 性別の選択 -->
-                                <v-btn-toggle v-model="gender" color="primary">
-                                    <v-btn width="100px" @click="genderTest">
-                                        <v-icon>mdi-human-female</v-icon>
-                                        Woman
-                                    </v-btn>
-                                    <v-btn width="100px" @click="genderTest">
-                                        <v-icon>mdi-human-male</v-icon>
-                                        Man
-                                    </v-btn>
-                                    <v-btn width="100px" @click="genderTest">
-                                        Other
-                                    </v-btn>
-                                </v-btn-toggle>
                             </v-card>
-                            <v-item class="mb-12 container" justify>
-                                <!-- 画像の選択 -->
+                            <v-card class="mb-12 container" flat>
+                                <!-- 画像のアップロード -->
                                 <croppa
                                     v-model="croppaImg"
                                     :width="150"
@@ -86,7 +72,7 @@
                                     :height="150"
                                     class="imgupload"
                                 ></croppa>
-                            </v-item>
+                            </v-card>
                             <div class="ContinueCancel">
                                 <v-btn text>Cancel</v-btn>
                                 <v-btn color="primary" @click="nextStep(1)">
@@ -172,33 +158,42 @@
                                             return-object
                                             single-line
                                         ></v-select>
+                                        <!-- 性別の選択 -->
+                                        <v-select
+                                            v-model="gender"
+                                            :items="genders"
+                                            item-text="name"
+                                            item-value="val"
+                                            label="Your gender"
+                                            return-object
+                                            single-line
+                                        ></v-select>
                                     </v-col>
                                 </v-row>
                             </v-card>
                             <div class="ContinueCancel">
                                 <v-btn text>Cancel</v-btn>
-                                <v-btn color="primary" @click="nextStep(3)">
+                                <v-btn color="primary" @click="nextStep(2)">
                                     Continue
                                 </v-btn>
                             </div>
                         </v-stepper-content>
                         <v-stepper-content :key="`3-content`" :step="3">
                             <!-- 登録画面 -->
-                            <v-checkbox
-                                v-model="agreementService"
-                                :rules="[rules.required]"
+                            <v-textarea
+                                v-model="greetingContent"
+                                class="card-text__font pa-2"
+                                auto-grow
+                                color="accent"
+                                autofocus
+                                clearable
+                                placeholder="'What do you want to do?'"
+                                label="Edit Greeting"
+                                :counter="counter"
+                                :rules="greetingRules"
+                                rows="1"
                             >
-                                <template v-slot:label>
-                                    <a
-                                        href="#"
-                                        @click.stop.prevent="
-                                            dialogBox = dialogContent.Service
-                                            dialog = true
-                                        "
-                                        >Terms of Service
-                                    </a>
-                                </template>
-                            </v-checkbox>
+                            </v-textarea>
                             <v-checkbox
                                 v-model="agreementPolicy"
                                 :rules="[rules.required]"
@@ -211,7 +206,7 @@
                                             dialog = true
                                         "
                                     >
-                                        Privacy Policy </a
+                                        Privacy Policy / Terms of Service </a
                                     >*
                                 </template>
                             </v-checkbox>
@@ -231,6 +226,28 @@
                                     >Submit</v-btn
                                 >
                             </v-card-actions>
+                            <v-dialog v-model="greetingExample" width="400">
+                                <v-card absolute max-width="400" persistent>
+                                    <v-img
+                                        :src="
+                                            require('~/assets/images/greetingExample.png')
+                                        "
+                                    />
+                                    <v-card-actions class="text-center pb-4">
+                                        <v-spacer />
+                                        <v-btn
+                                            color="accent"
+                                            text
+                                            outlined
+                                            @click="
+                                                greetingExample = !greetingExample
+                                            "
+                                            >OK !</v-btn
+                                        >
+                                        <v-spacer />
+                                    </v-card-actions>
+                                </v-card>
+                            </v-dialog>
                             <v-dialog
                                 v-model="dialog"
                                 absolute
@@ -399,6 +416,11 @@ export default {
              * gender
              */
             gender: '',
+            genders: [
+                { name: 'Woman', val: 0 },
+                { name: 'Man', val: 1 },
+                { name: 'Others', val: 2 }
+            ],
 
             /**
              * 誕生日の選択
@@ -458,7 +480,17 @@ export default {
             image: '',
             croppaImg: null,
             imgUrl: '',
-            formData: new FormData()
+            formData: new FormData(),
+            /**
+             * 挨拶文の追加
+             */
+            greeting: {},
+            greetingContent: '',
+            counter: 200,
+            greetingRules: [
+                (v) => v === null || v.length <= 200 || 'Max 200 characters'
+            ],
+            greetingExample: false
         }
     },
     computed: {
@@ -477,6 +509,20 @@ export default {
         },
         menu(val) {
             val && setTimeout(() => (this.$refs.picker.activePicker = 'YEAR'))
+        },
+        greetingContent() {
+            this.greeting.content = this.greetingContent
+        },
+        e1() {
+            console.log('greetingExample :', this.e1)
+            if (this.e1 === 3) {
+                console.log('テスト')
+                self = this
+                setTimeout(function() {
+                    console.log('object')
+                    self.greetingExample = true
+                }, 500)
+            }
         }
     },
 
@@ -507,86 +553,82 @@ export default {
             try {
             } catch (error) {}
         },
-        genderTest() {},
         saveBirth(date) {
             this.$refs.menu.save(date)
         },
 
+        timeout(ms) {
+            return new Promise((resolve) => setTimeout(resolve, ms))
+        },
         /**
          * get GeoLocation and location name
          *
          */
         async getLocation() {
             this.geoLoading = true
-            const self = this
-            await navigator.geolocation.getCurrentPosition(
-                function(position) {
-                    self.latitude = position.coords.latitude
-                    self.longitude = position.coords.longitude
+            // ここから
+            await this.timeout(2000)
 
-                    self.$axios
-                        .$get(`${process.env.apiBaseUrl}locationplace`, {
-                            params: {
-                                x: position.coords.longitude,
-                                y: position.coords.latitude
-                            }
-                        })
-                        .then(function(response) {
-                            self.geoLoading = false
-                            if (response.response.location.length > 0) {
-                                self.place = response.response.location[0]
-                                self.nowPlace = `${self.place.prefecture}, ${self.place.city}`
-                            }
-                        })
-                },
-                function(error) {
-                    switch (error.code) {
-                        case 1: // PERMISSION_DENIED
-                            alert('位置情報の利用が許可されていません')
-                            break
-                        case 2: // POSITION_UNAVAILABLE
-                            alert('現在位置が取得できませんでした')
-                            break
-                        case 3: // TIMEOUT
-                            alert('タイムアウトになりました')
-                            break
-                        default:
-                            alert('Error (エラーコード:' + error.code + ') ')
-                            break
+            this.longitude = 139.7113362
+            this.latitude = 35.673192
+            const self = this
+            this.$axios
+                .$get(`${process.env.apiBaseUrl}locationplace`, {
+                    params: {
+                        x: this.longitude,
+                        y: this.latitude
                     }
-                }
-            )
+                })
+                .then(function(response) {
+                    console.log('response :', response)
+                    self.geoLoading = false
+                    if (response.response.location.length > 0) {
+                        self.place = response.response.location[0]
+                        self.nowPlace = `${self.place.prefecture}, ${self.place.city}`
+                    }
+                })
+
+            // ここまで
+
+            // await navigator.geolocation.getCurrentPosition(
+            //     function(position) {
+            //         self.latitude = position.coords.latitude
+            //         self.longitude = position.coords.longitude
+
+            //         self.$axios
+            //             .$get(`${process.env.apiBaseUrl}locationplace`, {
+            //                 params: {
+            //                     x: position.coords.longitude,
+            //                     y: position.coords.latitude
+            //                 }
+            //             })
+            //             .then(function(response) {
+            //                 self.geoLoading = false
+            //                 if (response.response.location.length > 0) {
+            //                     self.place = response.response.location[0]
+            //                     self.nowPlace = `${self.place.prefecture}, ${self.place.city}`
+            //                 }
+            //             })
+            //     },
+            //     function(error) {
+            //         switch (error.code) {
+            //             case 1: // PERMISSION_DENIED
+            //                 alert('位置情報の利用が許可されていません')
+            //                 break
+            //             case 2: // POSITION_UNAVAILABLE
+            //                 alert('現在位置が取得できませんでした')
+            //                 break
+            //             case 3: // TIMEOUT
+            //                 alert('タイムアウトになりました')
+            //                 break
+            //             default:
+            //                 alert('Error (エラーコード:' + error.code + ') ')
+            //                 break
+            //         }
+            //     }
+            // )
         },
-        // readImgFromURL(inputURL) {
-        //
-        //     if (inputURL) {
-        //
-        //         const reader = new FileReader()
-        //         const self = this
-        //         reader.onload = (e) => {
-        //             self.imageSrc = e.target.result
-        //
-        //             //
-        //         }
-        //         reader.readAsDataURL(inputURL)
-        //         // reader.readAsDataURL(inputURL.files[0])
-        //         // INPUT_FORM_DATA.face_image = $dom('#js-image').files[0]
-        //     }
-        // },
-        // imageUploader() {
-        //     // this.readImgFromURL(files[0])
-        //
-        //     //
-        //     this.readImgFromURL(this.uploadImage)
-        // },
-        // generateImage() {
-        //     const url = this.croppaImg.generateDataUrl()
-        //     if (!url) {
-        //         alert('no image')
-        //         return
-        //     }
-        //     this.imgUrl = url
-        // },
+
         imageUploader() {
             this.croppaImg.generateBlob((blob) => {
                 this.formData.append('face_image', blob)
@@ -603,17 +645,19 @@ export default {
                 email: this.email,
                 password: this.password,
                 birthday: this.date,
-                sex: this.gender,
+                sex: this.gender.val,
                 geolocation: [this.longitude, this.latitude],
                 job_type: this.job.value,
                 oauth_id: 0,
                 face_image: '',
                 country: this.country.iso2,
-                fst_lang: this.language.langCode
+                fst_lang: this.language.langCode,
+                ...this.greeting
             }
         },
         register() {
             this.isLoading = true
+            this.currentValue()
             Object.keys(this.INPUT_FORM_DATA).forEach((i) =>
                 this.formData.append(i, this.INPUT_FORM_DATA[i])
             )
@@ -656,5 +700,8 @@ export default {
 .container {
     width: 100%;
     text-align: center;
+}
+.v-stepper {
+    box-shadow: none;
 }
 </style>

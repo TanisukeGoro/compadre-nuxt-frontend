@@ -239,6 +239,10 @@
                                                 item-text="name"
                                                 class="caption mt-0 pt-0"
                                                 return-object
+                                                @input="
+                                                    editorParam.country =
+                                                        country.iso2
+                                                "
                                             >
                                                 <template
                                                     slot="selection"
@@ -440,6 +444,12 @@ export default {
             ? (this.SelfIntroduction =
                   '右上の"変更"ボタンから自己紹介の文を書いてみましょう！！')
             : (this.SelfIntroduction = this.userData.profile_text)
+        if (this.userData.country !== null) {
+            this.country =
+                countriesName.find(
+                    (i) => i.iso2 === this.userData.country.toUpperCase()
+                ) || null
+        }
     },
     methods: {
         ...mapActions('comman/auth', ['getLoginUser']),
@@ -469,13 +479,14 @@ export default {
             this.editorParam = Object.assign({}, this.userData)
         },
         editSave() {
-            // 編集データのpost
             const self = this
             this.$axios
                 .$put(`${process.env.apiBaseUrl}user`, { ...this.editorParam })
                 .then((i) => {
                     self.userData = Object.assign({}, i.user)
                     self.SelfIntroduction = i.user.profile_text
+                        ? i.user.profile_text
+                        : '右上の"変更"ボタンから自己紹介の文を書いてみましょう！！'
                     self.dialog = false
                 })
                 .catch(
