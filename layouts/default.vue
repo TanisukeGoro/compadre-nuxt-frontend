@@ -127,3 +127,8 @@ export default {
     }
 }
 </script>
+<style>
+body {
+    background-color: #f4d03f;
+}
+</style>
