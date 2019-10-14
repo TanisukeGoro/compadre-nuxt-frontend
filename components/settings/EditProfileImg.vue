@@ -71,7 +71,7 @@ export default {
                     this.formData.append('face_image', blob)
                     this.$axios
                         .$post(
-                            `${process.env.apiBaseUrl}imagepload`,
+                            `${process.env.apiBaseUrl}imageupload`,
                             this.formData
                         )
                         .then(async (i) => {
