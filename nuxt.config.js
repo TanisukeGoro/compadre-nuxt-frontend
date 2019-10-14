@@ -20,12 +20,13 @@ export default {
             { charset: 'utf-8' },
             {
                 name: 'viewport',
-                content: 'width=device-width, initial-scale=1'
+                content:
+                    'width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no'
             },
             { name: 'apple-mobile-web-app-capable', content: 'yes' },
             {
                 name: 'apple-mobile-web-app-status-bar-style',
-                content: 'default'
+                content: 'black-translucent'
             },
             {
                 hid: 'description',
@@ -95,7 +96,8 @@ export default {
         manifest: {
             start_url: '/app/select',
             name: 'compadre',
-            description: 'The Compadre frontend side project'
+            description: 'The Compadre frontend side project',
+            theme_color: '#F4D03F'
         }
     },
     /**
