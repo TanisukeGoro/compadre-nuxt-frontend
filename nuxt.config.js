@@ -1,6 +1,7 @@
 import colors from 'vuetify/es5/util/colors'
 const environment = process.env.NODE_ENV || 'development'
 const envSet = require(`./env.${environment}.js`)
+const splashscreens = require(`./config/splashscreens`) // import splash screen meta tag
 // ここで切り替え
 const apiUrl =
     process.env.NODE_ENV === 'development'
@@ -19,7 +20,13 @@ export default {
             { charset: 'utf-8' },
             {
                 name: 'viewport',
-                content: 'width=device-width, initial-scale=1'
+                content:
+                    'width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no'
+            },
+            { name: 'apple-mobile-web-app-capable', content: 'yes' },
+            {
+                name: 'apple-mobile-web-app-status-bar-style',
+                content: 'black-translucent'
             },
             {
                 hid: 'description',
@@ -31,13 +38,10 @@ export default {
                 content: 'notranslate'
             }
         ],
-        link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-          { rel: "apple-touch-startup-image", href: "launch-1125x2436.png", media: "(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" },
-            { rel: "apple-touch-startup-image", href: "launch-750x1334.png", media: "(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" },
-            { rel: "apple-touch-startup-image", href: "launch-1242x2208.png", media: "(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3)" },
-            { rel: "apple-touch-startup-image", href: "launch-640x1136.png", media: "(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" }
-    ]
-        
+        link: [
+            { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+            ...splashscreens.splashscreens
+        ]
     },
     /*
      ** Customize the progress-bar color
@@ -50,7 +54,7 @@ export default {
     /*
      ** Plugins to load before mounting the App
      */
-    plugins: ['~/plugins/fillters', '~/plugins/head.js'],
+    plugins: ['~/plugins/fillters', '~/plugins/head.js', '~/plugins/axios'],
     /*
      ** Nuxt.js dev-modules
      */
@@ -90,7 +94,10 @@ export default {
     proxy: {},
     pwa: {
         manifest: {
-            start_url: '/app/select'
+            start_url: '/app/select',
+            name: 'compadre',
+            description: 'The Compadre frontend side project',
+            theme_color: '#F4D03F'
         }
     },
     /**

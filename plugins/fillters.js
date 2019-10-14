@@ -18,6 +18,7 @@ Vue.filter('description', function(value) {
 
 // YYYYMMDD => Age
 Vue.filter('yyyymmdd2Age', function(yyyymmdd) {
+    if (yyyymmdd === null || yyyymmdd || undefined) return ' -- '
     yyyymmdd.match(/^([1-2]\d{3})-(\d{1,2})-(\d{1,2})$/)
     if (yyyymmdd.match(/^[1-2]\d{3}-\d{1,2}-\d{1,2}$/)) {
         return getAge(
@@ -60,7 +61,7 @@ Vue.filter('jobCode2JobName', function(jobCode) {
 /**
  * 画像のURLを変換するための
  */
-Vue.filter('avaterIconUrl', function(iconUrl) {
+Vue.filter('avatarIconUrl', function(iconUrl) {
     if (iconUrl === null || iconUrl === '')
         return require('~/assets/images/onErrorUserImg.png')
     return !~iconUrl.indexOf('lorempixel', 'start')

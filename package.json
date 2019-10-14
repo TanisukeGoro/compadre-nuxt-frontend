@@ -1,7 +1,7 @@
 {
     "name": "compadre",
     "version": "0.1.3",
-    "description": "The Madison frontend side project ",
+    "description": "The Compadre frontend side project",
     "author": "Okita",
     "private": true,
     "scripts": {
