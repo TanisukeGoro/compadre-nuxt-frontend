@@ -409,7 +409,7 @@ export default {
             // greetingsのカウントバー
             color: 'black',
             // スライドの設定
-            dialog: true,
+            dialog: false,
             editProfilePhotoDialog: false
         }
     },
