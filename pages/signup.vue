@@ -28,6 +28,8 @@
                         </template>
                     </v-stepper-header>
 
+                    <!-- 登録ページ１ -->
+
                     <v-stepper-items>
                         <v-stepper-content :key="`1-content`" :step="1">
                             <v-card class="mb-12" flat>
@@ -44,22 +46,6 @@
                                     label="E-mail"
                                     required
                                 ></v-text-field>
-                            </v-card>
-                            <div class="ContinueCancel">
-                                <v-btn text>Cancel</v-btn>
-                                <v-btn color="primary" @click="nextStep(1)">
-                                    Continue
-                                </v-btn>
-                            </div>
-                        </v-stepper-content>
-                        <v-stepper-content :key="`2-content`" :step="2">
-                            <!-- <v-btn color="primary" @click="nextStep(2)">
-                                Continue
-                            </v-btn>
-
-                            <v-btn text>Cancel</v-btn> -->
-
-                            <v-card class="mb-12" flat>
                                 <v-text-field
                                     v-model="password"
                                     :append-icon="
@@ -73,71 +59,6 @@
                                     class="input-group--focused"
                                     @click:append="showPassword = !showPassword"
                                 ></v-text-field>
-                                <v-layout>
-                                    <v-flex xs4>
-                                        <v-select
-                                            v-model="country"
-                                            label="country"
-                                            :items="countries"
-                                            width="50px"
-                                            item-value="iso2"
-                                            item-text="name"
-                                            class="caption"
-                                            return-object
-                                            @input="updateValue"
-                                        >
-                                            <template
-                                                slot="selection"
-                                                slot-scope="{ item }"
-                                            >
-                                                <p
-                                                    class="inline iti-flag"
-                                                    :class="
-                                                        item.iso2.toLowerCase()
-                                                    "
-                                                ></p>
-                                            </template>
-                                            <template
-                                                slot="item"
-                                                slot-scope="{ item }"
-                                            >
-                                                <p
-                                                    class="inline iti-flag"
-                                                    :class="
-                                                        item.iso2.toLowerCase()
-                                                    "
-                                                ></p>
-                                                {{ item.name }}
-                                            </template>
-                                        </v-select>
-                                    </v-flex>
-                                    <v-flex xs8>
-                                        <v-text-field
-                                            v-model="phone"
-                                            :rules="phoneRules"
-                                            flat
-                                            type="tel"
-                                            label="phone number"
-                                            @input="updateValue"
-                                        ></v-text-field>
-                                    </v-flex>
-                                </v-layout>
-                                <!--  ここに入れる-->
-                                <div class="ContinueCancel">
-                                    <v-btn text>Cancel</v-btn>
-                                    <v-btn color="primary" @click="nextStep(2)">
-                                        Continue
-                                    </v-btn>
-                                </div>
-                            </v-card>
-                        </v-stepper-content>
-                        <v-stepper-content :key="`3-content`" :step="3">
-                            <!-- <v-btn color="primary" @click="nextStep(3)">
-                                Continue
-                            </v-btn>
-
-                            <v-btn text>Cancel</v-btn> -->
-                            <v-card class="mb-12" flat>
                                 <!-- 性別の選択 -->
                                 <v-btn-toggle v-model="gender" color="primary">
                                     <v-btn width="100px" @click="genderTest">
@@ -152,37 +73,37 @@
                                         Other
                                     </v-btn>
                                 </v-btn-toggle>
-                                <!-- 誕生日の選択 -->
-                                <v-menu
-                                    ref="menu"
-                                    v-model="menu"
-                                    :close-on-content-click="false"
-                                    transition="scale-transition"
-                                    offset-y
-                                    full-width
-                                    min-width="290px"
-                                >
-                                    <template v-slot:activator="{ on }">
-                                        <v-text-field
-                                            v-model="date"
-                                            label="Birthday date"
-                                            prepend-icon="mdi-calendar-today"
-                                            readonly
-                                            v-on="on"
-                                        ></v-text-field>
-                                    </template>
-                                    <v-date-picker
-                                        ref="picker"
-                                        v-model="date"
-                                        :max="
-                                            new Date()
-                                                .toISOString()
-                                                .substr(0, 10)
-                                        "
-                                        min="1950-01-01"
-                                        @change="saveBirth"
-                                    ></v-date-picker>
-                                </v-menu>
+                            </v-card>
+                            <v-item class="mb-12 container" justify>
+                                <!-- 画像の選択 -->
+                                <croppa
+                                    v-model="croppaImg"
+                                    :width="150"
+                                    :placeholder-font-size="16"
+                                    placeholder="Account Image"
+                                    :prevent-white-space="true"
+                                    :zoom-speed="10"
+                                    :height="150"
+                                    class="imgupload"
+                                ></croppa>
+                            </v-item>
+                            <div class="ContinueCancel">
+                                <v-btn text>Cancel</v-btn>
+                                <v-btn color="primary" @click="nextStep(1)">
+                                    Continue
+                                </v-btn>
+                            </div>
+                        </v-stepper-content>
+
+                        <!-- 登録ページ２ -->
+
+                        <v-stepper-content :key="`2-content`" :step="2">
+                            <!-- <v-btn color="primary" @click="nextStep(3)">
+                                Continue
+                            </v-btn>
+
+                            <v-btn text>Cancel</v-btn> -->
+                            <v-card class="mb-12" flat>
                                 <!-- 位置情報の取得 -->
                                 <v-row>
                                     <v-col cols="12">
@@ -261,53 +182,7 @@
                                 </v-btn>
                             </div>
                         </v-stepper-content>
-                        <v-stepper-content :key="`4-content`" :step="4">
-                            <!-- <v-btn color="primary" @click="nextStep(4)">
-                                Continue
-                            </v-btn>
-
-                            <v-btn text>Cancel</v-btn> -->
-                            <v-card class="mb-12 container" flat>
-                                <!-- 画像のアップロード -->
-                                <croppa
-                                    v-model="croppaImg"
-                                    :width="150"
-                                    :placeholder-font-size="16"
-                                    placeholder="Account Image"
-                                    :prevent-white-space="true"
-                                    :zoom-speed="10"
-                                    :height="150"
-                                    class="imgupload"
-                                ></croppa>
-                                <!-- <v-file-input
-                                v-model="uploadImage"
-                                :rules="imageRules"
-                                accept="image/png, image/jpeg, image/bmp"
-                                placeholder="Pick an avatar"
-                                prepend-icon="mdi-camera"
-                                label="Avatar"
-                                :show-size="1000"
-                                @change="imageUploader"
-                            ></v-file-input>
-                            <v-img
-                                :src="imageSrc"
-                                aspect-ratio="1"
-                                class="grey lighten-2"
-                                max-width="400"
-                                max-height="400"
-                            ></v-img> -->
-                            </v-card>
-                            <div class="ContinueCancel">
-                                <v-btn text>Cancel</v-btn>
-                                <v-btn color="primary" @click="nextStep(4)">
-                                    Continue
-                                </v-btn>
-                            </div>
-                            <!-- <v-btn color="success" @click="imageUploader"
-                                >text</v-btn
-                            > -->
-                        </v-stepper-content>
-                        <v-stepper-content :key="`5-content`" :step="5">
+                        <v-stepper-content :key="`3-content`" :step="3">
                             <!-- 登録画面 -->
                             <v-checkbox
                                 v-model="agreementService"
@@ -470,7 +345,7 @@ export default {
             },
 
             e1: 1,
-            steps: 5,
+            steps: 3,
             /**
              * name validation
              */
