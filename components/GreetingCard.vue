@@ -42,7 +42,7 @@
                         <v-list-item>
                             <v-list-item-avatar color="grey" size="72">
                                 <v-img
-                                    :src="candidate.icon_url | avaterIconUrl"
+                                    :src="candidate.icon_url | avatarIconUrl"
                                 ></v-img>
                             </v-list-item-avatar>
                             <v-list-item-content>
@@ -87,43 +87,50 @@
                             }}
                         </v-card-text>
                         <!-- 編集用 -->
-                        <v-textarea
-                            v-if="cardState === 'edit'"
-                            v-model="propsContent"
-                            class="card-text__font pa-2"
-                            auto-grow
-                            color="accent"
-                            autofocus
-                            clearable
-                            placeholder="'What do you want to do?'"
-                            label="Edit Greeting"
-                            :counter="counter"
-                            rows="1"
-                        >
-                        </v-textarea>
+                        <v-form>
+                            <v-textarea
+                                v-if="cardState === 'edit'"
+                                v-model="propsContent"
+                                class="card-text__font pa-2"
+                                auto-grow
+                                color="accent"
+                                autofocus
+                                clearable
+                                placeholder="'What do you want to do?'"
+                                label="Edit Greeting"
+                                :counter="counter"
+                                :rules="rules"
+                                rows="1"
+                            >
+                            </v-textarea>
 
-                        <v-divider color="grey"></v-divider>
+                            <v-divider color="grey"></v-divider>
 
-                        <v-list-item>
-                            <v-list-item-content>
-                                <v-list-item-title
-                                    class="subtitle-2 grey--text"
-                                >
-                                    <v-icon class="mr-3 grey--text"
-                                        >mdi-voice</v-icon
+                            <v-list-item>
+                                <v-list-item-content>
+                                    <v-list-item-title
+                                        class="subtitle-2 grey--text"
                                     >
-                                    {{
-                                        candidate.fst_lang | langCode2langName
-                                    }},
-                                    {{
-                                        candidate.snd_lang | langCode2langName
-                                    }},
-                                    {{ candidate.trd_lang | langCode2langName }}
-                                </v-list-item-title>
-                            </v-list-item-content>
-                        </v-list-item>
-                        <v-card-actions>
-                            <!-- <v-flex xs1>
+                                        <v-icon class="mr-3 grey--text"
+                                            >mdi-voice</v-icon
+                                        >
+                                        {{
+                                            candidate.fst_lang
+                                                | langCode2langName
+                                        }},
+                                        {{
+                                            candidate.snd_lang
+                                                | langCode2langName
+                                        }},
+                                        {{
+                                            candidate.trd_lang
+                                                | langCode2langName
+                                        }}
+                                    </v-list-item-title>
+                                </v-list-item-content>
+                            </v-list-item>
+                            <v-card-actions>
+                                <!-- <v-flex xs1>
                                 <v-btn
                                     v-if="cardState === 'select'"
                                     color="accent"
@@ -134,31 +141,35 @@
                                     Hi !
                                 </v-btn>
                             </v-flex> -->
-                            <span v-if="cardState === 'select'" class="likebtn">
-                                <LikeButton
-                                    :btn-state="postBtnState"
-                                    @ClickLikebutton="clickHiBtn"
+                                <span
+                                    v-if="cardState === 'select'"
+                                    class="likebtn"
+                                >
+                                    <LikeButton
+                                        :btn-state="postBtnState"
+                                        @ClickLikebutton="clickHiBtn"
+                                    />
+                                </span>
+                                <div
+                                    v-if="cardState === 'edit'"
+                                    class="SaveCancelBtn"
+                                >
+                                    <v-btn
+                                        color="success"
+                                        outlined
+                                        @click="editCancel"
+                                        >Cancel</v-btn
+                                    >
+                                    <v-btn color="success" @click="editSave"
+                                        >Save</v-btn
+                                    >
+                                </div>
+                                <the-editor-btn
+                                    v-if="cardState === 'preview'"
+                                    @assignFromChild="assginState($event)"
                                 />
-                            </span>
-                            <div
-                                v-if="cardState === 'edit'"
-                                class="SaveCancelBtn"
-                            >
-                                <v-btn
-                                    color="success"
-                                    outlined
-                                    @click="editCancel"
-                                    >Cancel</v-btn
-                                >
-                                <v-btn color="success" @click="editSave"
-                                    >Save</v-btn
-                                >
-                            </div>
-                            <the-editor-btn
-                                v-if="cardState === 'preview'"
-                                @assignFromChild="assginState($event)"
-                            />
-                        </v-card-actions>
+                            </v-card-actions>
+                        </v-form>
                     </v-card>
                 </v-carousel-item>
             </v-carousel>
@@ -216,6 +227,9 @@ export default {
         return {
             carousel: 0,
             counter: 200,
+            rules: [
+                (v) => v === null || v.length <= 200 || 'Max 200 characters'
+            ],
             storemodel: this.$store.getters['app/candidate/model'],
             model: this.$store.getters['app/candidate/model'],
             propsContent: '',
@@ -273,6 +287,10 @@ export default {
         editSave(e) {
             // axiosの通信のあとでthisを参照できなくなるので、ここでやってしまう
             if (this.propsContent.trim() === '') return !1
+            if (this.propsContent.trim().length > 200) {
+                alert('Max 200 characters')
+                return !1
+            }
             const self = this
             if (this.hashId) {
                 this.$axios

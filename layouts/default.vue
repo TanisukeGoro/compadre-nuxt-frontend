@@ -121,9 +121,14 @@ export default {
         }
     },
     created() {
-        this.iconUrl = this.$options.filters.avaterIconUrl(
+        this.iconUrl = this.$options.filters.avatarIconUrl(
             this.$auth.state.user.icon_url
         )
     }
 }
 </script>
+<style>
+body {
+    background-color: #f4d03f;
+}
+</style>
