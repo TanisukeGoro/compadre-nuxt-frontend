@@ -134,6 +134,42 @@
                                                 </v-fade-transition>
                                             </template>
                                         </v-text-field>
+                                        <!-- 出身国の追加 -->
+                                        <v-select
+                                            v-model="country"
+                                            label="Where are you from?"
+                                            :items="countries"
+                                            width="50px"
+                                            item-value="iso2"
+                                            item-text="name"
+                                            class="caption"
+                                            return-object
+                                            @input="updateValue"
+                                        >
+                                            <template
+                                                slot="selection"
+                                                slot-scope="{ item }"
+                                            >
+                                                <p
+                                                    class="inline iti-flag"
+                                                    :class="
+                                                        item.iso2.toLowerCase()
+                                                    "
+                                                ></p>
+                                            </template>
+                                            <template
+                                                slot="item"
+                                                slot-scope="{ item }"
+                                            >
+                                                <p
+                                                    class="inline iti-flag"
+                                                    :class="
+                                                        item.iso2.toLowerCase()
+                                                    "
+                                                ></p>
+                                                {{ item.name }}
+                                            </template>
+                                        </v-select>
                                         <!-- 職業選択 -->
                                         <v-menu
                                             ref="menu"
