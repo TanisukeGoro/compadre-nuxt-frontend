@@ -61,7 +61,36 @@
                     />
                 </transition>
             </v-container>
-            <v-send-footer @sendDataFromChild="sendMessage($event)" />
+            <v-send-footer
+                @sendDataFromChild="sendMessage($event)"
+                @openCarender="openCarender"
+            />
+            <v-dialog
+                v-model="recommendationDialog"
+                fullscreen
+                hide-overlay
+                transition="dialog-bottom-transition"
+            >
+                <v-card flat>
+                    <v-toolbar flat color="primary" class="white--text">
+                        <v-btn icon dark @click="recommendationDialog = false">
+                            <v-icon>mdi-close</v-icon>
+                        </v-btn>
+                        <v-spacer></v-spacer>
+                        <v-toolbar-title>日程調整</v-toolbar-title>
+                        <v-spacer></v-spacer>
+                        <v-toolbar-items>
+                            <v-btn
+                                dark
+                                text
+                                @click="recommendationDialog = false"
+                                >Save</v-btn
+                            >
+                        </v-toolbar-items>
+                    </v-toolbar>
+                    <recommend-date />
+                </v-card>
+            </v-dialog>
         </v-content>
     </v-app>
 </template>
@@ -73,10 +102,12 @@ import { db, firebase } from '~/plugins/firebase'
 import VMessageTimestamp from '~/components/chat/VMessageTimestamp'
 import VMessageDate from '~/components/chat/VMessageDate'
 import VSendFooter from '~/components/chat/VSendFooter'
+import RecommendDate from '~/components/chat/RecommendDate'
 
 import ChatCard from '@/components/chat/ChatCard'
 import ChatCardSelect from '@/components/chat/ChatCardSelect'
 import SpotCard from '@/components/chat/SpotCard'
+
 export default {
     layout: 'chat',
     components: {
@@ -85,7 +116,8 @@ export default {
         VSendFooter,
         ChatCardSelect,
         ChatCard,
-        SpotCard
+        SpotCard,
+        RecommendDate
     },
     data() {
         return {
@@ -97,7 +129,9 @@ export default {
             userId: this.$auth.state.user.id,
             showBotCard: false,
             answer: false,
-            regexp: /^:(.*)\((.*)\):$/
+            regexp: /^:(.*)\((.*)\):$/,
+            // ダイアログ
+            recommendationDialog: true
         }
     },
     computed: {
@@ -243,6 +277,11 @@ export default {
 
             this.answer = true
             this.showBotCard = false
+        },
+        openCarender() {
+            console.log('test')
+            this.recommendationDialog = true
+            console.log(this.recommendationDialog)
         }
     }
 }
