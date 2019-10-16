@@ -44,9 +44,9 @@
                     <v-callout v-if="message.audioURL"
                         ><v-audio :src="message.audioURL"></v-audio
                     ></v-callout>
-                    <v-callout v-else-if="message.text">
-                        {{ message.text }}
-                    </v-callout>
+                    <v-callout v-else-if="message.text">{{
+                        message.text
+                    }}</v-callout>
                     <v-callout v-else
                         ><v-img :src="message.imageURL"></v-img
                     ></v-callout>
