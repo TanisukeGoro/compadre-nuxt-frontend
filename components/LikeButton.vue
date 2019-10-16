@@ -1,12 +1,12 @@
 <template>
     <v-row>
-        <v-layout justify-center class="btn">
+        <v-layout justify-center>
             <v-btn
                 rounded
                 dark
                 :loading="!btnState"
                 class="mb-5 btn"
-                style="background: linear-gradient(to right, #70e1f5, #ffd194);"
+                style="background: linear-gradient(to right, #70e1f5, #ffd194); width:200px; font-size: x-large;"
                 @click="$emit('ClickLikebutton')"
                 >Hi!</v-btn
             >

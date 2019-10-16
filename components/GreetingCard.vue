@@ -22,7 +22,7 @@
                 v-model="carousel"
                 height="100%"
                 :hide-delimiters="true"
-                :show-arrows="showArrows"
+                :show-arrows="false"
                 :touchless="touchless"
                 :cycle="false"
                 :light="true"
@@ -33,11 +33,9 @@
                     :key="candidate.candidateId"
                 >
                     <v-card
-                        height="100%"
                         max-width="344"
-                        class="mx-auto pt-4"
-                        flat
-                        color="background"
+                        class="mx-auto"
+                        style="margin-top:2.5%; border-radius:25px; height:90%;"
                     >
                         <v-list-item>
                             <v-list-item-avatar color="grey" size="72">

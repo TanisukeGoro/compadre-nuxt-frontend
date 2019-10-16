@@ -134,18 +134,73 @@
                                                 </v-fade-transition>
                                             </template>
                                         </v-text-field>
-                                        <!-- 職業選択 -->
+                                        <!-- 出身国の追加 -->
                                         <v-select
-                                            v-model="job"
-                                            :hint="job.description"
-                                            :items="jobs"
+                                            v-model="country"
+                                            label="Where are you from?"
+                                            :items="countries"
+                                            width="50px"
+                                            item-value="iso2"
                                             item-text="name"
-                                            item-value="value"
-                                            label="JOB"
-                                            persistent-hint
+                                            class="caption"
                                             return-object
-                                            single-line
-                                        ></v-select>
+                                            @input="updateValue"
+                                        >
+                                            <template
+                                                slot="selection"
+                                                slot-scope="{ item }"
+                                            >
+                                                <p
+                                                    class="inline iti-flag"
+                                                    :class="
+                                                        item.iso2.toLowerCase()
+                                                    "
+                                                ></p>
+                                            </template>
+                                            <template
+                                                slot="item"
+                                                slot-scope="{ item }"
+                                            >
+                                                <p
+                                                    class="inline iti-flag"
+                                                    :class="
+                                                        item.iso2.toLowerCase()
+                                                    "
+                                                ></p>
+                                                {{ item.name }}
+                                            </template>
+                                        </v-select>
+                                        <!-- 職業選択 -->
+                                        <v-menu
+                                            ref="menu"
+                                            v-model="menu"
+                                            :close-on-content-click="false"
+                                            transition="scale-transition"
+                                            offset-y
+                                            full-width
+                                            min-width="290px"
+                                        >
+                                            <template v-slot:activator="{ on }">
+                                                <v-text-field
+                                                    v-model="date"
+                                                    label="Birthday date"
+                                                    prepend-icon="mdi-calendar-today"
+                                                    readonly
+                                                    v-on="on"
+                                                ></v-text-field>
+                                            </template>
+                                            <v-date-picker
+                                                ref="picker"
+                                                v-model="date"
+                                                :max="
+                                                    new Date()
+                                                        .toISOString()
+                                                        .substr(0, 10)
+                                                "
+                                                min="1950-01-01"
+                                                @change="saveBirth"
+                                            ></v-date-picker>
+                                        </v-menu>
                                         <!-- 言語選択 -->
                                         <v-select
                                             v-model="language"
