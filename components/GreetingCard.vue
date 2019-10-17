@@ -38,14 +38,14 @@
                         style="margin-top:2.5%; border-radius:25px; height:90%;"
                     >
                         <v-list-item>
-                            <v-list-item-avatar color="grey" size="72">
+                            <v-list-item-avatar color="grey" size="50">
                                 <v-img
                                     :src="candidate.icon_url | avatarIconUrl"
                                 ></v-img>
                             </v-list-item-avatar>
                             <v-list-item-content>
                                 <v-list-item-title
-                                    class="headline  grey--text text--darken-3"
+                                    class="subtitle-1 grey--text text--darken-3"
                                 >
                                     {{ candidate.name }}
                                 </v-list-item-title>
@@ -76,7 +76,7 @@
                                 cardState === 'select' ||
                                     cardState === 'preview'
                             "
-                            class="subtitle-1 grey--text text--darken-3"
+                            style="font-size: 2rem; line-height: 2.5rem;"
                         >
                             {{
                                 candidate.greetings.length > 0
@@ -101,8 +101,6 @@
                                 rows="1"
                             >
                             </v-textarea>
-
-                            <v-divider color="grey"></v-divider>
 
                             <v-list-item>
                                 <v-list-item-content>
