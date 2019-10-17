@@ -76,7 +76,8 @@
                                 cardState === 'select' ||
                                     cardState === 'preview'
                             "
-                            style="font-size: 2rem; line-height: 2.5rem;"
+                            style="font-size: 1.7rem; line-height: 2.3rem; font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', YuGothic, 'ヒラギノ角ゴ ProN W3', Hiragino Kaku Gothic ProN, Arial, Meiryo, sans-serif;
+}"
                         >
                             {{
                                 candidate.greetings.length > 0
