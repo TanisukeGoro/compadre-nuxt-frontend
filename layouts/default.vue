@@ -106,11 +106,6 @@ export default {
                 },
                 {
                     icon: 'mdi-settings-outline',
-                    title: 'Settings',
-                    to: '/app/user/settings'
-                },
-                {
-                    icon: 'mdi-settings-outline',
                     title: 'Edit Greetings',
                     to: '/app/user/edit-greeting'
                 }
