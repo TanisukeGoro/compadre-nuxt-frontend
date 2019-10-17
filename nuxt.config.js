@@ -161,7 +161,8 @@ export default {
                     background: '#fafafa',
                     chips: '#FAEEB8',
                     chipsColor: '#61636b',
-                    logoText: '#4db4da'
+                    logoText: '#4db4da',
+                    text: '#c76b33'
                 },
                 // ダークモードのとき
                 dark: {

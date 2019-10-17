@@ -57,14 +57,14 @@ import { db, firebase } from '~/plugins/firebase'
 export default {
     props: {
         cardType: {
-            type: Array,
-            default: () => {}
+            type: String,
+            default: ''
         },
         postId: {
             type: String,
             default: ''
         },
-        toTolkUser: {
+        toTalkUser: {
             type: Object,
             default: () => {}
         }
@@ -388,7 +388,7 @@ export default {
         }
     },
     mounted() {
-        this[this.cardType[1]](this.cardType[2])
+        this.proposeActivity(this.cardType)
     },
     methods: {
         proposeActivity(selectedCard) {
@@ -398,14 +398,20 @@ export default {
             db.collection('chat_rooms')
                 .doc(this.$route.params.room_id)
                 .collection('messages')
-                .doc(this.postId)
-                .update({
+                .add({
                     text: `:selectActivitySpot(${JSON.stringify(showCard)}):`,
                     send_uid: this.$auth.state.user.id,
-                    receive_uid: 19,
+                    receive_uid: this.toTalkUser.toTolk_uid,
                     idRead: false,
                     created: firebase.firestore.FieldValue.serverTimestamp()
                 })
+                .then(
+                    this.$emit('closeSelectSpot', {
+                        postText: `:selectActivitySpot(${JSON.stringify(
+                            showCard
+                        )}):`
+                    })
+                )
         },
         selectActivitySpot(StringJson) {
             this.showCards = [JSON.parse(StringJson)]

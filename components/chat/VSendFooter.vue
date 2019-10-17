@@ -13,8 +13,10 @@
                 <v-row justify="center" no-gutters class="my-2 mx-0">
                     <v-col sm="6" xs="12">
                         <v-layout wrap align-end justify-center>
-                            <v-flex xs1 class="pb-2">
-                                <v-icon>mdi-camera</v-icon>
+                            <v-flex xs1 class="pb-3">
+                                <v-icon @click="checkCalender"
+                                    >mdi-calendar-multiple-check</v-icon
+                                >
                             </v-flex>
                             <v-flex xs9>
                                 <v-textarea
@@ -30,7 +32,7 @@
                                     auto-grow
                                 ></v-textarea>
                             </v-flex>
-                            <v-flex xs1 class="pb-2 pl-1">
+                            <v-flex xs1 class="pb-3 pl-1">
                                 <v-icon
                                     :color="message && 'accent'"
                                     @click="sendDataToFirebase"
@@ -90,6 +92,10 @@ export default {
             emitPromise.then((response) => {
                 self.message = ''
             })
+        },
+        checkCalender() {
+            console.log('child')
+            this.$emit('openCarender', {})
         }
     }
 }
