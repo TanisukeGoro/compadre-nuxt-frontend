@@ -1,19 +1,17 @@
 <template>
     <v-list class="pa-0">
         <v-list-item class="pa-0">
-            <v-row justify="center">
-                <v-date-picker
-                    v-model="dates"
-                    width="100%"
-                    multiple
-                    :min="startDate"
-                    style="
+            <v-date-picker
+                v-model="dates"
+                width="100%"
+                multiple
+                :min="startDate"
+                style="
                         -webkit-box-shadow: 0 1px 1px #888888;
                         -moz-box-shadow: 0 1px 1px #888888;
                         box-shadow: 0 1px 1px #888888;
                     "
-                ></v-date-picker>
-            </v-row>
+            ></v-date-picker>
         </v-list-item>
         <v-list-item v-for="(date, index) in orderdDates" :key="index">
             <v-list-item-content>
@@ -22,7 +20,7 @@
                 </v-list-item-subtitle>
             </v-list-item-content>
             <div v-if="dates" max-height="40" class="my-0">
-                <v-list-item-avatar class="my-0">
+                <v-list-item-avatar class="my-0 ml-5">
                     <v-btn
                         outlined
                         rounded
@@ -38,7 +36,7 @@
                         <v-icon size="16">mdi-weather-sunny</v-icon>
                     </v-btn>
                 </v-list-item-avatar>
-                <v-list-item-avatar class="my-0">
+                <v-list-item-avatar class="my-0 mr-5">
                     <v-btn
                         outlined
                         rounded
@@ -107,16 +105,20 @@ export default {
     },
     watch: {
         dates() {
-            if (this.dates.length > 5) return this.dates.pop()
-
             if (this.dates.length > this.checkDateTimeZone.length) {
                 this.checkDateTimeZone.push({
-                    selectDate: {},
-                    timeZone: 'non'
+                    selectDate: new Date(this.dates[this.dates.length - 1]),
+                    timeZone: 'none'
                 })
             } else {
                 this.checkDateTimeZone.pop()
             }
+
+            if (this.dates.length > 5) {
+                this.dates.pop()
+                this.checkDateTimeZone.pop()
+            }
+
             // もし、datesがcheckDateよりも長ければ
 
             // 短ければ
@@ -124,6 +126,7 @@ export default {
     },
     updated() {},
     mounted() {
+        this.dates = []
         const _date = new Date()
         this.startDate = `${_date.getFullYear()}-${_date.getMonth() +
             1}-${_date.getDate()}`
@@ -143,11 +146,21 @@ export default {
         },
         submitRecommendDate() {
             this.checkDateTimeZone.length = this.dates.length
-            console.log(
-                this.checkDateTimeZone.map((i) =>
-                    console.log(i.selectDate, i.timeZone)
-                )
+            this.checkDateTimeZone.map((i) =>
+                console.log(i.selectDate, i.timeZone)
             )
+            // ないなら送信しない
+            if (this.checkDateTimeZone.length === 0) return 0
+            const _sendData = this.checkDateTimeZone.map((i) => {
+                return { selectDate: i.selectDate, timeZone: i.timeZone }
+            })
+            this.$emit('sendRecommendationDate', {
+                text: `:proposalMeetingDates(${JSON.stringify(_sendData)}):`
+            })
+        },
+        refreshDialog() {
+            this.checkDateTimeZone = []
+            this.dates = []
         }
     }
 }
@@ -156,5 +169,6 @@ export default {
 <style scoped>
 .v-picker__title {
     padding: 10px 28px !important;
+    width: 100%;
 }
 </style>
