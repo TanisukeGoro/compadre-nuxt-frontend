@@ -105,6 +105,7 @@ export default {
      * See https://auth.nuxtjs.org/
      */
     auth: {
+        localStorage: false,
         redirect: {
             login: '/login', // 未ログイン時のリダイレクト先
             logout: '/', // ログアウト処理を実行した直後のリダイレクト先
