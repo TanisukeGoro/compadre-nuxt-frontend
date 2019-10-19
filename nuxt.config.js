@@ -155,7 +155,7 @@ export default {
                     secondary: '#F5D76E',
                     accent: '#4F75A0',
                     error: '#ED5E7D',
-                    warning: '#ffeb3b',
+                    warning: '#FF934F',
                     info: '#cddc39',
                     success: '#EBB920',
                     background: '#fafafa',
