@@ -17,7 +17,7 @@
 
 <template>
     <v-app>
-        <v-content style="padding-bottom:120px">
+        <v-content style="padding-bottom:90px">
             <v-carousel
                 v-model="carousel"
                 height="100%"
@@ -31,12 +31,11 @@
                 <v-carousel-item
                     v-for="candidate in displayCandidate"
                     :key="candidate.candidateId"
-                    style="margin-bottom: 18px;"
                 >
                     <v-card
                         max-width="344"
                         class="mx-auto"
-                        style="margin-top:2.5%; border-radius:25px; min-height:95% "
+                        style="margin-top:5%; border-radius:25px; min-height:85% "
                         flat
                         outlined
                     >
@@ -379,7 +378,7 @@ export default {
 }
 .likebtn {
     z-index: 100;
-    position: fixed;
+    /* position: fixed; */
     left: 25%;
     bottom: 50px;
     /* -webkit-backface-visibility: hidden;

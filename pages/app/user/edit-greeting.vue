@@ -17,7 +17,7 @@
             :hide-delimiters="hideDelimiters"
             :show-arrows="showArrows"
             :touchless="touchLess"
-            :card-state="cardState"
+            :card-state="'edit'"
             @fromSelectComponent="changeState($event)"
             @returnEditFromChild="returnEdit($event)"
             @cancelEditFromChild="cancelEdit"
@@ -187,7 +187,7 @@ export default {
          */
         editGreeting() {
             if (this.greetings[0].greetings[0].hash_id === '') {
-                return !1
+                return 0
             }
             this.cardState = 'edit'
             this.preModel = this.model

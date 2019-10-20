@@ -31,5 +31,6 @@ export default {
 <style>
 .btn {
     padding-top: 50px;
+    margin-top: 10px;
 }
 </style>
