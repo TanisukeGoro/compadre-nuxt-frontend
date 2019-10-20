@@ -45,7 +45,7 @@
                                 cardState === 'select' ||
                                     cardState === 'preview'
                             "
-                            style="font-size: 24px; line-height: 1.5; margin-top:10%;"
+                            style="font-size: 20px; line-height: 1.5; margin-top:6%;"
                             >{{
                                 candidate.greetings.length > 0
                                     ? candidate.greetings[0].content
@@ -59,7 +59,7 @@
                             {{ candidate.trd_lang | langCode2langName }}
                         </v-card-text>
 
-                        <v-card-text class="pa-0">
+                        <v-card-text class="pa-0" style="padding:10px;">
                             <div style="bottom:0px; position:absolute">
                                 <v-divider></v-divider>
                                 <v-list-item>
