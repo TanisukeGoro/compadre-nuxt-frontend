@@ -344,7 +344,7 @@
                                     >
                                         <v-avatar left class="mr-0">
                                             <v-icon class="body-1">
-                                                mdi-airballoon
+                                                mdi-flag-variant-outline
                                             </v-icon>
                                         </v-avatar>
                                         {{
