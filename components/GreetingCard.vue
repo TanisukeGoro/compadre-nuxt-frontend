@@ -107,16 +107,15 @@
                                                 :class="
                                                     candidate.country.toLowerCase()
                                                 "
-                                            >
-                                                {{
-                                                    candidate.country
-                                                        | countryCode2countryName
-                                                }}
-                                                {{
-                                                    candidate.birthday
-                                                        | yyyymmdd2Age
-                                                }}歳
-                                            </p>
+                                            ></p>
+                                            {{
+                                                candidate.country
+                                                    | countryCode2countryName
+                                            }}
+                                            {{
+                                                candidate.birthday
+                                                    | yyyymmdd2Age
+                                            }}歳
                                         </v-list-item-subtitle>
                                         <v-list-item-subtitle
                                             class="grey--text text--darken-1"

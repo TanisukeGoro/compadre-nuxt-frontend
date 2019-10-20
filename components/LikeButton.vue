@@ -11,7 +11,7 @@
                 @click="$emit('ClickLikebutton')"
             >
                 <v-icon>mdi-human-greeting</v-icon>
-                Hi!</v-btn
+                Say Hi!</v-btn
             >
         </v-layout>
     </v-row>
