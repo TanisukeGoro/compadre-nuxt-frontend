@@ -17,12 +17,12 @@
 
 <template>
     <v-app>
-        <v-content>
+        <v-content style="padding-bottom:120px">
             <v-carousel
                 v-model="carousel"
                 height="100%"
                 :hide-delimiters="true"
-                :show-arrows="showArrows"
+                :show-arrows="false"
                 :touchless="touchless"
                 :cycle="false"
                 :light="true"
@@ -31,61 +31,105 @@
                 <v-carousel-item
                     v-for="candidate in displayCandidate"
                     :key="candidate.candidateId"
+                    style="margin-bottom: 18px;"
                 >
                     <v-card
-                        height="100%"
                         max-width="344"
-                        class="mx-auto pt-4"
+                        class="mx-auto"
+                        style="margin-top:2.5%; border-radius:25px; min-height:95% "
                         flat
-                        color="background"
+                        outlined
                     >
-                        <v-list-item>
-                            <v-list-item-avatar color="grey" size="72">
-                                <v-img
-                                    :src="candidate.icon_url | avatarIconUrl"
-                                ></v-img>
-                            </v-list-item-avatar>
-                            <v-list-item-content>
-                                <v-list-item-title
-                                    class="headline  grey--text text--darken-3"
-                                >
-                                    {{ candidate.name }}
-                                </v-list-item-title>
-                                <v-list-item-subtitle
-                                    class="grey--text text--darken-1"
-                                >
-                                    <p
-                                        class="inline iti-flag mr-1"
-                                        :class="candidate.country.toLowerCase()"
-                                    ></p>
-                                    {{
-                                        candidate.country
-                                            | countryCode2countryName
-                                    }}
-                                    {{ candidate.birthday | yyyymmdd2Age }}歳
-                                </v-list-item-subtitle>
-                                <v-list-item-subtitle
-                                    class="grey--text text--darken-1"
-                                >
-                                    {{ candidate.job_type | jobCode2JobName }}
-                                </v-list-item-subtitle>
-                            </v-list-item-content>
-                        </v-list-item>
-
                         <!-- 表示用 -->
                         <v-card-text
                             v-if="
                                 cardState === 'select' ||
                                     cardState === 'preview'
                             "
-                            class="subtitle-1 grey--text text--darken-3"
-                        >
-                            {{
+                            style="font-size: 24px; line-height: 1.5;"
+                            >{{
                                 candidate.greetings.length > 0
                                     ? candidate.greetings[0].content
                                     : 'No Messages...'
-                            }}
+                            }}</v-card-text
+                        >
+                        <v-card-text>
+                            <v-icon class="mr-3 grey--text">mdi-voice</v-icon>
+                            {{ candidate.fst_lang | langCode2langName }},
+                            {{ candidate.snd_lang | langCode2langName }},
+                            {{ candidate.trd_lang | langCode2langName }}
                         </v-card-text>
+
+                        <v-card-text class="pa-0">
+                            <div style="bottom:0px; position:absolute">
+                                <v-divider></v-divider>
+                                <v-list-item>
+                                    <v-list-item-avatar
+                                        color="#c6e9e2"
+                                        size="50"
+                                    >
+                                        <v-img
+                                            :src="
+                                                candidate.icon_url
+                                                    | avatarIconUrl
+                                            "
+                                            :lazy-src="
+                                                require('~/assets/images/onErrorUserImg.png')
+                                            "
+                                        >
+                                            <template v-slot:placeholder>
+                                                <v-row
+                                                    class="fill-height ma-0"
+                                                    align="center"
+                                                    justify="center"
+                                                >
+                                                    <v-progress-circular
+                                                        indeterminate
+                                                        color="white"
+                                                        size="20"
+                                                    ></v-progress-circular>
+                                                </v-row>
+                                            </template>
+                                        </v-img>
+                                    </v-list-item-avatar>
+                                    <v-list-item-content>
+                                        <v-list-item-title
+                                            class="subtitle-1 grey--text text--darken-3"
+                                            >{{
+                                                candidate.name
+                                            }}</v-list-item-title
+                                        >
+                                        <v-list-item-subtitle
+                                            class="grey--text text--darken-1"
+                                        >
+                                            <p
+                                                class="inline iti-flag mr-1"
+                                                :class="
+                                                    candidate.country.toLowerCase()
+                                                "
+                                            ></p>
+                                            {{
+                                                candidate.country
+                                                    | countryCode2countryName
+                                            }}
+                                            {{
+                                                candidate.birthday
+                                                    | yyyymmdd2Age
+                                            }}歳
+                                        </v-list-item-subtitle>
+                                        <v-list-item-subtitle
+                                            class="grey--text text--darken-1"
+                                        >
+                                            {{
+                                                candidate.job_type
+                                                    | jobCode2JobName
+                                            }}
+                                        </v-list-item-subtitle>
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </div>
+                        </v-card-text>
+
                         <!-- 編集用 -->
                         <v-form>
                             <v-textarea
@@ -103,74 +147,36 @@
                                 rows="1"
                             >
                             </v-textarea>
-
-                            <v-divider color="grey"></v-divider>
-
-                            <v-list-item>
-                                <v-list-item-content>
-                                    <v-list-item-title
-                                        class="subtitle-2 grey--text"
-                                    >
-                                        <v-icon class="mr-3 grey--text"
-                                            >mdi-voice</v-icon
-                                        >
-                                        {{
-                                            candidate.fst_lang
-                                                | langCode2langName
-                                        }},
-                                        {{
-                                            candidate.snd_lang
-                                                | langCode2langName
-                                        }},
-                                        {{
-                                            candidate.trd_lang
-                                                | langCode2langName
-                                        }}
-                                    </v-list-item-title>
-                                </v-list-item-content>
-                            </v-list-item>
-                            <v-card-actions>
-                                <!-- <v-flex xs1>
-                                <v-btn
-                                    v-if="cardState === 'select'"
-                                    color="accent"
-                                    absolute
-                                    bottom
-                                    @click="isshow = !is"
-                                >
-                                    Hi !
-                                </v-btn>
-                            </v-flex> -->
-                                <span
-                                    v-if="cardState === 'select'"
-                                    class="likebtn"
-                                >
-                                    <LikeButton
-                                        :btn-state="postBtnState"
-                                        @ClickLikebutton="clickHiBtn"
-                                    />
-                                </span>
-                                <div
-                                    v-if="cardState === 'edit'"
-                                    class="SaveCancelBtn"
-                                >
-                                    <v-btn
-                                        color="success"
-                                        outlined
-                                        @click="editCancel"
-                                        >Cancel</v-btn
-                                    >
-                                    <v-btn color="success" @click="editSave"
-                                        >Save</v-btn
-                                    >
-                                </div>
-                                <the-editor-btn
-                                    v-if="cardState === 'preview'"
-                                    @assignFromChild="assginState($event)"
-                                />
-                            </v-card-actions>
                         </v-form>
+
+                        <v-card-actions>
+                            <div
+                                v-if="cardState === 'edit'"
+                                class="SaveCancelBtn"
+                            >
+                                <v-btn
+                                    color="success"
+                                    outlined
+                                    @click="editCancel"
+                                    >Cancel</v-btn
+                                >
+                                <v-btn color="success" @click="editSave"
+                                    >Save</v-btn
+                                >
+                            </div>
+                            <the-editor-btn
+                                v-if="cardState === 'preview'"
+                                @assignFromChild="assginState($event)"
+                            />
+                        </v-card-actions>
                     </v-card>
+
+                    <span v-if="cardState === 'select'" class="likebtn">
+                        <LikeButton
+                            :btn-state="postBtnState"
+                            @ClickLikebutton="clickHiBtn"
+                        />
+                    </span>
                 </v-carousel-item>
             </v-carousel>
         </v-content>
@@ -371,6 +377,13 @@ export default {
     margin: 0 auto;
 }
 .likebtn {
-    margin: 0 auto;
+    z-index: 100;
+    position: fixed;
+    left: 25%;
+    bottom: 50px;
+    /* -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    overflow: hidden; */
+    /* margin: 0 auto;*/
 }
 </style>

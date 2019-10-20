@@ -131,7 +131,7 @@
                                         <v-card>
                                             <edit-profile-img
                                                 @cancelProfileImg="
-                                                    editProfilePhotoDialog = !editProfilePhotoDialog
+                                                    upDateUserImgSrc
                                                 "
                                             />
                                         </v-card>
@@ -344,7 +344,7 @@
                                     >
                                         <v-avatar left class="mr-0">
                                             <v-icon class="body-1">
-                                                mdi-airballoon
+                                                mdi-flag-variant-outline
                                             </v-icon>
                                         </v-avatar>
                                         {{
@@ -477,6 +477,10 @@ export default {
         },
         startUpEditor() {
             this.editorParam = Object.assign({}, this.userData)
+        },
+        upDateUserImgSrc() {
+            this.editProfilePhotoDialog = !this.editProfilePhotoDialog
+            this.editorParam.icon_url = this.$auth.state.user.icon_user
         },
         editSave() {
             const self = this

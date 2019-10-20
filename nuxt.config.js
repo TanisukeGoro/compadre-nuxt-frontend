@@ -46,7 +46,7 @@ export default {
     /*
      ** Customize the progress-bar color
      */
-    loading: { color: '#fff' },
+    loading: {},
     /*
      ** Global CSS
      */
@@ -105,6 +105,7 @@ export default {
      * See https://auth.nuxtjs.org/
      */
     auth: {
+        localStorage: false,
         redirect: {
             login: '/login', // 未ログイン時のリダイレクト先
             logout: '/', // ログアウト処理を実行した直後のリダイレクト先
@@ -155,13 +156,14 @@ export default {
                     secondary: '#F5D76E',
                     accent: '#4F75A0',
                     error: '#ED5E7D',
-                    warning: '#ffeb3b',
+                    warning: '#FF934F',
                     info: '#cddc39',
                     success: '#EBB920',
                     background: '#fafafa',
                     chips: '#FAEEB8',
                     chipsColor: '#61636b',
-                    logoText: '#4db4da'
+                    logoText: '#4db4da',
+                    text: '#c76b33'
                 },
                 // ダークモードのとき
                 dark: {

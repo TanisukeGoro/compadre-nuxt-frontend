@@ -32,7 +32,8 @@
                             :align-end="msg.send_uid === $auth.state.user.id"
                         >
                             <v-flex>
-                                <spot-card
+                                <component
+                                    :is="msg.text.match(regexp)[1]"
                                     class="callout right"
                                     :class="
                                         msg.send_uid === $auth.state.user.id
@@ -43,11 +44,22 @@
                                     :post-id="msg.id"
                                     :to-tolk-user="toTalk_user"
                                 />
+                                <!-- <spot-card
+                                    class="callout right"
+                                    :class="
+                                        msg.send_uid === $auth.state.user.id
+                                            ? 'left'
+                                            : 'right'
+                                    "
+                                    :card-type="msg.text.match(regexp)"
+                                    :post-id="msg.id"
+                                    :to-tolk-user="toTalk_user"
+                                /> -->
                             </v-flex>
                         </v-layout>
                     </div>
                 </div>
-                <transition name="fade">
+                <!-- <transition name="fade">
                     <chat-card
                         v-if="showBotCard"
                         :to-talk-user="toTalk_user"
@@ -59,9 +71,50 @@
                         v-if="showBotCard"
                         @selectCardFromChild="selectCard($event)"
                     />
-                </transition>
+                </transition> -->
             </v-container>
-            <v-send-footer @sendDataFromChild="sendMessage($event)" />
+            <v-send-footer
+                @sendDataFromChild="sendMessage($event)"
+                @openCarender="openCarender"
+            />
+            <v-dialog
+                v-model="recommendationDialog"
+                fullscreen
+                hide-overlay
+                transition="dialog-bottom-transition"
+            >
+                <v-card flat>
+                    <v-toolbar flat color="primary">
+                        <v-btn icon dark @click="recommendationDialog = false">
+                            <v-icon>mdi-close</v-icon>
+                        </v-btn>
+                        <v-spacer></v-spacer>
+                        <v-toolbar-title>{{ dialogTitle }}</v-toolbar-title>
+                        <v-spacer></v-spacer>
+                    </v-toolbar>
+                    <v-card-text
+                        class="pa-0 text-center"
+                        :style="{
+                            background: $vuetify.theme.themes['light'].primary
+                        }"
+                        >{{ dialogMsg }}</v-card-text
+                    >
+                    <component
+                        :is="componentId"
+                        ref="recommendDates"
+                        :to-talk-user="toTalk_user"
+                        :card-type="cardType"
+                        @sendRecommendationDate="sendRecommend($event)"
+                        @closeSelectSpot="closeSelectSpot($event)"
+                    />
+                </v-card>
+            </v-dialog>
+            <hook-recommend-event
+                :recommend-event="showBotCard"
+                :to-talk-user="toTalk_user"
+                @closeEvent="showBotCard = !showBotCard"
+                @selectEventFromChild="selectEventType($event)"
+            />
         </v-content>
     </v-app>
 </template>
@@ -73,10 +126,14 @@ import { db, firebase } from '~/plugins/firebase'
 import VMessageTimestamp from '~/components/chat/VMessageTimestamp'
 import VMessageDate from '~/components/chat/VMessageDate'
 import VSendFooter from '~/components/chat/VSendFooter'
+import RecommendDate from '~/components/chat/RecommendDate'
 
 import ChatCard from '@/components/chat/ChatCard'
 import ChatCardSelect from '@/components/chat/ChatCardSelect'
 import SpotCard from '@/components/chat/SpotCard'
+import ProposalMeetingDates from '@/components/chat/ProposalMeetingDates'
+import ProposalMeetingSpot from '@/components/chat/ProposalMeetingSpot'
+import HookRecommendEvent from '@/components/chat/HookRecommendEvent'
 export default {
     layout: 'chat',
     components: {
@@ -85,7 +142,13 @@ export default {
         VSendFooter,
         ChatCardSelect,
         ChatCard,
-        SpotCard
+        sendActivityCard: SpotCard,
+        selectActivitySpot: SpotCard,
+        proposeActivity: SpotCard,
+        proposalMeetingDates: ProposalMeetingDates,
+        RecommendDate,
+        ProposalMeetingSpot,
+        HookRecommendEvent
     },
     data() {
         return {
@@ -96,8 +159,14 @@ export default {
             directMessages: this.$store.state.directMessages,
             userId: this.$auth.state.user.id,
             showBotCard: false,
-            answer: false,
-            regexp: /^:(.*)\((.*)\):$/
+            regexp: /^:(.*)\((.*)\):$/,
+            // ダイアログ
+            recommendationDialog: false,
+            recommendEvent: false,
+            dialogTitle: '',
+            dialogMsg: '',
+            cardType: '',
+            componentId: ''
         }
     },
     computed: {
@@ -120,6 +189,7 @@ export default {
             (i) => i.hashed_room_id === this.$route.params.room_id
         )
         if (!this.toTalk_user) this.$router.push('/app/chat')
+        console.log(this.toTalk_user)
 
         /**
          * setPostRefでfirestoreからの情報を取ってくるまで待機
@@ -168,12 +238,7 @@ export default {
                 })
         },
 
-        // this.posts[this.posts.length - 2].send_uid ===
-        // this.userId
-        //     ? rallyCount
-        //     : rallyCount++
         async getChatInfo() {
-            // const chatInfo = ''
             const chatInfo = await db
                 .collection('chat_rooms')
                 .doc(this.$route.params.room_id)
@@ -189,6 +254,7 @@ export default {
             const { recentPost, recentUser, rallyCount } = chatInfoData
             if (recentPost && recentUser && rallyCount) {
                 // 更新処理
+                console.log('更新処理')
                 return this.setChatInfo(
                     postedText,
                     this.userId,
@@ -198,6 +264,7 @@ export default {
             } else {
                 // データがないってことはどういう状況なの？
                 // initするべきか。
+                console.log('そうじゃない')
                 return this.setChatInfo(postedText, this.userId, 1)
             }
         },
@@ -212,10 +279,10 @@ export default {
                 )
                 .add({
                     text: dbdata.text,
-                    send_uid: dbdata.send_uid,
+                    send_uid: this.$auth.state.user.id,
                     receive_uid: this.toTalk_user.toTolk_uid,
-                    idRead: dbdata.idRead,
-                    created: dbdata.created
+                    idRead: false,
+                    created: firebase.firestore.FieldValue.serverTimestamp()
                 })
                 .then(() => {
                     'Status OK'
@@ -226,29 +293,39 @@ export default {
                 ? this.initChatInfo(dbdata.text)
                 : self.updateChatInfo(chatInfoData, dbdata.text, false)
         },
-        getMessages() {},
-        async selectCard(card) {
-            const sendData = {
-                text: `:proposeActivity(${card.select}):`,
-                send_uid: this.userId,
-                receive_uid: this.toTalk_user.toTolk_uid,
-                idRead: false,
-                created: firebase.firestore.FieldValue.serverTimestamp()
-            }
-            await this.sendMessage(sendData)
-            const chatInfoData = await this.getChatInfo()
-            !chatInfoData
-                ? this.initChatInfo(sendData.text)
-                : this.updateChatInfo(chatInfoData, sendData.text, true)
-
-            this.answer = true
+        selectEventType(card) {
+            this.cardType = card.recommendType
+            this.dialogTitle = 'お店の予約提案'
+            this.dialogMsg = '提案したいお店を選択して下さい！'
             this.showBotCard = false
+            this.componentId = 'proposal-meeting-spot'
+            this.recommendationDialog = true
+        },
+        async closeSelectSpot(postedText) {
+            const chatInfoData = await this.getChatInfo()
+            this.updateChatInfo(chatInfoData, postedText.postText, true)
+            this.showBotCard = false
+            this.closeDialog()
+        },
+        openCarender() {
+            this.dialogTitle = '日程調整'
+            this.dialogMsg = '提案したい日程を2~5個選択して下さい!'
+            this.componentId = 'recommend-date'
+            this.recommendationDialog = true
+        },
+        async sendRecommend(data) {
+            await this.sendMessage(data)
+            this.closeDialog()
+            this.$refs.recommendDates.refreshDialog()
+        },
+        closeDialog() {
+            this.recommendationDialog = false
         }
     }
 }
 </script>
 
-<style>
+<style scoped>
 .fade-enter-active,
 .fade-leave-active {
     transition: opacity 1.5s;
