@@ -45,7 +45,7 @@
                                 cardState === 'select' ||
                                     cardState === 'preview'
                             "
-                            style="font-size: 24px; line-height: 1.5;"
+                            style="font-size: 24px; line-height: 1.5; margin-top:10%;"
                             >{{
                                 candidate.greetings.length > 0
                                     ? candidate.greetings[0].content
