@@ -60,7 +60,7 @@
                                     @click:append="showPassword = !showPassword"
                                 ></v-text-field>
                             </v-card>
-                            <v-card class="mb-12 container" flat>
+                            <v-card class="mb-12 container1" flat>
                                 <!-- 画像のアップロード -->
                                 <croppa
                                     v-model="croppaImg"
@@ -752,7 +752,7 @@ export default {
 .ContinueCancel {
     text-align: center;
 }
-.container {
+.container1 {
     width: 100%;
     text-align: center;
 }
