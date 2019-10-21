@@ -17,7 +17,7 @@
             :hide-delimiters="hideDelimiters"
             :show-arrows="showArrows"
             :touchless="touchLess"
-            :card-state="'edit'"
+            :card-state="cardState"
             @fromSelectComponent="changeState($event)"
             @returnEditFromChild="returnEdit($event)"
             @cancelEditFromChild="cancelEdit"

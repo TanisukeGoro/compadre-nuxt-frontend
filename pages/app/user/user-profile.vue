@@ -333,10 +333,11 @@
                                         <v-avatar left class="mr-0">
                                             <v-icon class="body-1">
                                                 mdi-cake
-                                            </v-icon>
-                                        </v-avatar>
-                                        {{ userData.birthday | yyyymmdd2Age }}歳
-                                    </v-chip>
+                                            </v-icon> </v-avatar
+                                        >{{
+                                            userData.birthday | yyyymmdd2Age
+                                        }}歳</v-chip
+                                    >
                                     <v-chip
                                         class="ma-1 caption"
                                         color="chips"
