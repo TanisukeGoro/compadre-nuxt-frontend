@@ -744,7 +744,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .inline {
     display: inline-block;
     margin-bottom: 0 !important;
