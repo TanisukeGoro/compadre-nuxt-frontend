@@ -46,12 +46,20 @@
                                     cardState === 'preview'
                             "
                             style="font-size: 24px; line-height: 1.5; margin-top:10%;"
-                            >{{
-                                candidate.greetings.length > 0
-                                    ? candidate.greetings[0].content
-                                    : 'No Messages...'
-                            }}</v-card-text
                         >
+                            <div v-if="candidate.greetings.length > 0">
+                                <div
+                                    v-for="(text,
+                                    index) in candidate.greetings[0].content.split(
+                                        '\n'
+                                    )"
+                                    :key="index"
+                                >
+                                    {{ text }}
+                                </div>
+                            </div>
+                            <div v-else>No Messages...</div>
+                        </v-card-text>
                         <v-card-text>
                             <v-icon class="mr-3 grey--text">mdi-voice</v-icon>
                             {{ candidate.fst_lang | langCode2langName }},
