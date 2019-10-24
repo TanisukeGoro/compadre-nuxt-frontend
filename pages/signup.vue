@@ -8,6 +8,7 @@
 </script>
 <template>
     <v-app>
+        <script src="//connect.facebook.net/en_US/sdk.js"></script>
         <v-content>
             <!-- <v-btn color="success" @click="test">text</v-btn>
             {{ phoneNumber == undefined || phoneNumber.isValid() }} -->
@@ -28,14 +29,55 @@
                         </template>
                     </v-stepper-header>
 
-                    <!-- 登録ページ１ -->
-
                     <v-stepper-items>
+                        <!-- 登録ページ 1 Facebook認証 -->
                         <v-stepper-content :key="`1-content`" :step="1">
+                            <v-card
+                                title="Social Login"
+                                bg-variant="light"
+                                class="p-2"
+                            >
+                                <v-list>
+                                    <v-list-item-group color="primary">
+                                        <v-list-item
+                                            v-for="auth in strategies"
+                                            :key="auth.key"
+                                        >
+                                            <v-list-item-icon>
+                                                <v-icon
+                                                    >mdi-{{ auth.icon }}</v-icon
+                                                >
+                                            </v-list-item-icon>
+                                            <v-list-item-content>
+                                                <v-list-item-title>
+                                                    <v-btn
+                                                        block
+                                                        :style="{
+                                                            background:
+                                                                auth.color
+                                                        }"
+                                                        class="login-button white--text"
+                                                        @click="
+                                                            signupWithFacebook
+                                                        "
+                                                    >
+                                                        Singup with
+                                                        {{ auth.name }}
+                                                    </v-btn>
+                                                </v-list-item-title>
+                                            </v-list-item-content>
+                                        </v-list-item>
+                                    </v-list-item-group>
+                                </v-list>
+                            </v-card>
+                        </v-stepper-content>
+                        <!-- 登録ページ 2 -->
+                        <v-stepper-content :key="`2-content`" :step="2">
                             <v-card class="mb-12" flat>
                                 <v-text-field
                                     v-model="name"
                                     :rules="nameRules"
+                                    disabled
                                     :counter="20"
                                     label="Your name"
                                     required
@@ -44,6 +86,7 @@
                                     v-model="email"
                                     :rules="emailRules"
                                     label="E-mail"
+                                    disabled
                                     required
                                 ></v-text-field>
                                 <v-text-field
@@ -68,22 +111,23 @@
                                     :placeholder-font-size="16"
                                     placeholder="Account Image"
                                     :prevent-white-space="true"
-                                    :zoom-speed="10"
+                                    :initial-image="initUserImg"
+                                    :zoom-speed="7"
                                     :height="150"
                                     class="imgupload"
                                 ></croppa>
                             </v-card>
                             <div class="ContinueCancel">
                                 <v-btn text>Cancel</v-btn>
-                                <v-btn color="primary" @click="nextStep(1)">
+                                <v-btn color="primary" @click="nextStep(2)">
                                     Continue
                                 </v-btn>
                             </div>
                         </v-stepper-content>
 
-                        <!-- 登録ページ２ -->
+                        <!-- 登録ページ 3 -->
 
-                        <v-stepper-content :key="`2-content`" :step="2">
+                        <v-stepper-content :key="`3-content`" :step="3">
                             <!-- <v-btn color="primary" @click="nextStep(3)">
                                 Continue
                             </v-btn>
@@ -96,7 +140,7 @@
                                         <v-text-field
                                             v-model="nowPlace"
                                             clearable
-                                            label="Message"
+                                            label="Tap Right Circle & Get Location"
                                             type="text"
                                         >
                                             <template v-slot:prepend>
@@ -179,7 +223,6 @@
                                             :close-on-content-click="false"
                                             transition="scale-transition"
                                             offset-y
-                                            full-width
                                             min-width="290px"
                                         >
                                             <template v-slot:activator="{ on }">
@@ -231,13 +274,14 @@
                             </v-card>
                             <div class="ContinueCancel">
                                 <v-btn text>Cancel</v-btn>
-                                <v-btn color="primary" @click="nextStep(2)">
+                                <v-btn color="primary" @click="nextStep(3)">
                                     Continue
                                 </v-btn>
                             </div>
                         </v-stepper-content>
-                        <v-stepper-content :key="`3-content`" :step="3">
-                            <!-- 登録画面 -->
+
+                        <!-- 登録画面 4-->
+                        <v-stepper-content :key="`4-content`" :step="4">
                             <v-textarea
                                 v-model="greetingContent"
                                 class="card-text__font pa-2"
@@ -384,6 +428,19 @@ export default {
     data() {
         return {
             form: false,
+            /**
+             * Facebook認証関連
+             */
+            initUserImg: '',
+            strategies: [
+                {
+                    key: 'facebook',
+                    name: 'Facebook',
+                    color: '#3c65c4',
+                    icon: 'facebook-box'
+                }
+            ],
+            facebookData: {},
             agreementService: false,
             agreementPolicy: false,
             dialogContent: {
@@ -437,7 +494,7 @@ export default {
             },
 
             e1: 1,
-            steps: 3,
+            steps: 4,
             /**
              * name validation
              */
@@ -584,6 +641,9 @@ export default {
     },
 
     watch: {
+        initUserImg() {
+            this.croppaImg.refresh()
+        },
         steps(val) {
             if (this.e1 > val) {
                 this.e1 = val
@@ -597,7 +657,7 @@ export default {
         },
         e1() {
             console.log('greetingExample :', this.e1)
-            if (this.e1 === 3) {
+            if (this.e1 === 4) {
                 console.log('テスト')
                 self = this
                 setTimeout(function() {
@@ -605,6 +665,11 @@ export default {
                     self.greetingExample = true
                 }, 500)
             }
+        },
+        facebookData() {
+            console.log({ ...this.facebookData })
+            this.initUserImg = `https://graph.facebook.com/${this.facebookData.id}/picture?width=1000&height=1000`
+            // this.getUserPhoto()
         }
     },
 
@@ -769,10 +834,10 @@ export default {
                         this.$router.push('/app/select')
                     })
                     .catch((i) => {
-                        console.log(i.response.data)
-                        console.log(i.response.status) // 例：400
-                        console.log(i.response.statusText) // Bad Request
-                        console.log(i.response.headers)
+                        // console.log(i.response.data)
+                        // console.log(i.response.status) // 例：400
+                        // console.log(i.response.statusText) // Bad Request
+                        // console.log(i.response.headers)
                         this.alertColor = 'error'
                         this.alertIcon = 'mdi-alert-circle-outline'
                         this.errorAlert = true
@@ -781,6 +846,70 @@ export default {
                         `
                         this.formData = new FormData()
                     })
+            })
+        },
+
+        /**
+         * Facebook 連携用
+         */
+        async getFacebookMe() {
+            const self = this
+            await window.FB.api(
+                '/me',
+                {
+                    fields: 'id,about,birthday,email,gender,location,name'
+                },
+                function(response) {
+                    self.facebookData = response
+                    self.name = response.name
+                    self.email = response.email
+                    const birthday = new Date(response.birthday)
+                    self.date = `${birthday.getFullYear()}-${birthday.getMonth() +
+                        1}-${birthday.getDate()}`
+                    self.nextStep(1)
+                }
+            )
+        },
+        facebookLogin() {
+            window.FB.login()
+        },
+        async getFacebookLoginStatus() {
+            const self = this
+            await window.FB.getLoginStatus(function(response) {
+                if (response.status === 'connected') {
+                    self.getFacebookMe()
+                } else {
+                    self.facebookLogin()
+                }
+            })
+        },
+        getUserPhoto() {
+            const self = this
+            this.$axios
+                .$get(
+                    `https://graph.facebook.com/${this.facebookData.id}/picture?width=1000&height=1000`
+                )
+                .then(
+                    (i) =>
+                        (self.initUserImg = `https://graph.facebook.com/${this.facebookData.id}/picture?width=1000&height=1000`)
+                )
+        },
+        signupWithFacebook() {
+            window.FB.init({
+                appId: 433680970792692,
+                xfbml: true,
+                version: 'v4.0'
+            })
+            this.getFacebookLoginStatus()
+
+            const self = this
+            /**
+             * 以下を参考にした
+             * https://stackoverflow.com/questions/24031418/get-facebook-user-data-javascript-api
+             * https://stackoverflow.com/questions/43382485/how-to-await-fb-login-callback-on-reactjs
+             */
+            window.FB.Event.subscribe('auth.statusChange', function() {
+                self.getFacebookMe()
             })
         }
     }
