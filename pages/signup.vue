@@ -143,6 +143,7 @@
                                             item-value="iso2"
                                             item-text="name"
                                             class="caption"
+                                            prepend-icon="mdi-flag-outline"
                                             return-object
                                             @input="updateValue"
                                         >
@@ -156,6 +157,7 @@
                                                         item.iso2.toLowerCase()
                                                     "
                                                 ></p>
+                                                {{ item.name }}
                                             </template>
                                             <template
                                                 slot="item"
@@ -212,6 +214,7 @@
                                             persistent-hint
                                             return-object
                                             single-line
+                                            prepend-icon="mdi-flag-outline"
                                         ></v-select>
                                         <!-- 性別の選択 -->
                                         <v-select
@@ -281,6 +284,23 @@
                                     >Submit</v-btn
                                 >
                             </v-card-actions>
+                            <v-alert
+                                v-model="errorAlert"
+                                dismissible
+                                :color="alertColor"
+                                border="left"
+                                elevation="2"
+                                colored-border
+                                :icon="alertIcon"
+                                style="word-break: break-all;"
+                            >
+                                <div
+                                    v-for="text in Msg.split('\n')"
+                                    :key="text"
+                                >
+                                    {{ text }}
+                                </div>
+                            </v-alert>
                             <v-dialog v-model="greetingExample" width="400">
                                 <v-card absolute max-width="400" persistent>
                                     <v-img
@@ -545,7 +565,14 @@ export default {
             greetingRules: [
                 (v) => v === null || v.length <= 200 || 'Max 200 characters'
             ],
-            greetingExample: false
+            greetingExample: false,
+            /**
+             * 通信エラー
+             */
+            errorAlert: false,
+            Msg: '',
+            alertColor: 'cyan',
+            alertIcon: 'mdi-hail'
         }
     },
     computed: {
@@ -725,6 +752,9 @@ export default {
                         this.formData
                     )
                     .then((res) => {
+                        this.Msg = `Register Successful
+                        Now loading... Please wait`
+                        this.errorAlert = true
                         this.isLoading = false
                         if (res.access_token) {
                             this.$auth.loginWith('local', {
@@ -737,6 +767,19 @@ export default {
                     })
                     .then((res) => {
                         this.$router.push('/app/select')
+                    })
+                    .catch((i) => {
+                        console.log(i.response.data)
+                        console.log(i.response.status) // 例：400
+                        console.log(i.response.statusText) // Bad Request
+                        console.log(i.response.headers)
+                        this.alertColor = 'error'
+                        this.alertIcon = 'mdi-alert-circle-outline'
+                        this.errorAlert = true
+                        this.isLoading = false
+                        this.Msg = `${i}\n${i.response.statusText}\n${i.response.data.message}
+                        `
+                        this.formData = new FormData()
                     })
             })
         }
