@@ -501,7 +501,10 @@ export default {
             name: '',
             nameRules: [
                 (v) => !!v || 'Name is required',
-                (v) => v.length <= 20 || 'Name must be less than 20 characters'
+                (v) =>
+                    v === null ||
+                    v.length <= 20 ||
+                    'Name must be less than 20 characters'
             ],
             /**
              * email validation
@@ -629,7 +632,8 @@ export default {
             errorAlert: false,
             Msg: '',
             alertColor: 'cyan',
-            alertIcon: 'mdi-hail'
+            alertIcon: 'mdi-hail',
+            int_counter: 0
         }
     },
     computed: {
@@ -667,7 +671,15 @@ export default {
             }
         },
         facebookData() {
+            this.int_counter += 1
+            if (this.int_counter > 1) return 0
             console.log({ ...this.facebookData })
+            this.name = this.facebookData.name
+            this.email = this.facebookData.email
+            console.log(this.name, this.email)
+            const birthday = new Date(this.facebookData.birthday)
+            this.date = `${birthday.getFullYear()}-${birthday.getMonth() +
+                1}-${birthday.getDate()}`
             this.initUserImg = `https://graph.facebook.com/${this.facebookData.id}/picture?width=1000&height=1000`
             // this.getUserPhoto()
         }
@@ -861,11 +873,6 @@ export default {
                 },
                 function(response) {
                     self.facebookData = response
-                    self.name = response.name
-                    self.email = response.email
-                    const birthday = new Date(response.birthday)
-                    self.date = `${birthday.getFullYear()}-${birthday.getMonth() +
-                        1}-${birthday.getDate()}`
                     self.nextStep(1)
                 }
             )
@@ -896,7 +903,7 @@ export default {
         },
         signupWithFacebook() {
             window.FB.init({
-                appId: 433680970792692,
+                appId: 2492514334313989,
                 xfbml: true,
                 version: 'v4.0'
             })
