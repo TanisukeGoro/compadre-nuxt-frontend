@@ -45,7 +45,7 @@
                                 cardState === 'select' ||
                                     cardState === 'preview'
                             "
-                            style="font-size: 24px; line-height: 1.5; margin-top:10%;"
+                            style="font-size: 20px; line-height: 1.5; margin-top:10%;"
                         >
                             <div v-if="candidate.greetings.length > 0">
                                 <div

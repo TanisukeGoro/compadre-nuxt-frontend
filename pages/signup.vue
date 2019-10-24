@@ -472,8 +472,8 @@ export default {
              */
             gender: '',
             genders: [
-                { name: 'Woman', val: 0 },
-                { name: 'Man', val: 1 },
+                { name: 'Female', val: 0 },
+                { name: 'Male', val: 1 },
                 { name: 'Others', val: 2 }
             ],
 
