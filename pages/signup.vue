@@ -853,19 +853,19 @@ export default {
         /**
          * Facebook 連携用
          */
-        async getFacebookMe() {
-            const self = this
-            await window.FB.api(
-                '/me',
-                {
-                    fields: 'id,about,birthday,email,gender,location,name'
-                },
-                function(response) {
-                    self.facebookData = response
-                    self.nextStep(1)
-                }
-            )
-        },
+        // async getFacebookMe() {
+        //     const self = this
+        //     await window.FB.api(
+        //         '/me',
+        //         {
+        //             fields: 'id,about,birthday,email,gender,location,name'
+        //         },
+        //         function(response) {
+        //             self.facebookData = response
+        //             self.nextStep(1)
+        //         }
+        //     )
+        // },
         facebookLogin() {
             const self = this
             window.FB.login(
@@ -873,13 +873,17 @@ export default {
                     const { accessToken, userID } = response.authResponse
                     self.$axios
                         .$get(
-                            `https://graph.facebook.com/${userID}?fields=birthday,email&access_token=${accessToken}`
+                            `https://graph.facebook.com/${userID}?fields=name,birthday,email&access_token=${accessToken}`
                         )
                         .then((i) => {
+                            console.log(i)
+                            self.name = i.name
                             self.email = i.email
                             const birthday = new Date(i.birthday)
                             self.date = `${birthday.getFullYear()}-${birthday.getMonth() +
                                 1}-${birthday.getDate()}`
+                            self.initUserImg = `https://graph.facebook.com/${i.id}/picture?width=1000&height=1000`
+                            self.nextStep(1)
                         })
                 },
                 { scope: 'email' }
@@ -889,22 +893,11 @@ export default {
             const self = this
             await window.FB.getLoginStatus(function(response) {
                 if (response.status === 'connected') {
-                    self.getFacebookMe()
+                    self.facebookLogin()
                 } else {
                     self.facebookLogin()
                 }
             })
-        },
-        getUserPhoto() {
-            const self = this
-            this.$axios
-                .$get(
-                    `https://graph.facebook.com/${this.facebookData.id}/picture?width=1000&height=1000`
-                )
-                .then(
-                    (i) =>
-                        (self.initUserImg = `https://graph.facebook.com/${this.facebookData.id}/picture?width=1000&height=1000`)
-                )
         },
         signupWithFacebook() {
             window.FB.init({
@@ -912,7 +905,8 @@ export default {
                 xfbml: true,
                 version: 'v4.0'
             })
-            this.getFacebookLoginStatus()
+            // this.getFacebookLoginStatus()
+            this.facebookLogin()
 
             const self = this
             /**
@@ -920,9 +914,9 @@ export default {
              * https://stackoverflow.com/questions/24031418/get-facebook-user-data-javascript-api
              * https://stackoverflow.com/questions/43382485/how-to-await-fb-login-callback-on-reactjs
              */
-            window.FB.Event.subscribe('auth.statusChange', function() {
-                self.getFacebookMe()
-            })
+            // window.FB.Event.subscribe('auth.statusChange', function() {
+            //     self.getFacebookMe()
+            // })
         }
     }
 }
