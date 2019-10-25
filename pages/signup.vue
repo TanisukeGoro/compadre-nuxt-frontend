@@ -871,7 +871,12 @@ export default {
             )
         },
         facebookLogin() {
-            window.FB.login()
+            window.FB.login(
+                function(response) {
+                    console.log(response)
+                },
+                { scope: 'public_profile,email' }
+            )
         },
         async getFacebookLoginStatus() {
             const self = this
