@@ -673,10 +673,8 @@ export default {
         facebookData() {
             this.int_counter += 1
             if (this.int_counter > 1) return 0
-            console.log({ ...this.facebookData })
             this.name = this.facebookData.name
             this.email = this.facebookData.email
-            console.log(this.name, this.email)
             const birthday = new Date(this.facebookData.birthday)
             this.date = `${birthday.getFullYear()}-${birthday.getMonth() +
                 1}-${birthday.getDate()}`
@@ -698,11 +696,6 @@ export default {
             const a = new AsYouType('JP')
             a.input('08031947940')
             const b = new AsYouType('JP').input('0223751514')
-
-            // const aphone = parsePhoneNumberFromString(a, 'JP')
-            //
-            //
-            //
         },
         updateValue() {
             this.currPhoneInp = new AsYouType(this.country.iso2.toUpperCase())
