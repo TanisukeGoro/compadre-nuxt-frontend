@@ -660,12 +660,9 @@ export default {
             this.greeting.content = this.greetingContent
         },
         e1() {
-            console.log('greetingExample :', this.e1)
             if (this.e1 === 4) {
-                console.log('テスト')
                 self = this
                 setTimeout(function() {
-                    console.log('object')
                     self.greetingExample = true
                 }, 500)
             }
@@ -674,10 +671,10 @@ export default {
             this.int_counter += 1
             if (this.int_counter > 1) return 0
             this.name = this.facebookData.name
-            this.email = this.facebookData.email
-            const birthday = new Date(this.facebookData.birthday)
-            this.date = `${birthday.getFullYear()}-${birthday.getMonth() +
-                1}-${birthday.getDate()}`
+            // this.email = this.facebookData.email
+            // const birthday = new Date(this.facebookData.birthday)
+            // this.date = `${birthday.getFullYear()}-${birthday.getMonth() +
+            //     1}-${birthday.getDate()}`
             this.initUserImg = `https://graph.facebook.com/${this.facebookData.id}/picture?width=1000&height=1000`
             // this.getUserPhoto()
         }
@@ -732,7 +729,6 @@ export default {
                     }
                 })
                 .then(function(response) {
-                    console.log('response :', response)
                     self.geoLoading = false
                     if (response.response.location.length > 0) {
                         self.place = response.response.location[0]
@@ -871,11 +867,22 @@ export default {
             )
         },
         facebookLogin() {
+            const self = this
             window.FB.login(
                 function(response) {
-                    console.log(response)
+                    const { accessToken, userID } = response.authResponse
+                    self.$axios
+                        .$get(
+                            `https://graph.facebook.com/${userID}?fields=birthday,email&access_token=${accessToken}`
+                        )
+                        .then((i) => {
+                            self.email = i.email
+                            const birthday = new Date(i.birthday)
+                            self.date = `${birthday.getFullYear()}-${birthday.getMonth() +
+                                1}-${birthday.getDate()}`
+                        })
                 },
-                { scope: 'public_profile,email' }
+                { scope: 'email' }
             )
         },
         async getFacebookLoginStatus() {
