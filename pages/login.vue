@@ -61,7 +61,7 @@
                         </v-list>
                     </v-card>
 
-                    <v-card title="Social Login" bg-variant="light" class="p-2">
+                    <!-- <v-card title="Social Login" bg-variant="light" class="p-2">
                         <v-list>
                             <v-list-item-group color="primary">
                                 <v-list-item
@@ -89,7 +89,7 @@
                                 </v-list-item>
                             </v-list-item-group>
                         </v-list>
-                    </v-card>
+                    </v-card> -->
                 </v-col>
             </v-row>
         </v-container>
