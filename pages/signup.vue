@@ -441,6 +441,7 @@ export default {
                 }
             ],
             facebookData: {},
+            facebookID: '',
             agreementService: false,
             agreementPolicy: false,
             dialogContent: {
@@ -800,6 +801,7 @@ export default {
                 face_image: '',
                 country: this.country.iso2,
                 fst_lang: this.language.langCode,
+                facebook: this.facebookID,
                 ...this.greeting
             }
         },
@@ -885,6 +887,7 @@ export default {
                             self.date = `${birthday.getFullYear()}-${birthday.getMonth() +
                                 1}-${birthday.getDate()}`
                             self.initUserImg = `https://graph.facebook.com/${i.id}/picture?width=1000&height=1000`
+                            self.facebookID = i.id
                             self.nextStep(1)
                         })
                 },
