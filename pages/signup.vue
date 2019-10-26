@@ -853,19 +853,19 @@ export default {
         /**
          * Facebook 連携用
          */
-        // async getFacebookMe() {
-        //     const self = this
-        //     await window.FB.api(
-        //         '/me',
-        //         {
-        //             fields: 'id,about,birthday,email,gender,location,name'
-        //         },
-        //         function(response) {
-        //             self.facebookData = response
-        //             self.nextStep(1)
-        //         }
-        //     )
-        // },
+        async getFacebookMe() {
+            const self = this
+            await window.FB.api(
+                '/me',
+                {
+                    fields: 'id,about,birthday,email,gender,location,name'
+                },
+                function(response) {
+                    self.facebookData = response
+                    self.nextStep(1)
+                }
+            )
+        },
         facebookLogin() {
             const self = this
             window.FB.login(
@@ -879,7 +879,9 @@ export default {
                             console.log(i)
                             self.name = i.name
                             self.email = i.email
-                            const birthday = new Date(i.birthday)
+                            const birthday = i.birthday
+                                ? new Date(i.birthday)
+                                : ''
                             self.date = `${birthday.getFullYear()}-${birthday.getMonth() +
                                 1}-${birthday.getDate()}`
                             self.initUserImg = `https://graph.facebook.com/${i.id}/picture?width=1000&height=1000`
@@ -893,7 +895,7 @@ export default {
             const self = this
             await window.FB.getLoginStatus(function(response) {
                 if (response.status === 'connected') {
-                    self.facebookLogin()
+                    self.getFacebookMe()
                 } else {
                     self.facebookLogin()
                 }
@@ -910,6 +912,7 @@ export default {
 
             const self = this
             /**
+             * ユーザーのAuthのステータス変更時のイベント
              * 以下を参考にした
              * https://stackoverflow.com/questions/24031418/get-facebook-user-data-javascript-api
              * https://stackoverflow.com/questions/43382485/how-to-await-fb-login-callback-on-reactjs
