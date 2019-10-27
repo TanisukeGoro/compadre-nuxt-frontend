@@ -8,6 +8,7 @@
 </script>
 <template>
     <v-app>
+        <script src="//connect.facebook.net/en_US/sdk.js"></script>
         <v-content>
             <!-- <v-btn color="success" @click="test">text</v-btn>
             {{ phoneNumber == undefined || phoneNumber.isValid() }} -->
@@ -28,14 +29,55 @@
                         </template>
                     </v-stepper-header>
 
-                    <!-- 登録ページ１ -->
-
                     <v-stepper-items>
+                        <!-- 登録ページ 1 Facebook認証 -->
                         <v-stepper-content :key="`1-content`" :step="1">
+                            <v-card
+                                title="Social Login"
+                                bg-variant="light"
+                                class="p-2"
+                            >
+                                <v-list>
+                                    <v-list-item-group color="primary">
+                                        <v-list-item
+                                            v-for="auth in strategies"
+                                            :key="auth.key"
+                                        >
+                                            <v-list-item-icon>
+                                                <v-icon
+                                                    >mdi-{{ auth.icon }}</v-icon
+                                                >
+                                            </v-list-item-icon>
+                                            <v-list-item-content>
+                                                <v-list-item-title>
+                                                    <v-btn
+                                                        block
+                                                        :style="{
+                                                            background:
+                                                                auth.color
+                                                        }"
+                                                        class="login-button white--text"
+                                                        @click="
+                                                            signupWithFacebook
+                                                        "
+                                                    >
+                                                        Singup with
+                                                        {{ auth.name }}
+                                                    </v-btn>
+                                                </v-list-item-title>
+                                            </v-list-item-content>
+                                        </v-list-item>
+                                    </v-list-item-group>
+                                </v-list>
+                            </v-card>
+                        </v-stepper-content>
+                        <!-- 登録ページ 2 -->
+                        <v-stepper-content :key="`2-content`" :step="2">
                             <v-card class="mb-12" flat>
                                 <v-text-field
                                     v-model="name"
                                     :rules="nameRules"
+                                    disabled
                                     :counter="20"
                                     label="Your name"
                                     required
@@ -44,6 +86,7 @@
                                     v-model="email"
                                     :rules="emailRules"
                                     label="E-mail"
+                                    disabled
                                     required
                                 ></v-text-field>
                                 <v-text-field
@@ -68,22 +111,23 @@
                                     :placeholder-font-size="16"
                                     placeholder="Account Image"
                                     :prevent-white-space="true"
-                                    :zoom-speed="10"
+                                    :initial-image="initUserImg"
+                                    :zoom-speed="7"
                                     :height="150"
                                     class="imgupload"
                                 ></croppa>
                             </v-card>
                             <div class="ContinueCancel">
                                 <v-btn text>Cancel</v-btn>
-                                <v-btn color="primary" @click="nextStep(1)">
+                                <v-btn color="primary" @click="nextStep(2)">
                                     Continue
                                 </v-btn>
                             </div>
                         </v-stepper-content>
 
-                        <!-- 登録ページ２ -->
+                        <!-- 登録ページ 3 -->
 
-                        <v-stepper-content :key="`2-content`" :step="2">
+                        <v-stepper-content :key="`3-content`" :step="3">
                             <!-- <v-btn color="primary" @click="nextStep(3)">
                                 Continue
                             </v-btn>
@@ -96,7 +140,7 @@
                                         <v-text-field
                                             v-model="nowPlace"
                                             clearable
-                                            label="Message"
+                                            label="Tap Right Circle & Get Location"
                                             type="text"
                                         >
                                             <template v-slot:prepend>
@@ -143,6 +187,7 @@
                                             item-value="iso2"
                                             item-text="name"
                                             class="caption"
+                                            prepend-icon="mdi-flag-outline"
                                             return-object
                                             @input="updateValue"
                                         >
@@ -156,6 +201,7 @@
                                                         item.iso2.toLowerCase()
                                                     "
                                                 ></p>
+                                                {{ item.name }}
                                             </template>
                                             <template
                                                 slot="item"
@@ -177,7 +223,6 @@
                                             :close-on-content-click="false"
                                             transition="scale-transition"
                                             offset-y
-                                            full-width
                                             min-width="290px"
                                         >
                                             <template v-slot:activator="{ on }">
@@ -212,6 +257,7 @@
                                             persistent-hint
                                             return-object
                                             single-line
+                                            prepend-icon="mdi-flag-outline"
                                         ></v-select>
                                         <!-- 性別の選択 -->
                                         <v-select
@@ -228,13 +274,14 @@
                             </v-card>
                             <div class="ContinueCancel">
                                 <v-btn text>Cancel</v-btn>
-                                <v-btn color="primary" @click="nextStep(2)">
+                                <v-btn color="primary" @click="nextStep(3)">
                                     Continue
                                 </v-btn>
                             </div>
                         </v-stepper-content>
-                        <v-stepper-content :key="`3-content`" :step="3">
-                            <!-- 登録画面 -->
+
+                        <!-- 登録画面 4-->
+                        <v-stepper-content :key="`4-content`" :step="4">
                             <v-textarea
                                 v-model="greetingContent"
                                 class="card-text__font pa-2"
@@ -281,6 +328,23 @@
                                     >Submit</v-btn
                                 >
                             </v-card-actions>
+                            <v-alert
+                                v-model="errorAlert"
+                                dismissible
+                                :color="alertColor"
+                                border="left"
+                                elevation="2"
+                                colored-border
+                                :icon="alertIcon"
+                                style="word-break: break-all;"
+                            >
+                                <div
+                                    v-for="text in Msg.split('\n')"
+                                    :key="text"
+                                >
+                                    {{ text }}
+                                </div>
+                            </v-alert>
                             <v-dialog v-model="greetingExample" width="400">
                                 <v-card absolute max-width="400" persistent>
                                     <v-img
@@ -364,6 +428,20 @@ export default {
     data() {
         return {
             form: false,
+            /**
+             * Facebook認証関連
+             */
+            initUserImg: '',
+            strategies: [
+                {
+                    key: 'facebook',
+                    name: 'Facebook',
+                    color: '#3c65c4',
+                    icon: 'facebook-box'
+                }
+            ],
+            facebookData: {},
+            facebookID: '',
             agreementService: false,
             agreementPolicy: false,
             dialogContent: {
@@ -417,14 +495,17 @@ export default {
             },
 
             e1: 1,
-            steps: 3,
+            steps: 4,
             /**
              * name validation
              */
             name: '',
             nameRules: [
                 (v) => !!v || 'Name is required',
-                (v) => v.length <= 20 || 'Name must be less than 20 characters'
+                (v) =>
+                    v === null ||
+                    v.length <= 20 ||
+                    'Name must be less than 20 characters'
             ],
             /**
              * email validation
@@ -472,8 +553,8 @@ export default {
              */
             gender: '',
             genders: [
-                { name: 'Woman', val: 0 },
-                { name: 'Man', val: 1 },
+                { name: 'Female', val: 0 },
+                { name: 'Male', val: 1 },
                 { name: 'Others', val: 2 }
             ],
 
@@ -545,7 +626,15 @@ export default {
             greetingRules: [
                 (v) => v === null || v.length <= 200 || 'Max 200 characters'
             ],
-            greetingExample: false
+            greetingExample: false,
+            /**
+             * 通信エラー
+             */
+            errorAlert: false,
+            Msg: '',
+            alertColor: 'cyan',
+            alertIcon: 'mdi-hail',
+            int_counter: 0
         }
     },
     computed: {
@@ -557,6 +646,9 @@ export default {
     },
 
     watch: {
+        initUserImg() {
+            this.croppaImg.refresh()
+        },
         steps(val) {
             if (this.e1 > val) {
                 this.e1 = val
@@ -569,15 +661,23 @@ export default {
             this.greeting.content = this.greetingContent
         },
         e1() {
-            console.log('greetingExample :', this.e1)
-            if (this.e1 === 3) {
-                console.log('テスト')
+            if (this.e1 === 4) {
                 self = this
                 setTimeout(function() {
-                    console.log('object')
                     self.greetingExample = true
                 }, 500)
             }
+        },
+        facebookData() {
+            this.int_counter += 1
+            if (this.int_counter > 1) return 0
+            this.name = this.facebookData.name
+            // this.email = this.facebookData.email
+            // const birthday = new Date(this.facebookData.birthday)
+            // this.date = `${birthday.getFullYear()}-${birthday.getMonth() +
+            //     1}-${birthday.getDate()}`
+            this.initUserImg = `https://graph.facebook.com/${this.facebookData.id}/picture?width=1000&height=1000`
+            // this.getUserPhoto()
         }
     },
 
@@ -594,11 +694,6 @@ export default {
             const a = new AsYouType('JP')
             a.input('08031947940')
             const b = new AsYouType('JP').input('0223751514')
-
-            // const aphone = parsePhoneNumberFromString(a, 'JP')
-            //
-            //
-            //
         },
         updateValue() {
             this.currPhoneInp = new AsYouType(this.country.iso2.toUpperCase())
@@ -635,7 +730,6 @@ export default {
                     }
                 })
                 .then(function(response) {
-                    console.log('response :', response)
                     self.geoLoading = false
                     if (response.response.location.length > 0) {
                         self.place = response.response.location[0]
@@ -707,6 +801,7 @@ export default {
                 face_image: '',
                 country: this.country.iso2,
                 fst_lang: this.language.langCode,
+                facebook: this.facebookID,
                 ...this.greeting
             }
         },
@@ -725,6 +820,9 @@ export default {
                         this.formData
                     )
                     .then((res) => {
+                        this.Msg = `Register Successful
+                        Now loading... Please wait`
+                        this.errorAlert = true
                         this.isLoading = false
                         if (res.access_token) {
                             this.$auth.loginWith('local', {
@@ -738,7 +836,93 @@ export default {
                     .then((res) => {
                         this.$router.push('/app/select')
                     })
+                    .catch((i) => {
+                        // console.log(i.response.data)
+                        // console.log(i.response.status) // 例：400
+                        // console.log(i.response.statusText) // Bad Request
+                        // console.log(i.response.headers)
+                        this.alertColor = 'error'
+                        this.alertIcon = 'mdi-alert-circle-outline'
+                        this.errorAlert = true
+                        this.isLoading = false
+                        this.Msg = `${i}\n${i.response.statusText}\n${i.response.data.message}
+                        `
+                        this.formData = new FormData()
+                    })
             })
+        },
+
+        /**
+         * Facebook 連携用
+         */
+        async getFacebookMe() {
+            const self = this
+            await window.FB.api(
+                '/me',
+                {
+                    fields: 'id,about,birthday,email,gender,location,name'
+                },
+                function(response) {
+                    self.facebookData = response
+                    self.nextStep(1)
+                }
+            )
+        },
+        facebookLogin() {
+            const self = this
+            window.FB.login(
+                function(response) {
+                    const { accessToken, userID } = response.authResponse
+                    self.$axios
+                        .$get(
+                            `https://graph.facebook.com/${userID}?fields=name,birthday,email&access_token=${accessToken}`
+                        )
+                        .then((i) => {
+                            console.log(i)
+                            self.name = i.name
+                            self.email = i.email
+                            const birthday = i.birthday
+                                ? new Date(i.birthday)
+                                : ''
+                            self.date = `${birthday.getFullYear()}-${birthday.getMonth() +
+                                1}-${birthday.getDate()}`
+                            self.initUserImg = `https://graph.facebook.com/${i.id}/picture?width=1000&height=1000`
+                            self.facebookID = i.id
+                            self.nextStep(1)
+                        })
+                },
+                { scope: 'email' }
+            )
+        },
+        async getFacebookLoginStatus() {
+            const self = this
+            await window.FB.getLoginStatus(function(response) {
+                if (response.status === 'connected') {
+                    self.getFacebookMe()
+                } else {
+                    self.facebookLogin()
+                }
+            })
+        },
+        signupWithFacebook() {
+            window.FB.init({
+                appId: 2492514334313989,
+                xfbml: true,
+                version: 'v4.0'
+            })
+            // this.getFacebookLoginStatus()
+            this.facebookLogin()
+
+            const self = this
+            /**
+             * ユーザーのAuthのステータス変更時のイベント
+             * 以下を参考にした
+             * https://stackoverflow.com/questions/24031418/get-facebook-user-data-javascript-api
+             * https://stackoverflow.com/questions/43382485/how-to-await-fb-login-callback-on-reactjs
+             */
+            // window.FB.Event.subscribe('auth.statusChange', function() {
+            //     self.getFacebookMe()
+            // })
         }
     }
 }

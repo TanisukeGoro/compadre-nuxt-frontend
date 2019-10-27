@@ -12,7 +12,7 @@
             <v-list-item>
                 <v-list-item-avatar>
                     <v-avatar size="30">
-                        <v-img :src="iconUrl"></v-img>
+                        <v-img :src="iconUrl | avatarIconUrl"></v-img>
                     </v-avatar>
                 </v-list-item-avatar>
 
@@ -55,7 +55,7 @@
         <v-app-bar app clipped-right color="primary" height="55" fixed dark>
             <v-app-bar-nav-icon @click.stop="drawer = !drawer">
                 <v-avatar size="30">
-                    <v-img :src="iconUrl"></v-img>
+                    <v-img :src="iconUrl | avatarIconUrl"></v-img>
                 </v-avatar>
             </v-app-bar-nav-icon>
 
@@ -116,9 +116,7 @@ export default {
         }
     },
     created() {
-        this.iconUrl = this.$options.filters.avatarIconUrl(
-            this.$auth.state.user.icon_url
-        )
+        this.iconUrl = this.$auth.state.user.icon_url
     }
 }
 </script>

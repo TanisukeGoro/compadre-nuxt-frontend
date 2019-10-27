@@ -45,7 +45,7 @@
                                 cardState === 'select' ||
                                     cardState === 'preview'
                             "
-                            style="font-size: 24px; line-height: 1.5; margin-top:10%;"
+                            style="font-size: 20px; line-height: 1.5; margin-top:10%;"
                         >
                             <div v-if="candidate.greetings.length > 0">
                                 <div
@@ -186,6 +186,12 @@
                     </span>
                 </v-carousel-item>
             </v-carousel>
+            <the-matching-dialog
+                v-model="matchingDialog"
+                :matching-dialog="matchingDialog"
+                :you-icon-url="matchedUser.icon_url"
+                :you-name="matchedUser.name"
+            />
         </v-content>
     </v-app>
 </template>
@@ -194,11 +200,13 @@
 import '@/assets/selectcard.css'
 import { mapState, mapActions } from 'vuex'
 import LikeButton from '~/components/LikeButton'
+import TheMatchingDialog from '~/components/TheMatchingDialog.vue'
 import TheEditorBtn from '~/components/TheEditorBtn'
 export default {
     components: {
         LikeButton,
-        TheEditorBtn
+        TheEditorBtn,
+        TheMatchingDialog
     },
     // filters: { //filtersはthisで他のプロパティにアクセエスできない.ので諦めた
     //     jobfilter(jobNumber) {
@@ -249,7 +257,9 @@ export default {
             hashId: '',
             postBtnState: true,
             nextState: true,
-            iconBaseUrl: process.env.AwsStoreImageUrl
+            iconBaseUrl: process.env.AwsStoreImageUrl,
+            matchingDialog: false,
+            matchedUser: {}
         }
     },
     mounted() {
@@ -266,6 +276,7 @@ export default {
     },
     watch: {
         carousel() {
+            console.log(this.carousel)
             this.hashId = this.displayCandidate[
                 this.carousel
             ].greetings[0].hash_id
@@ -331,6 +342,10 @@ export default {
             if (this.postBtnState === true)
                 this.likeUser(this.displayCandidate[this.carousel].id)
         },
+        matchingEvent() {
+            this.matchingDialog = true
+            // alert('マッチングしました！！')
+        },
         /**
          * ユーザーによるいいねをPOSTしてる。
          * nuxtStateで連打による誤作動を防止している。
@@ -338,37 +353,40 @@ export default {
         async postUserLike(LikedID) {
             this.postBtnState = false
             try {
-                await this.$axios.$post(
-                    `${process.env.apiBaseUrl}matching/like`,
-                    {
+                await this.$axios
+                    .$post(`${process.env.apiBaseUrl}matching/like`, {
                         userId_you: this.displayCandidate[this.carousel].id
-                    }
-                )
+                    })
+                    .then((i) => console.log(i))
                 this.postBtnState = true
             } catch (error) {
                 this.postBtnState = true
             }
         },
         async matchingUser(LikedID) {
+            const self = this
             try {
-                await this.$axios.$post(`${process.env.apiBaseUrl}matching`, {
-                    userId_you: LikedID
-                })
+                await this.$axios
+                    .$post(`${process.env.apiBaseUrl}matching`, {
+                        userId_you: LikedID
+                    })
+                    .then((i) => {
+                        if (i.status === 200) {
+                            self.matchedUser =
+                                self.displayCandidate[self.carousel]
+                            self.matchingEvent()
+                        }
+                    })
             } catch (error) {}
         },
         /**
          * ユーザーのいいねのPOSTが完了してから次のユーザーを呼び出す。
          */
-        likeUser(LikedID) {
-            console.log(
-                'likeUser',
-                this.displayCandidate[this.carousel].has_user_voted
-            )
-            if (this.displayCandidate[this.carousel].has_user_voted) {
-                console.log('matchinguser')
-                this.matchingUser(LikedID)
-            }
-            this.postUserLike(LikedID)
+        async likeUser(LikedID) {
+            // どっちにもリクエストを投げてしまう。
+            await this.postUserLike(LikedID)
+            await this.matchingUser(LikedID)
+            if (this.$route.path === '/app/select') this.carousel += 1
         }
     }
 }
