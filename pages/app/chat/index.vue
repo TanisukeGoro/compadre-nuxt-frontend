@@ -51,11 +51,13 @@ export default {
     components: {
         NoChatPartner
     },
-    data: () => ({
-        // AWSの画像だったら爆速で取ってこれる感じか。
-        iconURL: `${process.env.AwsStoreImageUrl}images/GDayPwYX4Ioeknxb6R6Dbn9eDHXdr2NNy94Dctp5.jpeg`,
-        No_chat_partner: true
-    }),
+    data() {
+        return {
+            // AWSの画像だったら爆速で取ってこれる感じか。
+            iconURL: `${process.env.AwsStoreImageUrl}images/GDayPwYX4Ioeknxb6R6Dbn9eDHXdr2NNy94Dctp5.jpeg`,
+            No_chat_partner: true
+        }
+    },
     computed: {
         ...mapGetters('app/chat/chatList', ['chatLists'])
     },
