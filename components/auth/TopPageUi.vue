@@ -10,7 +10,7 @@
                                 <v-toolbar-title
                                     class="logoText--text logo-font"
                                 >
-                                    Open world and mind</v-toolbar-title
+                                    Making Friends</v-toolbar-title
                                 >
                                 <div class="flex-grow-1"></div>
                             </v-toolbar>

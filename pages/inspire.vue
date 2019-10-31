@@ -18,12 +18,13 @@
 </template>
 
 <script>
+// import jwtProvider from '~/plugins/virgilJwtProvider'
+
 export default {
-    auth: 'guest',
+    auth: false,
+    leyout: 'empty',
     data() {
-        return {
-            jwt: this.$store.getters.data
-        }
+        return {}
     },
     methods: {
         jwt_getter() {}
