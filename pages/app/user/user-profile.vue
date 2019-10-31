@@ -487,7 +487,8 @@ export default {
             const self = this
             this.$axios
                 .$put(`${process.env.apiBaseUrl}user`, { ...this.editorParam })
-                .then((i) => {
+                .then(async (i) => {
+                    await self.$auth.fetchUser()
                     self.userData = Object.assign({}, i.user)
                     self.SelfIntroduction = i.user.profile_text
                         ? i.user.profile_text

@@ -95,8 +95,8 @@ export default {
     pwa: {
         manifest: {
             start_url: '/app/select',
-            name: 'compadre',
-            description: 'The Compadre frontend side project',
+            name: 'Mafee',
+            description: 'The Mafee frontend side project',
             theme_color: '#F4D03F'
         }
     },
@@ -159,7 +159,7 @@ export default {
                 // 通常のテーマ
                 light: {
                     primary: '#F4D03F',
-                    secondary: '#F5D76E',
+                    secondary: '#fff7d9',
                     accent: '#4F75A0',
                     error: '#ED5E7D',
                     warning: '#FF934F',
@@ -168,7 +168,7 @@ export default {
                     background: '#fafafa',
                     chips: '#FAEEB8',
                     chipsColor: '#61636b',
-                    logoText: '#4db4da',
+                    logoText: '#fff7d9',
                     text: '#c76b33'
                 },
                 // ダークモードのとき
