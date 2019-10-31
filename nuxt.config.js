@@ -95,8 +95,8 @@ export default {
     pwa: {
         manifest: {
             start_url: '/app/select',
-            name: 'compadre',
-            description: 'The Compadre frontend side project',
+            name: 'Mafee',
+            description: 'The Mafee frontend side project',
             theme_color: '#F4D03F'
         }
     },
