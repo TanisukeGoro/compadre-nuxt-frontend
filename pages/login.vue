@@ -9,7 +9,7 @@
                         <v-toolbar color="primary" dark flat>
                             <v-spacer></v-spacer>
                             <v-toolbar-title class="logo-font logoText--text">
-                                Open world and mind</v-toolbar-title
+                                Making Friends</v-toolbar-title
                             >
                             <div class="flex-grow-1"></div>
                         </v-toolbar>
