@@ -248,17 +248,42 @@
                                         </v-menu>
                                         <!-- 言語選択 -->
                                         <v-select
-                                            v-model="language"
+                                            v-model="languages"
+                                            :items="minLangCodes"
+                                            item-value="iso639_1"
+                                            item-text="local"
                                             :hint="languages.description"
-                                            :items="languages"
-                                            item-text="name"
-                                            item-value="value"
                                             label="First Language"
                                             persistent-hint
                                             return-object
                                             single-line
                                             prepend-icon="mdi-flag-outline"
-                                        ></v-select>
+                                        >
+                                            <template
+                                                slot="selection"
+                                                slot-scope="{ item }"
+                                            >
+                                                <p
+                                                    class="inline iti-flag"
+                                                    :class="
+                                                        item.iso639_1.toLowerCase()
+                                                    "
+                                                ></p>
+                                                {{ item.local }}
+                                            </template>
+                                            <template
+                                                slot="item"
+                                                slot-scope="{ item }"
+                                            >
+                                                <p
+                                                    class="inline iti-flag"
+                                                    :class="
+                                                        item.iso639_1.toLowerCase()
+                                                    "
+                                                ></p>
+                                                {{ item.local }}
+                                            </template>
+                                        </v-select>
                                         <!-- 性別の選択 -->
                                         <v-select
                                             v-model="gender"
@@ -420,6 +445,7 @@
 <script>
 import { AsYouType } from 'libphonenumber-js'
 import { countries } from '~/plugins/phoneCodeCountries'
+import { minLangCodes } from '~/plugins/langCode'
 import '~/plugins/croppa'
 
 export default {
@@ -589,26 +615,9 @@ export default {
             /**
              * 言語選択
              */
+            minLangCodes,
+            languages: [],
             language: '',
-            languages: [
-                { name: '英語', langCode: 'en', description: '' },
-                { name: '中国語', langCode: 'zh', description: '' },
-                { name: '日本語', langCode: 'ja', description: '' },
-                { name: '韓国語', langCode: 'ko', description: '' },
-                { name: 'ロシア語', langCode: 'be', description: '' },
-                { name: 'ポルトガル語', langCode: 'pt', description: '' },
-                { name: 'スペイン語', langCode: 'es', description: '' },
-                { name: 'フランス語', langCode: 'fr', description: '' },
-                { name: 'ドイツ語', langCode: 'de', description: '' },
-                { name: 'イタリア語', langCode: 'it', description: '' },
-                { name: 'マレー語', langCode: 'ms', description: '' },
-                { name: 'フィリピン語', langCode: 'tl', description: '' },
-                { name: 'ベトナム語', langCode: 'vi', description: '' },
-                { name: 'タイ語', langCode: 'th', description: '' },
-                { name: '台湾語', langCode: 'tw', description: '' },
-                { name: 'その他', langCode: 'other', description: '' }
-            ],
-
             /**
              * 画像のアップロード
              */
@@ -800,7 +809,7 @@ export default {
                 oauth_id: 0,
                 face_image: '',
                 country: this.country.iso2,
-                fst_lang: this.language.langCode,
+                fst_lang: this.languages.iso639_1,
                 facebook: this.facebookID,
                 ...this.greeting
             }
