@@ -216,36 +216,6 @@
                                                 {{ item.name }}
                                             </template>
                                         </v-select>
-                                        <!-- 職業選択 -->
-                                        <v-menu
-                                            ref="menu"
-                                            v-model="menu"
-                                            :close-on-content-click="false"
-                                            transition="scale-transition"
-                                            offset-y
-                                            min-width="290px"
-                                        >
-                                            <template v-slot:activator="{ on }">
-                                                <v-text-field
-                                                    v-model="date"
-                                                    label="Birthday date"
-                                                    prepend-icon="mdi-calendar-today"
-                                                    readonly
-                                                    v-on="on"
-                                                ></v-text-field>
-                                            </template>
-                                            <v-date-picker
-                                                ref="picker"
-                                                v-model="date"
-                                                :max="
-                                                    new Date()
-                                                        .toISOString()
-                                                        .substr(0, 10)
-                                                "
-                                                min="1950-01-01"
-                                                @change="saveBirth"
-                                            ></v-date-picker>
-                                        </v-menu>
                                         <!-- 言語選択 -->
                                         <v-select
                                             v-model="languages"
@@ -284,6 +254,36 @@
                                                 {{ item.local }}
                                             </template>
                                         </v-select>
+                                        <!-- 誕生日 -->
+                                        <v-menu
+                                            ref="menu"
+                                            v-model="menu"
+                                            :close-on-content-click="false"
+                                            transition="scale-transition"
+                                            offset-y
+                                            min-width="290px"
+                                        >
+                                            <template v-slot:activator="{ on }">
+                                                <v-text-field
+                                                    v-model="date"
+                                                    label="Birthday date"
+                                                    prepend-icon="mdi-calendar-today"
+                                                    readonly
+                                                    v-on="on"
+                                                ></v-text-field>
+                                            </template>
+                                            <v-date-picker
+                                                ref="picker"
+                                                v-model="date"
+                                                :max="
+                                                    new Date()
+                                                        .toISOString()
+                                                        .substr(0, 10)
+                                                "
+                                                min="1950-01-01"
+                                                @change="saveBirth"
+                                            ></v-date-picker>
+                                        </v-menu>
                                         <!-- 性別の選択 -->
                                         <v-select
                                             v-model="gender"
