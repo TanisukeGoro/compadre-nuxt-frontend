@@ -181,7 +181,7 @@
                                         </v-col>
                                         <v-col cols="9" class="pa-0">
                                             <v-select
-                                                v-model="langages"
+                                                v-model="languages"
                                                 :items="minLangCodes"
                                                 item-value="iso639_1"
                                                 item-text="local"
@@ -401,7 +401,7 @@ export default {
             countriesName,
             // 言語データ
             minLangCodes,
-            langages: [],
+            languages: [],
 
             // 編集のデータ
             editorParam: '',
@@ -409,7 +409,7 @@ export default {
             userData: '',
 
             SelfIntroduction: '',
-            userLangages: [],
+            userlanguages: [],
             country: '',
             // greetingsのカウントバー
             color: 'black',
@@ -434,12 +434,12 @@ export default {
         this.country = results || ''
 
         // 言語の初期設定
-        this.langages = [
+        this.languages = [
             this.searchLang(this.userData.fst_lang),
             this.searchLang(this.userData.snd_lang),
             this.searchLang(this.userData.trd_lang)
         ]
-        this.langages = this.langages.filter((i) => i !== ' -- ')
+        this.languages = this.languages.filter((i) => i !== ' -- ')
         // プロフィールがnullの時は以下を表示
         this.userData.profile_text === null
             ? (this.SelfIntroduction =
@@ -462,11 +462,11 @@ export default {
             }
             // データの更新処理
             this.editorParam.fst_lang =
-                this.langages.length >= 1 ? this.langages[0] : null
+                this.languages.length >= 1 ? this.languages[0] : null
             this.editorParam.snd_lang =
-                this.langages.length >= 2 ? this.langages[1] : null
+                this.languages.length >= 2 ? this.languages[1] : null
             this.editorParam.trd_lang =
-                this.langages.length >= 3 ? this.langages[2] : null
+                this.languages.length >= 3 ? this.languages[2] : null
         },
         searchLang(langCode) {
             if (langCode === null) return ' -- '
