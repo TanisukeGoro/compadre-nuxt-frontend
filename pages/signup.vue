@@ -227,7 +227,7 @@
                                             persistent-hint
                                             return-object
                                             single-line
-                                            prepend-icon="mdi-flag-outline"
+                                            prepend-icon="mdi-voice"
                                         >
                                             <template
                                                 slot="selection"
