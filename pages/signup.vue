@@ -881,11 +881,15 @@ export default {
                             console.log(i)
                             self.name = i.name
                             self.email = i.email
-                            const birthday = i.birthday
-                                ? new Date(i.birthday)
-                                : ''
-                            self.date = `${birthday.getFullYear()}-${birthday.getMonth() +
-                                1}-${birthday.getDate()}`
+
+                            if (i.birthday) {
+                                const birthday = new Date(i.birthday)
+                                self.date = `${birthday.getFullYear()}-${birthday.getMonth() +
+                                    1}-${birthday.getDate()}`
+                            } else {
+                                self.date = ''
+                            }
+
                             self.initUserImg = `https://graph.facebook.com/${i.id}/picture?width=1000&height=1000`
                             self.facebookID = i.id
                             self.nextStep(1)

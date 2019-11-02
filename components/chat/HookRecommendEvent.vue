@@ -20,7 +20,7 @@
                             fab
                             dark
                             small
-                            color="secondary"
+                            color="#F4D76D"
                             style="display:block"
                             @click="startUpRecommendSpot('lunch_dinner')"
                         >

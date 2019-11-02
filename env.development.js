@@ -9,6 +9,6 @@ module.exports = {
     storageBucket: 'themadison-2d71b.appspot.com',
     messagingSenderId: '97117588188',
     appId: '1:97117588188:web:555eaefb9fbdcb60564219',
-    VIRGIL_APP_ID: 'VIRGIL_APP_ID',
+    VIRGIL_APP_ID: 'a8d9213845654912af00f8e40b0dbf2a',
     VIRGIL_APP_KEY_ID: 'e01f06bd7778e56e057f210479fc1f48'
 }

@@ -16,13 +16,13 @@
                 <v-icon v-else>mdi-pencil-box-multiple-outline</v-icon>
             </v-btn>
         </template>
-        <v-btn fab dark small color="secondary" @click="assignState('edit')">
+        <v-btn fab dark small color="#F4D76D" @click="assignState('edit')">
             <v-icon>mdi-pencil</v-icon>
         </v-btn>
-        <v-btn fab dark small color="secondary" @click="assignState('create')">
+        <v-btn fab dark small color="#F4D76D" @click="assignState('create')">
             <v-icon>mdi-plus</v-icon>
         </v-btn>
-        <v-btn fab dark small color="secondary" @click="assignState('delete')">
+        <v-btn fab dark small color="#F4D76D" @click="assignState('delete')">
             <v-icon>mdi-delete</v-icon>
         </v-btn>
     </v-speed-dial>
