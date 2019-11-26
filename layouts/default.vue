@@ -12,7 +12,7 @@
             <v-list-item>
                 <v-list-item-avatar>
                     <v-avatar size="30">
-                        <v-img :src="iconUrl"></v-img>
+                        <v-img :src="iconUrl | avatarIconUrl"></v-img>
                     </v-avatar>
                 </v-list-item-avatar>
 
@@ -55,18 +55,20 @@
         <v-app-bar app clipped-right color="primary" height="55" fixed dark>
             <v-app-bar-nav-icon @click.stop="drawer = !drawer">
                 <v-avatar size="30">
-                    <v-img :src="iconUrl"></v-img>
+                    <v-img :src="iconUrl | avatarIconUrl"></v-img>
                 </v-avatar>
             </v-app-bar-nav-icon>
 
             <v-spacer></v-spacer>
 
-            <v-toolbar-title>{{ title }}</v-toolbar-title>
+            <v-toolbar-title class="logo-font">{{ title }}</v-toolbar-title>
 
             <v-spacer></v-spacer>
-
+            <!-- 消すとLogoの中央揃えが崩れるので困り者。
+                色を変更して誤魔化す。
+             -->
             <v-app-bar-nav-icon @click.stop="drawerRight = !drawerRight">
-                <v-icon>mdi-settings-outline</v-icon>
+                <v-icon color="primary">mdi-settings-outline</v-icon>
             </v-app-bar-nav-icon>
         </v-app-bar>
 
@@ -104,11 +106,6 @@ export default {
                 },
                 {
                     icon: 'mdi-settings-outline',
-                    title: 'Settings',
-                    to: '/app/user/settings'
-                },
-                {
-                    icon: 'mdi-settings-outline',
                     title: 'Edit Greetings',
                     to: '/app/user/edit-greeting'
                 }
@@ -119,8 +116,12 @@ export default {
         }
     },
     created() {
-        this.iconUrl =
-            process.env.AwsStoreImageUrl + this.$auth.state.user.icon_url
+        this.iconUrl = this.$auth.state.user.icon_url
     }
 }
 </script>
+<style>
+body {
+    background-color: #f4d03f;
+}
+</style>

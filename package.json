@@ -1,7 +1,7 @@
 {
-    "name": "compadre",
-    "version": "0.1.0",
-    "description": "The Madison frontend side project ",
+    "name": "mafee",
+    "version": "0.1.3",
+    "description": "The Mafee frontend side project",
     "author": "Okita",
     "private": true,
     "scripts": {
@@ -25,6 +25,9 @@
         "libphonenumber-js": "^1.7.25",
         "nuxt": "^2.10.0",
         "nuxt-i18n": "^6.3.0",
+        "nuxt-webfontloader": "^1.1.0",
+        "virgil-crypto": "^4.0.0-alpha.13",
+        "virgil-sdk": "^6.0.0-alpha.5",
         "vue-croppa": "^1.3.8",
         "vuexfire": "^3.1.2"
     },

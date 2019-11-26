@@ -1,8 +1,12 @@
 import colors from 'vuetify/es5/util/colors'
-// ここでenvの設定ファイルの切り替え
 const environment = process.env.NODE_ENV || 'development'
 const envSet = require(`./env.${environment}.js`)
-
+const splashscreens = require(`./config/splashscreens`) // import splash screen meta tag
+// ここで切り替え
+const apiUrl =
+    process.env.NODE_ENV === 'development'
+        ? 'http://localhost:80/api/v1/'
+        : 'https://compadre.herokuapp.com/api/v1/'
 export default {
     mode: 'spa',
     env: envSet,
@@ -16,28 +20,41 @@ export default {
             { charset: 'utf-8' },
             {
                 name: 'viewport',
-                content: 'width=device-width, initial-scale=1'
+                content:
+                    'width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no'
+            },
+            { name: 'apple-mobile-web-app-capable', content: 'yes' },
+            {
+                name: 'apple-mobile-web-app-status-bar-style',
+                content: 'black-translucent'
             },
             {
                 hid: 'description',
                 name: 'description',
                 content: process.env.npm_package_description || ''
+            },
+            {
+                name: 'google',
+                content: 'notranslate'
             }
         ],
-        link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+        link: [
+            { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+            ...splashscreens.splashscreens
+        ]
     },
     /*
      ** Customize the progress-bar color
      */
-    loading: { color: '#fff' },
+    loading: {},
     /*
      ** Global CSS
      */
-    css: ['@/assets/css/iti-flags.css'],
+    css: ['@/assets/css/iti-flags.css', '@/assets/css/logo-font.css'],
     /*
      ** Plugins to load before mounting the App
      */
-    plugins: ['~/plugins/fillters'],
+    plugins: ['~/plugins/fillters', '~/plugins/head.js', '~/plugins/axios'],
     /*
      ** Nuxt.js dev-modules
      */
@@ -54,7 +71,8 @@ export default {
         '@nuxtjs/axios',
         '@nuxtjs/proxy',
         '@nuxtjs/pwa',
-        '@nuxtjs/auth'
+        '@nuxtjs/auth',
+        'nuxt-webfontloader'
     ],
     /*
      ** Axios module configuration
@@ -73,16 +91,21 @@ export default {
      * proxy module configration
      * プロキシを設定したけど動く気がしないのでとりあえず放置する。
      */
-    proxy: {
-        '/api': 'http://localhost/api/v1/',
-        '/geolocation':
-            'https://geoapi.heartrails.com/api/json?method=searchByGeoLocation'
+    proxy: {},
+    pwa: {
+        manifest: {
+            start_url: '/app/select',
+            name: 'Mafee',
+            description: 'The Mafee frontend side project',
+            theme_color: '#F4D03F'
+        }
     },
     /**
      * Auth module configuration
      * See https://auth.nuxtjs.org/
      */
     auth: {
+        localStorage: false,
         redirect: {
             login: '/login', // 未ログイン時のリダイレクト先
             logout: '/', // ログアウト処理を実行した直後のリダイレクト先
@@ -94,23 +117,33 @@ export default {
                 // APIのエンドポイント
                 endpoints: {
                     login: {
-                        url: 'https://compadre.herokuapp.com/api/v1/auth/login',
+                        url: `${apiUrl}auth/login`,
                         method: 'post',
                         // レスポンスのトークンが入っているkey
                         propertyName: 'access_token'
                     },
                     logout: {
-                        url:
-                            'https://compadre.herokuapp.com/api/v1/auth/logout',
+                        url: `${apiUrl}auth/logout`,
                         method: 'post'
                     },
                     user: {
-                        url: 'https://compadre.herokuapp.com/api/v1/user',
+                        url: `${apiUrl}user`,
                         method: 'get',
                         propertyName: 'user'
                     }
                 }
+            },
+            facebook: {
+                client_id: '2492514334313989',
+                userinfo_endpoint:
+                    'https://graph.facebook.com/v2.12/me?fields=about,name,picture{url},email,birthday',
+                scope: ['public_profile', 'email', 'user_birthday']
             }
+        }
+    },
+    webfontloader: {
+        google: {
+            families: ['Pacifico:400,700'] // Loads Lato font with weights 400 and 700
         }
     },
     /*
@@ -126,13 +159,17 @@ export default {
                 // 通常のテーマ
                 light: {
                     primary: '#F4D03F',
-                    secondary: '#F5D76E',
+                    secondary: '#fff7d9',
                     accent: '#4F75A0',
                     error: '#ED5E7D',
-                    warning: '#ffeb3b',
+                    warning: '#FF934F',
                     info: '#cddc39',
                     success: '#EBB920',
-                    background: '#fafafa'
+                    background: '#fafafa',
+                    chips: '#FAEEB8',
+                    chipsColor: '#61636b',
+                    logoText: '#fff7d9',
+                    text: '#c76b33'
                 },
                 // ダークモードのとき
                 dark: {

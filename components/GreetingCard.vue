@@ -17,12 +17,12 @@
 
 <template>
     <v-app>
-        <v-content>
+        <v-content style="padding-bottom:90px">
             <v-carousel
                 v-model="carousel"
                 height="100%"
                 :hide-delimiters="true"
-                :show-arrows="showArrows"
+                :show-arrows="false"
                 :touchless="touchless"
                 :cycle="false"
                 :light="true"
@@ -33,114 +33,130 @@
                     :key="candidate.candidateId"
                 >
                     <v-card
-                        height="100%"
                         max-width="344"
-                        class="mx-auto pt-4"
+                        class="mx-auto"
+                        style="margin-top:5%; border-radius:25px; min-height:85% "
                         flat
-                        color="background"
+                        outlined
                     >
-                        <v-list-item>
-                            <v-list-item-avatar color="grey" size="72">
-                                <v-img
-                                    :src="
-                                        candidate.icon_url
-                                            ? iconBaseUrl + candidate.icon_url
-                                            : require('~/assets/images/onErrorUserImg.png')
-                                    "
-                                ></v-img>
-                            </v-list-item-avatar>
-                            <v-list-item-content>
-                                <v-list-item-title
-                                    class="headline  grey--text text--darken-3"
-                                >
-                                    {{ candidate.name }}
-                                </v-list-item-title>
-                                <v-list-item-subtitle
-                                    class="grey--text text--darken-1"
-                                >
-                                    <p
-                                        class="inline iti-flag mr-1"
-                                        :class="candidate.country.toLowerCase()"
-                                    ></p>
-                                    {{
-                                        candidate.country
-                                            | countryCode2countryName
-                                    }}
-                                    {{ candidate.birthday | yyyymmdd2Age }}歳
-                                </v-list-item-subtitle>
-                                <v-list-item-subtitle
-                                    class="grey--text text--darken-1"
-                                >
-                                    {{ jobCode[candidate.job_type] }}
-                                </v-list-item-subtitle>
-                            </v-list-item-content>
-                        </v-list-item>
-
                         <!-- 表示用 -->
                         <v-card-text
                             v-if="
                                 cardState === 'select' ||
                                     cardState === 'preview'
                             "
-                            class="subtitle-1 grey--text text--darken-3"
+                            style="font-size: 20px; line-height: 1.5; margin-top:10%;"
                         >
-                            {{
-                                candidate.greetings.length > 0
-                                    ? candidate.greetings[0].content
-                                    : 'No Messages...'
-                            }}
+                            <div v-if="candidate.greetings.length > 0">
+                                <div
+                                    v-for="(text,
+                                    index) in candidate.greetings[0].content.split(
+                                        '\n'
+                                    )"
+                                    :key="index"
+                                >
+                                    {{ text }}
+                                </div>
+                            </div>
+                            <div v-else>No Messages...</div>
                         </v-card-text>
-                        <!-- 編集用 -->
-                        <v-textarea
-                            v-if="cardState === 'edit'"
-                            v-model="propsContent"
-                            class="card-text__font pa-2"
-                            auto-grow
-                            color="accent"
-                            autofocus
-                            clearable
-                            placeholder="'What do you want to do?'"
-                            label="Edit Greeting"
-                            :counter="counter"
-                            rows="1"
-                        >
-                        </v-textarea>
+                        <v-card-text>
+                            <v-icon class="mr-3 grey--text">mdi-voice</v-icon>
+                            {{ candidate.fst_lang | langCode2langName }},
+                            {{ candidate.snd_lang | langCode2langName }},
+                            {{ candidate.trd_lang | langCode2langName }}
+                        </v-card-text>
 
-                        <v-divider color="grey"></v-divider>
-
-                        <v-list-item>
-                            <v-list-item-content>
-                                <v-list-item-title
-                                    class="subtitle-2 grey--text"
-                                >
-                                    <v-icon class="mr-3 grey--text"
-                                        >mdi-voice</v-icon
+                        <v-card-text class="pa-0" style="padding:10px;">
+                            <div style="bottom:0px; position:absolute">
+                                <v-divider></v-divider>
+                                <v-list-item>
+                                    <v-list-item-avatar
+                                        color="#c6e9e2"
+                                        size="50"
                                     >
-                                    {{
-                                        candidate.fst_lang | langCode2langName
-                                    }},
-                                    {{
-                                        candidate.snd_lang | langCode2langName
-                                    }},
-                                    {{ candidate.trd_lang | langCode2langName }}
-                                </v-list-item-title>
-                            </v-list-item-content>
-                        </v-list-item>
+                                        <v-img
+                                            :src="
+                                                candidate.icon_url
+                                                    | avatarIconUrl
+                                            "
+                                            :lazy-src="
+                                                require('~/assets/images/onErrorUserImg.png')
+                                            "
+                                        >
+                                            <template v-slot:placeholder>
+                                                <v-row
+                                                    class="fill-height ma-0"
+                                                    align="center"
+                                                    justify="center"
+                                                >
+                                                    <v-progress-circular
+                                                        indeterminate
+                                                        color="white"
+                                                        size="20"
+                                                    ></v-progress-circular>
+                                                </v-row>
+                                            </template>
+                                        </v-img>
+                                    </v-list-item-avatar>
+                                    <v-list-item-content>
+                                        <v-list-item-title
+                                            class="subtitle-1 grey--text text--darken-3"
+                                            >{{
+                                                candidate.name
+                                            }}</v-list-item-title
+                                        >
+                                        <v-list-item-subtitle
+                                            class="grey--text text--darken-1"
+                                        >
+                                            <p
+                                                class="inline iti-flag mr-1"
+                                                :class="
+                                                    candidate.country.toLowerCase()
+                                                "
+                                            ></p>
+                                            {{
+                                                candidate.country
+                                                    | countryCode2countryName
+                                            }}
+                                            {{
+                                                candidate.birthday
+                                                    | yyyymmdd2Age
+                                            }}歳
+                                        </v-list-item-subtitle>
+                                        <v-list-item-subtitle
+                                            class="grey--text text--darken-1"
+                                        >
+                                            {{
+                                                candidate.job_type
+                                                    | jobCode2JobName
+                                            }}
+                                        </v-list-item-subtitle>
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </div>
+                        </v-card-text>
+
+                        <!-- 編集用 -->
+                        <v-form>
+                            <v-textarea
+                                v-if="cardState === 'edit'"
+                                v-model="propsContent"
+                                class="card-text__font pa-2"
+                                auto-grow
+                                color="accent"
+                                autofocus
+                                clearable
+                                placeholder="'What do you want to do?'"
+                                label="Edit Greeting"
+                                :counter="counter"
+                                :rules="rules"
+                                rows="1"
+                            >
+                            </v-textarea>
+                        </v-form>
+
                         <v-card-actions>
-                            <!-- <v-flex xs1>
-                                <v-btn
-                                    v-if="cardState === 'select'"
-                                    color="accent"
-                                    absolute
-                                    bottom
-                                    @click="isshow = !is"
-                                >
-                                    Hi !
-                                </v-btn>
-                            </v-flex> -->
-                            <span v-if="cardState === 'select'" class="likebtn">
-                                <LikeButton @ClickLikebutton="HiClick" />
-                            </span>
                             <div
                                 v-if="cardState === 'edit'"
                                 class="SaveCancelBtn"
@@ -161,8 +177,21 @@
                             />
                         </v-card-actions>
                     </v-card>
+
+                    <span v-if="cardState === 'select'" class="likebtn">
+                        <LikeButton
+                            :btn-state="postBtnState"
+                            @ClickLikebutton="clickHiBtn"
+                        />
+                    </span>
                 </v-carousel-item>
             </v-carousel>
+            <the-matching-dialog
+                v-model="matchingDialog"
+                :matching-dialog="matchingDialog"
+                :you-icon-url="matchedUser.icon_url"
+                :you-name="matchedUser.name"
+            />
         </v-content>
     </v-app>
 </template>
@@ -171,11 +200,13 @@
 import '@/assets/selectcard.css'
 import { mapState, mapActions } from 'vuex'
 import LikeButton from '~/components/LikeButton'
+import TheMatchingDialog from '~/components/TheMatchingDialog.vue'
 import TheEditorBtn from '~/components/TheEditorBtn'
 export default {
     components: {
         LikeButton,
-        TheEditorBtn
+        TheEditorBtn,
+        TheMatchingDialog
     },
     // filters: { //filtersはthisで他のプロパティにアクセエスできない.ので諦めた
     //     jobfilter(jobNumber) {
@@ -198,7 +229,7 @@ export default {
         },
         touchless: {
             type: Boolean,
-            default: true
+            default: false
         },
         hideDelimiters: {
             type: Boolean,
@@ -217,26 +248,23 @@ export default {
         return {
             carousel: 0,
             counter: 200,
+            rules: [
+                (v) => v === null || v.length <= 200 || 'Max 200 characters'
+            ],
             storemodel: this.$store.getters['app/candidate/model'],
             model: this.$store.getters['app/candidate/model'],
             propsContent: '',
-            jobCode: {
-                1: '事務・オフィス系',
-                2: '販売・飲食・サービス系',
-                3: 'IT・エンジニア系',
-                4: 'Web・クリエイター系',
-                5: '医療・介護・福祉系',
-                6: '研究機関・教育系',
-                7: '商社・金融・経営',
-                8: '学生'
-            },
             hashId: '',
-            iconBaseUrl: process.env.AwsStoreImageUrl
+            postBtnState: true,
+            nextState: true,
+            iconBaseUrl: process.env.AwsStoreImageUrl,
+            matchingDialog: false,
+            matchedUser: {}
         }
     },
     mounted() {
-        console.log('GreetigCard :', this.displayCandidate)
         if (this.displayCandidate.length === 0) return
+        if (this.displayCandidate[this.carousel].greetings.length === 0) return
         this.hashId = this.displayCandidate[this.carousel].greetings[0].hash_id
     },
     computed: {
@@ -248,6 +276,7 @@ export default {
     },
     watch: {
         carousel() {
+            console.log(this.carousel)
             this.hashId = this.displayCandidate[
                 this.carousel
             ].greetings[0].hash_id
@@ -282,6 +311,10 @@ export default {
         editSave(e) {
             // axiosの通信のあとでthisを参照できなくなるので、ここでやってしまう
             if (this.propsContent.trim() === '') return !1
+            if (this.propsContent.trim().length > 200) {
+                alert('Max 200 characters')
+                return !1
+            }
             const self = this
             if (this.hashId) {
                 this.$axios
@@ -305,10 +338,55 @@ export default {
         editCancel() {
             this.$emit('cancelEditFromChild')
         },
-        HiClick() {
-            alert(
-                'クリックされました。データベースに送る処理は何も書いていません'
-            )
+        clickHiBtn() {
+            if (this.postBtnState === true)
+                this.likeUser(this.displayCandidate[this.carousel].id)
+        },
+        matchingEvent() {
+            this.matchingDialog = true
+            // alert('マッチングしました！！')
+        },
+        /**
+         * ユーザーによるいいねをPOSTしてる。
+         * nuxtStateで連打による誤作動を防止している。
+         */
+        async postUserLike(LikedID) {
+            this.postBtnState = false
+            try {
+                await this.$axios
+                    .$post(`${process.env.apiBaseUrl}matching/like`, {
+                        userId_you: this.displayCandidate[this.carousel].id
+                    })
+                    .then((i) => console.log(i))
+                this.postBtnState = true
+            } catch (error) {
+                this.postBtnState = true
+            }
+        },
+        async matchingUser(LikedID) {
+            const self = this
+            try {
+                await this.$axios
+                    .$post(`${process.env.apiBaseUrl}matching`, {
+                        userId_you: LikedID
+                    })
+                    .then((i) => {
+                        if (i.status === 200) {
+                            self.matchedUser =
+                                self.displayCandidate[self.carousel]
+                            self.matchingEvent()
+                        }
+                    })
+            } catch (error) {}
+        },
+        /**
+         * ユーザーのいいねのPOSTが完了してから次のユーザーを呼び出す。
+         */
+        async likeUser(LikedID) {
+            // どっちにもリクエストを投げてしまう。
+            await this.postUserLike(LikedID)
+            await this.matchingUser(LikedID)
+            if (this.$route.path === '/app/select') this.carousel += 1
         }
     }
 }
@@ -324,6 +402,13 @@ export default {
     margin: 0 auto;
 }
 .likebtn {
-    margin: 0 auto;
+    z-index: 100;
+    /* position: fixed; */
+    left: 25%;
+    bottom: 50px;
+    /* -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    overflow: hidden; */
+    /* margin: 0 auto;*/
 }
 </style>

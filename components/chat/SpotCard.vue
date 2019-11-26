@@ -1,10 +1,7 @@
 <template>
     <v-carousel hide-delimiters show-arrows-on-hover :show-arrows="showArrow">
-        <v-carousel-item
-            v-for="(showCard, i) in showCards"
-            :key="showCard.name"
-        >
-            <v-sheet :color="'#fafafa'" height="100%" tile>
+        <v-carousel-item v-for="(showCard, i) in showCards" :key="i">
+            <v-sheet :color="'#fafafa'" tile>
                 <v-row align="center" justify="center">
                     <v-card
                         :loading="loading"
@@ -19,7 +16,23 @@
                                     ? showCard.mediaUrl
                                     : 'https://cdn.vuetifyjs.com/images/cards/cooking.png'
                             "
-                        ></v-img>
+                            :lazy-src="
+                                'https://cdn.vuetifyjs.com/images/cards/cooking.png'
+                            "
+                        >
+                            <template v-slot:placeholder>
+                                <v-row
+                                    class="fill-height ma-0"
+                                    align="center"
+                                    justify="center"
+                                >
+                                    <v-progress-circular
+                                        indeterminate
+                                        color="grey lighten-5"
+                                    ></v-progress-circular>
+                                </v-row>
+                            </template>
+                        </v-img>
 
                         <v-card-title style="font-weight: bold;">{{
                             showCard.name
@@ -49,7 +62,6 @@
                             </div>
                         </v-card-actions>
                     </v-card>
-                    {{ i + 1 }}
                 </v-row>
             </v-sheet>
         </v-carousel-item>

@@ -117,6 +117,7 @@ export default {
                 let set = Object.assign({}, user)
                 greetingsArr.push(set)
             }
+            console.log('greetingArr :', { ...greetingsArr })
             return { greetings: greetingsArr }
         })
     },
@@ -186,7 +187,7 @@ export default {
          */
         editGreeting() {
             if (this.greetings[0].greetings[0].hash_id === '') {
-                return !1
+                return 0
             }
             this.cardState = 'edit'
             this.preModel = this.model

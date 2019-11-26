@@ -41,22 +41,6 @@ export default {
             hideDelimiters: true,
             cycle: false,
             Nodata: false,
-            langCode: {
-                ja: '日本語',
-                zh: '中国語',
-                en: '英語',
-                be: 'ロシア語',
-                pt: 'ポルトガル語',
-                es: 'スペイン語',
-                fr: 'フランス語',
-                de: 'ドイツ語',
-                it: 'イタリア語',
-                ms: 'マレー語',
-                tl: 'フィリピン語',
-                vi: 'ベトナム語',
-                th: 'タイ語',
-                tw: '台湾語'
-            },
             a: []
             // userdata: [
             //     {
@@ -117,10 +101,6 @@ export default {
             return this.model
         },
         candidatesarry() {
-            console.log(
-                this.$store.getters['app/candidate/candidates'],
-                'qwertyuio'
-            )
             return this.$store.getters['app/candidate/candidates']
         }
     },
@@ -166,7 +146,6 @@ export default {
     mounted() {
         this.currCandidate = this.candidates()
         if (this.currCandidate.length === 0) {
-            alert('これはやばいです')
             this.Nodata = true
         }
     },
@@ -285,9 +264,6 @@ export default {
                 this.$store.getters['app/candidate/candidates'][this.model].id
             )
             this.model++
-        },
-        bindCarousel(e) {
-            //
         },
         job_conversion(jobNum) {
             if (this.jobCode[jobNum]) {
