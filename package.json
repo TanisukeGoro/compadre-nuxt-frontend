@@ -23,7 +23,7 @@
         "@nuxtjs/pwa": "^3.0.0-0",
         "firebase": "^6.6.2",
         "libphonenumber-js": "^1.7.25",
-        "nuxt": "^2.10.0",
+        "nuxt": "^2.15.8",
         "nuxt-i18n": "^6.3.0",
         "nuxt-webfontloader": "^1.1.0",
         "virgil-crypto": "^4.0.0-alpha.13",
